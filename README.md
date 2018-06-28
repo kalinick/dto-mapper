@@ -2,19 +2,19 @@
 [![Build Status](https://travis-ci.org/vklymniuk/dto-mapper.svg?branch=master)](https://travis-ci.org/vklymniuk/dto-mapper)
 
 
-Dto mapper bundle. (*in progress*)
+# MapperBundle (*in progress*)
 
 Use generated-hydrator to create or extract objects. 
 
-
+## Installation
 ```bash
 $ composer require vklymniuk/dto-mapper
-
-
 ```
-Setup you destination classes by meta annotations like:
 
 ```php
+
+Setup you destination classes by meta annotations like:
+
 <?php
 
 use MapperBundle\Mapping\Annotation\Meta\PropertyClassRelation;
@@ -46,16 +46,18 @@ class RelationsRequestDto
 ``` 
 
  ```yaml
- # Mark registered classes by tag 
+ Mark registered classes by tag
+  
  tags:
     - dto_mapper.destination
 ``` 
 
+```tex
 use HydratorFactory::createBuilder($source, $destination): HydratorBuilderInterface; 
 to create create your custom hydrator
 
+```
 ```php
-
 <?php
     
 namespace MapperBundle\Hydrator;
@@ -109,10 +111,12 @@ interface HydratorBuilderInterface
 }
 ``` 
 
+```text
 use HydratorFactory::createHydrator($source, $destination): HydratorInterface 
 to create from configured
 
 '@MapperBundle\Mapper\MapperInterface' - to inject mapper in your service
+``` 
 
 ```php
 <?php
