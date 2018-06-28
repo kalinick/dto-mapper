@@ -8,7 +8,7 @@ use MapperBundle\Hydrator\Strategy\StrategyInterface;
 /**
  * Class HydratorBuilder
  */
-class HydratorBuilder
+class HydratorBuilder implements HydratorBuilderInterface
 {
     /**
      * @var AbstractHydrator
@@ -28,20 +28,17 @@ class HydratorBuilder
     /**
      * @param AbstractHydrator $hydrator
      *
-     * @return HydratorBuilder
+     * @return HydratorBuilderInterface
      */
-    public static function create(AbstractHydrator $hydrator): self
+    public static function create(AbstractHydrator $hydrator): HydratorBuilderInterface
     {
         return new self($hydrator);
     }
 
     /**
-     * @param string            $name
-     * @param StrategyInterface $strategy
-     *
-     * @return HydratorBuilder
+     * {@inheritDoc}
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): self
+    public function addStrategy(string $name, StrategyInterface $strategy): HydratorBuilderInterface
     {
         $this->hydrator->addStrategy($name, $strategy);
 
@@ -49,11 +46,9 @@ class HydratorBuilder
     }
 
     /**
-     * @param NamingStrategyInterface $namingStrategy
-     *
-     * @return HydratorBuilder
+     * {@inheritDoc}
      */
-    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): self
+    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): HydratorBuilderInterface
     {
         $this->hydrator->setNamingStrategy($namingStrategy);
 
@@ -62,9 +57,9 @@ class HydratorBuilder
 
 
     /**
-     * @return HydratorBuilder
+     * {@inheritDoc}
      */
-    public function removeNamingStrategy(): self
+    public function removeNamingStrategy(): HydratorBuilderInterface
     {
         $this->hydrator->removeNamingStrategy();
 
@@ -72,11 +67,9 @@ class HydratorBuilder
     }
 
     /**
-     * @param string $name
-     *
-     * @return HydratorBuilder
+     * {@inheritDoc}
      */
-    public function removeStrategy(string $name): self
+    public function removeStrategy(string $name): HydratorBuilderInterface
     {
         $this->hydrator->removeStrategy($name);
 
@@ -84,9 +77,7 @@ class HydratorBuilder
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function hasStrategy(string $name): bool
     {
@@ -94,7 +85,7 @@ class HydratorBuilder
     }
 
     /**
-     * @return HydratorInterface
+     * {@inheritDoc}
      */
     public function getHydrator(): HydratorInterface
     {

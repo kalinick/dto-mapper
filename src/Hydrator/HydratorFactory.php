@@ -35,9 +35,9 @@ class HydratorFactory
      * @param mixed $source
      * @param mixed $destination
      *
-     * @return HydratorBuilder
+     * @return HydratorBuilderInterface
      */
-    public function createBuilder($source, $destination): HydratorBuilder
+    public function createBuilder($source, $destination): HydratorBuilderInterface
     {
         $hydrator = $this->hydratorRegistry->getHydrator(HydratorRegistry::hydratorType($source, $destination));
 

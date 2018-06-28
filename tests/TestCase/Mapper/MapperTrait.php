@@ -2,6 +2,7 @@
 
 namespace Tests\TestCase\Mapper;
 
+use MapperBundle\Hydrator\AbstractHydrator;
 use MapperBundle\Hydrator\ArraySerializableHydrator;
 use MapperBundle\Hydrator\HydratorFactory;
 use MapperBundle\Hydrator\HydratorRegistry;
@@ -27,17 +28,10 @@ trait MapperTrait
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydratorRegistry = new HydratorRegistry();
-        $arrayHydrator = new ArraySerializableHydrator();
+        $baseHydrator = $this->createBaseHydrator($namingStrategy);
+        $hydratorRegistry->registerHydrator($baseHydrator, '*');
 
-        if ($namingStrategy !== null) {
-            $arrayHydrator->setNamingStrategy($namingStrategy);
-        }
-        $hydratorRegistry->registerHydrator($arrayHydrator, '*');
-
-        $relationHydrator = new ArraySerializableHydrator();
-        if ($namingStrategy !== null) {
-            $relationHydrator->setNamingStrategy($namingStrategy);
-        }
+        $relationHydrator = $this->createBaseHydrator($namingStrategy);
         $relationsStrategy = new PropertyCollectionRelatingStrategy($relationHydrator, $mappingRegistry);
         $relationHydrator->addStrategy(PropertyCollectionRelatingStrategy::class, $relationsStrategy);
         $hydratorRegistry->registerHydrator($relationHydrator, 'array:string');
@@ -45,6 +39,22 @@ trait MapperTrait
         $hydratorFactory = new HydratorFactory($hydratorRegistry, $mappingRegistry);
 
         return new Mapper($hydratorFactory);
+    }
+
+    /**
+     * @param NamingStrategyInterface|null $namingStrategy
+     *
+     * @return AbstractHydrator
+     */
+    private function createBaseHydrator(NamingStrategyInterface $namingStrategy = null): AbstractHydrator
+    {
+        $arrayHydrator = new ArraySerializableHydrator();
+
+        if ($namingStrategy !== null) {
+            $arrayHydrator->setNamingStrategy($namingStrategy);
+        }
+
+        return $arrayHydrator;
     }
 
     /**
