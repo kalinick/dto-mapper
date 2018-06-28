@@ -146,10 +146,9 @@ interface MapperInterface
 
 ``` 
 
-See examples of usage: See [here](https://github.com/vklymniuk/dto-mapper/blob/master/src/Resource/docs/examples/array-to-array)
-- 
-- See mapping anotations : See [here](https://github.com/vklymniuk/dto-mapper/blob/master/tests/DataFixtures/Dto/Destination/RelationsRequestDto.php)
+Usage examples : See [here](https://github.com/vklymniuk/dto-mapper/blob/master/src/Resource/docs/examples/array-to-array)
 
 
-Use code generators from p Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)
- 
+Mapping anotations : See [here](https://github.com/vklymniuk/dto-mapper/blob/master/tests/DataFixtures/Dto/Destination/RelationsRequestDto.php)
+
+Use code generators from Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)
