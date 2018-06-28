@@ -20,7 +20,7 @@ class ObjectToArrayExtractTest extends TestCase
     public function tesObjectToUnderscoreArrayExtraction()
     {
         $namingStrategy = new UnderscoreNamingStrategy();
-        $mapper = $this->getMapper($namingStrategy);
+        $mapper = $this->createMapper($namingStrategy);
         $dto = new RegistrationResponseDto();
         $extraxted = $mapper->extract($dto);
         $this->assertEquals($dto->getFirstName(), $extraxted['first_name']);

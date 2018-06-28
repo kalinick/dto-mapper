@@ -24,7 +24,7 @@ trait MapperTrait
      *
      * @return Mapper
      */
-    protected function getMapper(NamingStrategyInterface $namingStrategy = null): Mapper
+    protected function createMapper(NamingStrategyInterface $namingStrategy = null): Mapper
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydratorRegistry = new HydratorRegistry();

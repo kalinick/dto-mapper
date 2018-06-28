@@ -23,7 +23,7 @@ class ArrayToDtoMappingTest extends TestCase
     {
         $namingStrategy = new SnakeCaseNamingStrategy();
         /** @var RegistrationRequestDto $dto */
-        $dto = $this->getMapper($namingStrategy)->convert($registrationData, RegistrationRequestDto::class);
+        $dto = $this->createMapper($namingStrategy)->convert($registrationData, RegistrationRequestDto::class);
         $this->assertEquals($dto->getFirstName(), $registrationData['first_name']);
         $this->assertEquals($dto->getLastName(), $registrationData['last_name']);
         $this->assertEquals($dto->getPassword(), $registrationData['password']);

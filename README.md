@@ -1,6 +1,8 @@
 
 Dto mapper bundle. (*in progress*)
 
+Use generated-hydrator to create or extract objects. 
+
 
 ```bash
 $ composer require vklymniuk/dto-mapper
@@ -137,10 +139,9 @@ interface MapperInterface
 
 ``` 
 
-See examples of usega: See [here](https://github.com/vklymniuk/dto-mapper/tree/master/src/Resource/config/docs)
+See examples of usage: See [here](https://github.com/vklymniuk/dto-mapper/blob/master/src/Resource/docs/examples/array-to-array)
 - 
-- See mapping anotations : See [here](https://github.com/vklymniuk/dto-mapper/tree/master/src/Resource/config/docs/mapping-annotations)
-
+- See mapping anotations : See [here](https://github.com/vklymniuk/dto-mapper/blob/master/tests/DataFixtures/Dto/Destination/RelationsRequestDto.php)
 
 
 Use code generators from p Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)

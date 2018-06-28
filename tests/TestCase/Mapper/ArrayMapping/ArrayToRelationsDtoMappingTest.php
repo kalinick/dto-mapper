@@ -24,7 +24,7 @@ class ArrayToRelationsDtoMappingTest extends TestCase
     public function testArrayToClassRelationsMapping(array $parameters)
     {
         $namingStrategy = new SnakeCaseNamingStrategy();
-        $mapper = $this->getMapper($namingStrategy);
+        $mapper = $this->createMapper($namingStrategy);
         /** @var RelationsRequestDto $dto */
         $dto = $mapper->convert($parameters, RelationsRequestDto::class);
         $this->assertRegistrationData($parameters['registrations_requests'][0], $dto->getRegistrationsRequests()[0]);
