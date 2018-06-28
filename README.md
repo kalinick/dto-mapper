@@ -1,3 +1,6 @@
+# dto-mapper
+[![Build Status](https://travis-ci.org/vklymniuk/dto-mapper.svg?branch=master)](https://travis-ci.org/vklymniuk/dto-mapper)
+
 
 Dto mapper bundle. (*in progress*)
 
