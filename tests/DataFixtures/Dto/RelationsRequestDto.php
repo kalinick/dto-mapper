@@ -1,25 +1,26 @@
 <?php
 
-namespace Tests\DataFixtures\Dto\Destination;
+namespace Tests\DataFixtures\Dto;
 
-use MapperBundle\Mapping\Annotation\Meta\PropertyClassRelation;
-use MapperBundle\Mapping\Annotation\Meta\DestinationClass;
+use MapperBundle\Mapping\Annotation\Meta;
+use MapperBundle\Mapping\Annotation\Meta\Strategy;
 
 /**
  * Class RelationsRequestDto
- * @DestinationClass
+ * @Meta\DestinationClass
+ * @Meta\NamingStrategy\UnderscoreNamingStrategy
  */
 class RelationsRequestDto
 {
     /**
-     * @PropertyClassRelation(targetClass="Tests\DataFixtures\Dto\Destination\RegistrationRequestDto", multiply="true")
+     * @Strategy\CollectionStrategy(targetClass="Tests\DataFixtures\Dto\RegistrationRequestDto")
      *
      * @var RegistrationRequestDto[]
      */
     public $registrationsRequests = [];
 
     /**
-     * @PropertyClassRelation(targetClass="Tests\DataFixtures\Dto\Destination\PersonalInfoDto")
+     * @Strategy\MultiCollectionStrategy(targetClass="Tests\DataFixtures\Dto\PersonalInfoDto")
      *
      * @var PersonalInfoDto
      */

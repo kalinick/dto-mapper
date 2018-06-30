@@ -1,6 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace MapperBundle\Hydrator\Strategy;
+
+use MapperBundle\Hydrator\Exception\UnknownStrategyTypeException;
 
 /**
  * Interface StrategyEnabledInterface
@@ -16,6 +18,8 @@ interface StrategyEnabledInterface
     public function addStrategy(string $name, StrategyInterface $strategy): StrategyEnabledInterface;
 
     /**
+     * @throws UnknownStrategyTypeException
+     *
      * @param string $name
      *
      * @return StrategyInterface

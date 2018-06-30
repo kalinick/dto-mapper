@@ -55,7 +55,6 @@ class HydratorBuilder implements HydratorBuilderInterface
         return $this;
     }
 
-
     /**
      * {@inheritDoc}
      */

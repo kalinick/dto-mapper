@@ -2,6 +2,8 @@
 
 namespace MapperBundle\Hydrator\Strategy;
 
+use MapperBundle\Hydrator\Exception\InvalidArgumentException;
+
 /**
  * Interface StrategyInterface
  */
@@ -16,11 +18,12 @@ interface StrategyInterface
     public function extract($value, $context);
 
     /**
-     * @param string $propertyName
-     * @param string $destination
-     * @param mixed  $value
+     * @throws InvalidArgumentException
+     *
+     * @param mixed $value
+     * @param mixed $context
      *
      * @return mixed
      */
-    public function hydrate(string $propertyName, string $destination, $value);
+    public function hydrate($value, $context);
 }

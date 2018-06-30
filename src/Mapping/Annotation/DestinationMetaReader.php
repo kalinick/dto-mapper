@@ -5,44 +5,21 @@ namespace MapperBundle\Mapping\Annotation;
 use Doctrine\Common\Annotations\Reader;
 use MapperBundle\Mapping\Annotation\Exception\UndeclaredPropertyException;
 use MapperBundle\Mapping\Annotation\Meta\DestinationClass;
-use MapperBundle\Mapping\Annotation\Meta\PropertyClassRelation;
+
 
 /**
  * Class DestinationMetaReader
  */
-class DestinationMetaReader implements DestinationMetaInterface
+class DestinationMetaReader
 {
     /**
-     * @var bool
+     * @var Reader
      */
-    private $isDestinationClass = false;
+    private $reader;
 
     /**
-     * @var PropertyClassRelation[]
      */
     private $relationsProperties = [];
-
-    /**
-     * DestinationMetaReader constructor.
-     *
-     * @param Reader $reader
-     * @param string $className
-     */
-    private function __construct(Reader $reader, string $className)
-    {
-        $reflectionClass = new \ReflectionClass($className);
-        $this->isDestinationClass = (bool) $reader->getClassAnnotation($reflectionClass, DestinationClass::class);
-        $reflectionProperties = $reflectionClass->getProperties();
-
-        foreach ($reflectionProperties as $property) {
-            /** @var PropertyClassRelation $mapperProperty */
-            if (!$mapperProperty = $reader->getPropertyAnnotation($property, PropertyClassRelation::class)) {
-                continue;
-            }
-
-            $this->relationsProperties[$property->getName()] = $mapperProperty;
-        }
-    }
 
     /**
      * @param Reader $reader
@@ -50,7 +27,7 @@ class DestinationMetaReader implements DestinationMetaInterface
      *
      * @return DestinationMetaReader
      */
-    public static function read(Reader $reader, string $className): self
+    public static function createReader(Reader $reader, string $className): self
     {
         return new self($reader, $className);
     }
@@ -58,17 +35,9 @@ class DestinationMetaReader implements DestinationMetaInterface
     /**
      * {@inheritDoc}
      */
-    public function isDestinationClass(): bool
-    {
-        return $this->isDestinationClass;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function hasPropertyRelations(): bool
     {
-        return (bool) count($this->relationsProperties);
+        return (bool) \count($this->relationsProperties);
     }
 
     /**
@@ -76,9 +45,8 @@ class DestinationMetaReader implements DestinationMetaInterface
      */
     public function hasMultiRelations(string $propertyName): bool
     {
-        return $this->hasPropertyRelation($propertyName) ?
-            $this->loadPropertyRelation($propertyName)->isMultiply() :
-            false;
+        return !$this->hasPropertyRelation($propertyName) ?:
+            $this->loadPropertyRelation($propertyName)->isMultiply();
     }
 
     /**
@@ -95,6 +63,47 @@ class DestinationMetaReader implements DestinationMetaInterface
     public function getPropertyTarget(string $propertyName): string
     {
         return $this->loadPropertyRelation($propertyName)->getTargetClass();
+    }
+
+    /**
+     * DestinationMetaReader constructor.
+     *
+     * @param Reader $reader
+     * @param string $className
+     */
+    private function __construct(Reader $reader, string $className)
+    {
+        $this->reader = $reader;
+        $reflectionClass = new \ReflectionClass($className);
+        $this
+            ->loadClassAnnotations($reflectionClass);
+
+//        $reflectionProperties = $reflectionClass->getProperties();
+//
+//        foreach ($reflectionProperties as $property) {
+//            /** @var PropertyClassRelation $mapperProperty */
+//            if (!$mapperProperty = $reader->getPropertyAnnotation($property, PropertyClassRelation::class)) {
+//                continue;
+//            }
+//
+//            $this->relationsProperties[$property->getName()] = $mapperProperty;
+//        }
+    }
+
+    /**
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return DestinationMetaReader
+     */
+    private function loadClassAnnotations(\ReflectionClass $reflectionClass): self
+    {
+        $hasDestinationMapping = (bool) $this->reader->getClassAnnotation($reflectionClass, DestinationClass::class);
+
+    }
+
+    private function loadPropertyAnnotations()
+    {
+
     }
 
     /**

@@ -3,10 +3,9 @@
 namespace MapperBundle\Command;
 
 /**
- * @Todo: implement cache
  * Class WarmupCacheCommand
  */
 class WarmupCacheCommand
 {
-
+    public $a_b;
 }

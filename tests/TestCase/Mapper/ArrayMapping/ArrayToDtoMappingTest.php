@@ -3,9 +3,10 @@
 namespace Tests\TestCase\Mapper\ArrayMapping;
 
 use MapperBundle\Hydrator\NamingStrategy\SnakeCaseNamingStrategy;
-use PHPUnit\Framework\TestCase;
-use Tests\DataFixtures\Dto\Destination\RegistrationRequestDto;
+use Tests\DataFixtures\Dto\RegistrationRequestDto;
 use Tests\TestCase\Mapper\MapperTrait;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ArrayToDtoMappingTest
@@ -19,11 +20,14 @@ class ArrayToDtoMappingTest extends TestCase
      *
      * @dataProvider registrationDataProvider
      */
-    public function testArrayToDtoMapping(array $registrationData)
+    public function testArrayToDtoMapping(array $registrationData): void
     {
         $namingStrategy = new SnakeCaseNamingStrategy();
         /** @var RegistrationRequestDto $dto */
-        $dto = $this->createMapper($namingStrategy)->convert($registrationData, RegistrationRequestDto::class);
+        $dto = $this
+            ->createMapper($namingStrategy)
+            ->convert($registrationData, RegistrationRequestDto::class);
+
         $this->assertEquals($dto->getFirstName(), $registrationData['first_name']);
         $this->assertEquals($dto->getLastName(), $registrationData['last_name']);
         $this->assertEquals($dto->getPassword(), $registrationData['password']);

@@ -2,16 +2,20 @@
 
 namespace MapperBundle\Hydrator;
 
+use MapperBundle\Hydrator\Exception\InvalidArgumentException;
+
 /**
  * Interface HydrationInterface
  */
 interface HydrationInterface
 {
     /**
-     * @param array         $values
-     * @param object|string $destination
+     * @throws InvalidArgumentException
      *
-     * @return object
+     * @param array|object         $source
+     * @param object|string|array  $destination
+     *
+     * @return array|object
      */
-    public function hydrate(array $values, $destination): object;
+    public function hydrate($source, $destination);
 }

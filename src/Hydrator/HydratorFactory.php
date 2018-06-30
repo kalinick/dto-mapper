@@ -2,6 +2,7 @@
 
 namespace MapperBundle\Hydrator;
 
+use MapperBundle\Hydrator\Strategy\StrategyInterface;
 use MapperBundle\Mapping\MappingRegistry;
 
 /**
@@ -37,9 +38,10 @@ class HydratorFactory
      *
      * @return HydratorBuilderInterface
      */
-    public function createBuilder($source, $destination): HydratorBuilderInterface
+    public function createHydratorBuilder($source, $destination): HydratorBuilderInterface
     {
-        $hydrator = $this->hydratorRegistry->getHydrator(HydratorRegistry::hydratorType($source, $destination));
+        /** @var AbstractHydrator $hydrator */
+        $hydrator = $this->hydratorRegistry->getHydrator($source, $destination);
 
         return HydratorBuilder::create($hydrator);
     }
@@ -52,6 +54,20 @@ class HydratorFactory
      */
     public function createHydrator($source, $destination): HydratorInterface
     {
-        return $this->hydratorRegistry->getHydrator(HydratorRegistry::hydratorType($source, $destination));
+        /** @var HydratorBuilderInterface $hBuilder */
+        $hBuilder = $this->createHydrator($source, $destination);
+        $hydrationStrategies = $this->mappingRegistry->getRegisteredStrategiesFor($source, $destination);
+        $namingStrategy = $this->mappingRegistry->getRegisteredNamingStrategyFor($destination);
+
+        if ($namingStrategy !== null) {
+            $hBuilder->setNamingStrategy($namingStrategy);
+        }
+
+        /** @var StrategyInterface $strategy */
+        foreach ($hydrationStrategies as $name => $strategy) {
+            $hBuilder->addStrategy($name, $strategy);
+        }
+
+        return $hBuilder->getHydrator();
     }
 }

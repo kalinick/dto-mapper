@@ -10,7 +10,7 @@ final class SnakeCaseNamingStrategy implements NamingStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate(string $name): string
+    public function hydrate(string $name, $context = null): string
     {
         return $this->format($name);
     }

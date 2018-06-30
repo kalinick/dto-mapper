@@ -11,7 +11,7 @@ use MapperBundle\Hydrator\Strategy\StrategyInterface;
 interface HydratorBuilderInterface
 {
     /**
-     * @param NamingStrategyInterface $namingStrategy
+     * @param NamingStrategyInterface|null $namingStrategy
      *
      * @return HydratorBuilderInterface
      */

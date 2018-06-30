@@ -6,20 +6,20 @@ use GeneratedHydrator\Configuration;
 use MapperBundle\Hydrator\Exception\InvalidArgumentException;
 
 /**
- * Class ObjectHydrator
+ * Class CollectionHydrator
  */
-class ObjectHydrator extends AbstractHydrator
+class CollectionHydrator extends AbstractHydrator
 {
     /**
      * {@inheritDoc}
      */
     public function hydrate($source, $destination)
     {
-        if (!\is_object($source) ||
-            (!\is_object($destination) || \class_exists($destination))
+        if (!\is_array($source) ||
+            (!\get_class($destination) || !\class_exists($destination))
         ) {
             throw new InvalidArgumentException('
-                $source argument - must be object type,
+                $source argument - must be array type,
                 $destination argument - must by exist class name or object type
             ');
         }

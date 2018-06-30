@@ -10,7 +10,7 @@ final class IdentityNamingStrategy implements NamingStrategyInterface
     /**
      * {@inheritDoc}
      */
-    public function hydrate(string $name): string
+    public function hydrate(string $name, $context = null): string
     {
         return $name;
     }

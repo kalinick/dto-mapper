@@ -17,12 +17,15 @@ class HydratorRegistry
     private $hydrators = [];
 
     /**
-     * @param string $type
+     * @param mixed $source
+     * @param mixed $destination
      *
      * @return AbstractHydrator
      */
-    public function getHydrator(string $type): AbstractHydrator
+    public function getHydrator($source, $destination): AbstractHydrator
     {
+        $type = self::formatHydratorType($source, $destination);
+
         if (!$this->contains($type)) {
             return $this->getBaseHydrator();
         }
@@ -67,16 +70,15 @@ class HydratorRegistry
         return $this->hydrators[self::ALL_TYPE];
     }
 
-
     /**
      * @param mixed $source
      * @param mixed $destination
      *
      * @return string
      */
-    public static function hydratorType($source, $destination): string
+    public static function formatHydratorType($source, $destination): string
     {
-        return self::formatType(gettype($source), gettype($destination));
+        return self::formatType(\gettype($source), \gettype($destination));
     }
 
     /**

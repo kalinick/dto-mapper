@@ -3,7 +3,8 @@
 namespace MapperBundle\Mapping;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use MapperBundle\Mapping\Annotation\DestinationMetaInterface;
+use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
+use MapperBundle\Hydrator\Strategy\StrategyInterface;
 use MapperBundle\Mapping\Annotation\DestinationMetaReader;
 use MapperBundle\Mapping\Exception\UnregisteredDestinationException;
 
@@ -44,24 +45,28 @@ class MappingRegistry
      */
     public function registerMappedDestinationClass(string $className): void
     {
-        $this->registerDestination($className, DestinationMetaReader::read($this->annotationReader, $className));
+        $destinationMeta = DestinationMetaReader::createReader($this->annotationReader, $className);
     }
 
     /**
-     * @param string                $className
-     * @param DestinationMetaReader $metaReader
+     * @param mixed $source
+     * @param mixed $destination
      *
-     * @return void
+     * @return array ['name' => StrategyInterface .. etc]
      */
-    public function registerDestination(string $className, DestinationMetaReader $metaReader): void
+    public function getRegisteredStrategiesFor($source, $destination): array
     {
-        if (!isset($this->registeredDestinations[$className])) {
-            $this->registeredDestinations[$className] = $metaReader;
-        }
 
-        if ($metaReader->hasPropertyRelations()) {
-            $this->registeredRelationsMapping[$className] = $metaReader;
-        }
+    }
+
+    /**
+     * @param mixed $destination
+     *
+     * @return NamingStrategyInterface|null
+     */
+    public function getRegisteredNamingStrategyFor($destination): ?NamingStrategyInterface
+    {
+
     }
 
     /**
@@ -71,7 +76,18 @@ class MappingRegistry
      */
     public function hasRegisteredDestination(string $className): bool
     {
-        return isset($this->registeredDestinations[$className]);
+
+    }
+
+    /**
+     * @param string $name
+     * @param string $destinationClass
+     *
+     * @return bool
+     */
+    public function isMultiCollectionMapping(string $name, string $destinationClass): bool
+    {
+
     }
 
     /**
@@ -84,19 +100,78 @@ class MappingRegistry
         return isset($this->registeredRelationsMapping[$className]);
     }
 
-    /**
-     * @throws UnregisteredDestinationException
-     *
-     * @param string $destinationClass
-     *
-     * @return DestinationMetaInterface
-     */
-    public function loadRelationsMapping(string $destinationClass): DestinationMetaInterface
-    {
-        if (!$this->hasRegisteredRelationsMapping($destinationClass)) {
-            throw new UnregisteredDestinationException('Class:' . $destinationClass . ' has no registered relations mapping');
-        }
 
-        return $this->registeredRelationsMapping[$destinationClass];
+    /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    public function hasRegisteredRelationDestination(string $propertyName, string $className): bool
+    {
+//        return isset($this->registeredRelationsMapping[$className]);
     }
+
+
+    public function hasRegisteredMultiRelationsDestination(string $propertyName, string $destinationClass): bool
+    {
+
+    }
+
+    public function getRegisteredRelationDestination(string $propertyName, string $destinationClass): string
+    {
+
+    }
+
+//    /**
+//     * @param string                $className
+//     * @param DestinationMetaReader $metaReader
+//     *
+//     * @return void
+//     */
+//    public function registerDestination(string $className, DestinationMetaReader $metaReader): void
+//    {
+//        if (!isset($this->registeredDestinations[$className])) {
+//            $this->registeredDestinations[$className] = $metaReader;
+//        }
+//
+//        if ($metaReader->hasPropertyRelations()) {
+//            $this->registeredRelationsMapping[$className] = $metaReader;
+//        }
+//    }
+//
+//    /**
+//     * @param string $className
+//     *
+//     * @return bool
+//     */
+//    public function hasRegisteredDestination(string $className): bool
+//    {
+//        return isset($this->registeredDestinations[$className]);
+//    }
+//
+//    /**
+//     * @param string $className
+//     *
+//     * @return bool
+//     */
+//    public function hasRegisteredRelationsMapping(string $className): bool
+//    {
+//        return isset($this->registeredRelationsMapping[$className]);
+//    }
+//
+//    /**
+//     * @throws UnregisteredDestinationException
+//     *
+//     * @param string $destinationClass
+//     *
+//     * @return DestinationMetaInterface
+//     */
+//    public function loadRelationsMapping(string $destinationClass): DestinationMetaInterface
+//    {
+//        if (!$this->hasRegisteredRelationsMapping($destinationClass)) {
+//            throw new UnregisteredDestinationException("Class:{$destinationClass} has no registered relations mapping");
+//        }
+//
+//        return $this->registeredRelationsMapping[$destinationClass];
+//    }
 }

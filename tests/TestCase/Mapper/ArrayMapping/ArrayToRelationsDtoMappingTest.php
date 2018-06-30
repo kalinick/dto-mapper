@@ -3,10 +3,11 @@
 namespace Tests\TestCase\Mapper\ArrayMapping;
 
 use MapperBundle\Hydrator\NamingStrategy\SnakeCaseNamingStrategy;
-use PHPUnit\Framework\TestCase;
-use Tests\DataFixtures\Dto\Destination\RegistrationRequestDto;
-use Tests\DataFixtures\Dto\Destination\RelationsRequestDto;
+use Tests\DataFixtures\Dto\RegistrationRequestDto;
+use Tests\DataFixtures\Dto\RelationsRequestDto;
 use Tests\TestCase\Mapper\MapperTrait;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ArrayToRelationsDtoMappingTest
@@ -16,12 +17,11 @@ class ArrayToRelationsDtoMappingTest extends TestCase
     use MapperTrait;
 
     /**
-     * @test
      * @param array $parameters
      *
      * @dataProvider registrationDataProvider
      */
-    public function testArrayToClassRelationsMapping(array $parameters)
+    public function testArrayToClassRelationsMapping(array $parameters): void
     {
         $namingStrategy = new SnakeCaseNamingStrategy();
         $mapper = $this->createMapper($namingStrategy);
@@ -39,7 +39,7 @@ class ArrayToRelationsDtoMappingTest extends TestCase
      * @param array                  $registrationData
      * @param RegistrationRequestDto $dto
      */
-    private function assertRegistrationData(array $registrationData, RegistrationRequestDto $dto)
+    private function assertRegistrationData(array $registrationData, RegistrationRequestDto $dto): void
     {
         $this->assertEquals($dto->getFirstName(), $registrationData['first_name']);
         $this->assertEquals($dto->getLastName(), $registrationData['last_name']);

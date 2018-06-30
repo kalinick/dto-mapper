@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\DataFixtures\Dto\Destination;
+namespace Tests\DataFixtures\Dto;
 
 /**
  * Class RegistrationResponseDto

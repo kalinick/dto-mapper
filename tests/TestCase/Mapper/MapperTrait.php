@@ -12,7 +12,7 @@ use MapperBundle\Mapper\Mapper;
 use MapperBundle\Mapping\MappingRegistry;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Tests\DataFixtures\Dto\Destination\RelationsRequestDto;
+use Tests\DataFixtures\Dto\RelationsRequestDto;
 
 /**
  * Trait MapperTrait
