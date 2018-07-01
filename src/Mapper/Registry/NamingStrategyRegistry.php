@@ -4,6 +4,7 @@ namespace DataMapper\Mapper\Registry;
 
 use DataMapper\RegistryContainer;
 use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
+use DataMapper\TypeResolver;
 
 /**
  * Class DestinationRegistry
@@ -15,9 +16,7 @@ class NamingStrategyRegistry extends RegistryContainer implements NamingStrategy
      */
     public function getRegisteredNamingStrategyFor($destination): ?NamingStrategyInterface
     {
-        if (\is_object($destination)) {
-            $destination = \get_class($destination);
-        }
+        $destination = TypeResolver::resolveStrategyType($destination);
 
         return $this->offsetExists($destination) ?
             $this->offsetGet($destination): null;

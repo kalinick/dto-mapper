@@ -221,8 +221,8 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
 
         foreach ($extracted as $name => $value) {
             $hydratedName = $this->extractName($name);
-            $extracted[$hydratedName] = $value;
             unset($extracted[$name]);
+            $extracted[$hydratedName] = $value;
         }
 
         return $extracted;

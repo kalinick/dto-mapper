@@ -2,6 +2,10 @@
 
 namespace Tests\TestCase\Mapping;
 
+use DataMapper\Hydrator\HydratorFactory;
+use DataMapper\Hydrator\HydratorInterface;
+use DataMapper\TypeDict;
+use DataMapper\TypeResolver;
 use Tests\DataFixtures\Dto\RegistrationRequestDto;
 
 /**
@@ -74,5 +78,41 @@ class ArrayToDtoMappingTest extends AbstractMapping
                 ],
             ],
         ];
+    }
+
+    /**
+     * @param array  $source
+     * @param string $className
+     *
+     * @return HydratorInterface
+     */
+    protected function createArrayToClassHydrator(array $source, string $className): HydratorInterface
+    {
+        $mappingRegistry = $this->createMappingRegistry();
+        $hydrationRegistry = $this->createHydrationRegistry($mappingRegistry->getStrategyRegistry());
+
+        $collectionStrategy = $this->createCollectionStrategy(
+            $hydrationRegistry->getHydratorByType(TypeDict::ARRAY_TO_CLASS),
+            $mappingRegistry->getRelationsRegistry()
+        );
+
+        $mappingRegistry
+            ->getDestinationRegistry()
+            ->registerDestinationClass($className);
+
+        $mappingRegistry
+            ->getNamingRegistry()
+            ->registerNamingStrategy(
+                $className,
+                $this->createSnakeCaseNamingStrategy()
+            );
+
+        $strategyKey = TypeResolver::getStrategyType($source, $className);
+        $mappingRegistry
+            ->getStrategyRegistry()
+            ->registerTypeStrategy($strategyKey, $collectionStrategy);
+
+        return (new HydratorFactory($hydrationRegistry, $mappingRegistry))
+            ->createHydrator($source, $className);
     }
 }

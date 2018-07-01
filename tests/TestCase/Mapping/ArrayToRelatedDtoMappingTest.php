@@ -2,6 +2,10 @@
 
 namespace Tests\TestCase\Mapping;
 
+use DataMapper\Hydrator\HydratorFactory;
+use DataMapper\Hydrator\HydratorInterface;
+use DataMapper\TypeDict;
+use DataMapper\TypeResolver;
 use Tests\DataFixtures\Dto\PersonalInfoDto;
 use Tests\DataFixtures\Dto\RegistrationRequestDto;
 use Tests\DataFixtures\Dto\RelationsRequestDto;
@@ -113,5 +117,50 @@ class ArrayToRelatedDtoMappingTest extends AbstractMapping
                 ]
             ]
         ];
+    }
+
+    /**
+     * @param array  $source
+     * @param string $className
+     * @param array  $mappingProps
+     *
+     * @return HydratorInterface
+     */
+    protected function createArrayToClassCollectionHydrator(
+        array $source,
+        string $className,
+        array $mappingProps
+    ): HydratorInterface {
+        $mappingRegistry = $this->createMappingRegistry();
+        $hydrationRegistry = $this->createHydrationRegistry($mappingRegistry->getStrategyRegistry());
+        $relationsRegistry = $mappingRegistry->getRelationsRegistry();
+
+        foreach ($mappingProps as [$prop, $target, $multi]) {
+            $relationsRegistry->registerRelationsMapping($prop, $className, $target, $multi);
+        }
+
+        $collectionStrategy = $this->createCollectionStrategy(
+            $hydrationRegistry->getHydratorByType(TypeDict::ARRAY_TO_CLASS),
+            $relationsRegistry
+        );
+
+        $mappingRegistry
+            ->getDestinationRegistry()
+            ->registerDestinationClass($className);
+
+        $mappingRegistry
+            ->getNamingRegistry()
+            ->registerNamingStrategy(
+                $className,
+                $this->createSnakeCaseNamingStrategy()
+            );
+
+        $strategyKey = TypeResolver::getStrategyType($source, $className);
+        $mappingRegistry
+            ->getStrategyRegistry()
+            ->registerTypeStrategy($strategyKey, $collectionStrategy);
+
+        return (new HydratorFactory($hydrationRegistry, $mappingRegistry))
+            ->createHydrator($source, $className);
     }
 }
