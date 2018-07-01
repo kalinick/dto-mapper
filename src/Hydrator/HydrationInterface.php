@@ -1,6 +1,8 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
+
+use DataMapper\Exception\InvalidArgumentException;
 
 /**
  * Interface HydrationInterface
@@ -8,10 +10,12 @@ namespace MapperBundle\Hydrator;
 interface HydrationInterface
 {
     /**
-     * @param array         $values
-     * @param object|string $destination
+     * @throws InvalidArgumentException
      *
-     * @return object
+     * @param array|object         $source
+     * @param object|string|array  $destination
+     *
+     * @return array|object
      */
-    public function hydrate(array $values, $destination): object;
+    public function hydrate($source, $destination);
 }

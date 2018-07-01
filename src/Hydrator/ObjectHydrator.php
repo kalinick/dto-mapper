@@ -1,31 +1,77 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
+
+use DataMapper\Exception\InvalidArgumentException;
+use DataMapper\Mapper\Registry\StrategyRegistryInterface;
+use DataMapper\TypeResolver;
 
 /**
  * Class ObjectHydrator
  */
-class ObjectHydrator extends AbstractHydrator
+final class ObjectHydrator extends AbstractHydrator
 {
+    /**
+     * @var StrategyRegistryInterface
+     */
+    private $strategyRegistry;
 
     /**
-     * @param mixed $type
+     * ObjectHydrator constructor.
      *
-     * @return array
+     * @param StrategyRegistryInterface $strategyRegistry
      */
-    public function extract(object $type): array
+    public function __construct(StrategyRegistryInterface $strategyRegistry)
     {
-        // TODO: Implement extract() method.
+        $this->strategyRegistry = $strategyRegistry;
     }
 
     /**
-     * @param array         $values
-     * @param object|string $destination
-     *
-     * @return object
+     * {@inheritDoc}
      */
-    public function hydrate(array $values, $destination): object
+    public function hydrate($source, $destination)
     {
-        // TODO: Implement hydrate() method.
+        $notValid = !\is_object($source) || (!\is_object($destination) || \class_exists($destination));
+
+        if ($notValid) {
+            $message = '$source argument - must be object type,' .
+                '$destination argument - must by exist class name or object type';
+
+            throw new InvalidArgumentException($message);
+        }
+
+        $dto = \is_object($destination) ? $destination : new $destination();
+        $destinationClass = \get_class($dto);
+        $sourceClass = \get_class($source);
+        $strategyTypeKey = TypeResolver::getStrategyType($sourceClass, $destinationClass);
+
+        $mappedDestinationProps = $this->strategyRegistry->getMapperPropertiesKeys($strategyTypeKey);
+        $destinationContent = $this->filterSourceProps($destination, $mappedDestinationProps);
+
+        foreach ($mappedDestinationProps as $destinationProp) {
+            $destinationContent[$destinationProp] = $this->hydrateValue($destinationProp, $source, $destinationClass);
+        }
+
+        return $this->hydrateToObject($source, $dto);
+    }
+
+    /**
+     * @param object $source
+     * @param array  $mappedDestinationProps
+     *
+     * @return array
+     */
+    private function filterSourceProps(object $source, array $mappedDestinationProps): array
+    {
+        $destinationContent = $this->extract($source);
+        $excludeKeys = \array_keys($destinationContent, $mappedDestinationProps);
+
+        return \array_filter(
+            $destinationContent,
+            function ($key) use ($excludeKeys) {
+                return !\in_array($key, $excludeKeys, false);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

@@ -1,10 +1,8 @@
 <?php
 
-namespace MapperBundle\Mapper;
+namespace DataMapper\Mapper;
 
-use MapperBundle\Hydrator\HydratorFactory;
-use MapperBundle\Mapper\Exception\InvalidTypeException;
-use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
+use DataMapper\Hydrator\HydratorFactoryInterface;
 
 /**
  * Class Mapper
@@ -12,25 +10,22 @@ use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
 class Mapper implements MapperInterface
 {
     /**
-     * @var HydratorFactory
+     * @var HydratorFactoryInterface
      */
     private $hydratorFactory;
 
     /**
      * Mapper constructor.
      *
-     * @param HydratorFactory $hydratorFactory
+     * @param HydratorFactoryInterface $hydratorFactory
      */
-    public function __construct(HydratorFactory $hydratorFactory)
+    public function __construct(HydratorFactoryInterface $hydratorFactory)
     {
         $this->hydratorFactory = $hydratorFactory;
     }
 
     /**
-     * @param array|object  $source
-     * @param object|string $destination
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function convert($source, $destination)
     {
@@ -41,9 +36,7 @@ class Mapper implements MapperInterface
     }
 
     /**
-     * @param object $source
-     *
-     * @return array
+     * {@inheritDoc}
      */
     public function extract(object $source): array
     {

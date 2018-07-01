@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
 /**
  * Interface HydratorInterface

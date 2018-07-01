@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\Exception;
+namespace DataMapper\Hydrator\Exception;
 
 /**
  * Class HydratorException

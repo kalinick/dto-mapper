@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
 /**
  * Interface ExtractionInterface
@@ -8,7 +8,7 @@ namespace MapperBundle\Hydrator;
 interface ExtractionInterface
 {
     /**
-     * @param mixed $type
+     * @param object $type
      *
      * @return array
      */

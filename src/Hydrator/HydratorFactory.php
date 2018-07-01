@@ -1,13 +1,14 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Mapping\MappingRegistry;
+use DataMapper\Mapper\MappingRegistry;
+use DataMapper\TypeResolver;
 
 /**
  * Class HydratorFactory
  */
-class HydratorFactory
+class HydratorFactory implements HydratorFactoryInterface
 {
     /**
      * @var HydratorRegistry
@@ -32,26 +33,43 @@ class HydratorFactory
     }
 
     /**
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return HydratorBuilderInterface
+     * {@inheritDoc}
      */
-    public function createBuilder($source, $destination): HydratorBuilderInterface
+    public function createHydratorBuilder($source, $destination): HydratorBuilderInterface
     {
-        $hydrator = $this->hydratorRegistry->getHydrator(HydratorRegistry::hydratorType($source, $destination));
+        /** @var AbstractHydrator $hydrator */
+        $type = TypeResolver::getHydratedType($source, $destination);
+        $hydrator = $this->hydratorRegistry->getHydratorByType($type);
 
         return HydratorBuilder::create($hydrator);
     }
 
     /**
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return HydratorInterface
+     * {@inheritDoc}
      */
     public function createHydrator($source, $destination): HydratorInterface
     {
-        return $this->hydratorRegistry->getHydrator(HydratorRegistry::hydratorType($source, $destination));
+        $hBuilder = $this->createHydratorBuilder($source, $destination);
+        $strategyKey = TypeResolver::getStrategyType($source, $destination);
+
+        $hydrationStrategies = $this
+            ->mappingRegistry
+            ->getStrategyRegistry()
+            ->getRegisteredStrategiesFor($strategyKey);
+
+        $namingStrategy = $this
+            ->mappingRegistry
+            ->getNamingRegistry()
+            ->getRegisteredNamingStrategyFor($destination);
+
+        if ($namingStrategy !== null) {
+            $hBuilder->setNamingStrategy($namingStrategy);
+        }
+
+        foreach ($hydrationStrategies as $name => $strategy) {
+            $hBuilder->addStrategy($name, $strategy);
+        }
+
+        return $hBuilder->getHydrator();
     }
 }

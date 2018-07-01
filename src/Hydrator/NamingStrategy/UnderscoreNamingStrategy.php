@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\NamingStrategy;
+namespace DataMapper\Hydrator\NamingStrategy;
 
 /**
  * Class UnderscoreNamingStrategy
@@ -10,7 +10,7 @@ final class UnderscoreNamingStrategy implements NamingStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate(string $name): string
+    public function hydrate(string $name, $context = null): string
     {
         return $this->format($name);
     }
@@ -23,6 +23,11 @@ final class UnderscoreNamingStrategy implements NamingStrategyInterface
         return $this->format($name);
     }
 
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
     private function format(string $string): string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));

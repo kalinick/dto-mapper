@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Mapper;
+namespace DataMapper\Mapper;
 
 /**
  * Interface MapperInterface

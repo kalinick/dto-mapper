@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\NamingStrategy;
+namespace DataMapper\Hydrator\NamingStrategy;
 
 /**
  * Class ArrayMapNamingStrategy
@@ -15,7 +15,7 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
     /**
      * @var string[]
      */
-    private $hydrationMap = [];
+    private $hydrationMap;
 
     /**
      * Constructor
@@ -32,9 +32,9 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
     /**
      * {@inheritDoc}
      */
-    public function hydrate(string $name): string
+    public function hydrate(string $name, $context = null): string
     {
-        return isset($this->hydrationMap[$name]) ? $this->hydrationMap[$name] : $name;
+        return $this->hydrationMap[$name] ?? $name;
     }
 
     /**
@@ -42,6 +42,6 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
      */
     public function extract(string $name): string
     {
-        return isset($this->extractionMap[$name]) ? $this->extractionMap[$name] : $name;
+        return $this->extractionMap[$name] ?? $name;
     }
 }

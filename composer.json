@@ -1,7 +1,7 @@
 {
   "name": "vklymniuk/dto-mapper",
-  "type": "symfony-bundle",
-  "description": "Symfony bundle, easy way mapping data to DTO objects",
+  "type": "library",
+  "description": "Data mapper library, uses code generator for objects processing.",
   "license": "MIT",
   "authors": [
     {
@@ -9,18 +9,13 @@
       "email": "v.klymniuk@gmail.com"
     }
   ],
-  "require": {
-    "symfony/http-kernel": "^4.1",
-    "php": "^7.1",
+  "require-dev": {
+    "php": "^7.2",
     "ocramius/generated-hydrator": "^2.2",
-    "doctrine/annotations": "^1.6",
-    "symfony/config": "^4.1",
-    "symfony/dependency-injection": "^4.1",
-    "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "phpunit/phpunit": "^7.2"
   },
   "autoload":     {
-    "psr-4": { "MapperBundle\\": "src/" }
+    "psr-4": { "DataMapper\\": "src/" }
   },
   "autoload-dev": {
     "psr-4": { "Tests\\": "tests/" }

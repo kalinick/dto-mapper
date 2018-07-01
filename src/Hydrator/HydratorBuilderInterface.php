@@ -1,9 +1,9 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
-use MapperBundle\Hydrator\Strategy\StrategyInterface;
+use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
+use DataMapper\Hydrator\Strategy\StrategyInterface;
 
 /**
  * Interface HydratorBuilderInterface
@@ -11,31 +11,31 @@ use MapperBundle\Hydrator\Strategy\StrategyInterface;
 interface HydratorBuilderInterface
 {
     /**
-     * @param NamingStrategyInterface $namingStrategy
+     * @param NamingStrategyInterface|null $namingStrategy
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): HydratorBuilderInterface;
+    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): void;
 
     /**
      * @param string            $name
      * @param StrategyInterface $strategy
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): HydratorBuilderInterface;
+    public function addStrategy(string $name, StrategyInterface $strategy): void;
 
     /**
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function removeNamingStrategy(): HydratorBuilderInterface;
+    public function removeNamingStrategy(): void;
 
     /**
      * @param string $name
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function removeStrategy(string $name): HydratorBuilderInterface;
+    public function removeStrategy(string $name): void;
 
     /**
      * @param string $name
