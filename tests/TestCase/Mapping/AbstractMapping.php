@@ -8,8 +8,8 @@ use DataMapper\Hydrator\{
     NamingStrategy\UnderscoreNamingStrategy,
     Strategy\CollectionStrategy,
     Strategy\StrategyInterface,
+    Strategy\GetterStrategy,
     HydratorInterface,
-    HydratorFactory,
     HydratorRegistry,
     CollectionHydrator,
     AbstractHydrator,
@@ -24,7 +24,6 @@ use DataMapper\Mapper\{
 };
 
 use DataMapper\TypeDict;
-use DataMapper\TypeResolver;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -114,5 +113,15 @@ abstract class AbstractMapping extends TestCase
     protected function createSnakeCaseNamingStrategy(): NamingStrategyInterface
     {
         return new SnakeCaseNamingStrategy();
+    }
+
+    /**
+     * @param string $methodName
+     *
+     * @return GetterStrategy
+     */
+    protected function createGetterStrategy(string $methodName): GetterStrategy
+    {
+        return new GetterStrategy($methodName);
     }
 }

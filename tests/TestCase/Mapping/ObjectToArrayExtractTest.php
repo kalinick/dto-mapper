@@ -6,7 +6,7 @@ use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
 use DataMapper\TypeDict;
 
-use Tests\DataFixtures\Dto\RegistrationResponseDto;
+use Tests\DataFixtures\Model\RegistrationResponseDto;
 
 /**
  * Class ObjectToArrayExtractTest

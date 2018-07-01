@@ -35,6 +35,10 @@ class TypeResolver
      */
     public static function resolveStrategyType($variable): string
     {
+        if (\is_object($variable)) {
+            return \get_class($variable);
+        }
+
         $type = self::resolveBaseType($variable);
 
         return $type === TypeDict::CLASS_TYPE ? $variable : $type;

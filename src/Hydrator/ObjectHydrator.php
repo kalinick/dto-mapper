@@ -31,14 +31,7 @@ final class ObjectHydrator extends AbstractHydrator
      */
     public function hydrate($source, $destination)
     {
-        $notValid = !\is_object($source) || (!\is_object($destination) || \class_exists($destination));
-
-        if ($notValid) {
-            $message = '$source argument - must be object type,' .
-                '$destination argument - must by exist class name or object type';
-
-            throw new InvalidArgumentException($message);
-        }
+        $this->validateTypes($source, $destination);
 
         $dto = \is_object($destination) ? $destination : new $destination();
         $destinationClass = \get_class($dto);
@@ -46,13 +39,13 @@ final class ObjectHydrator extends AbstractHydrator
         $strategyTypeKey = TypeResolver::getStrategyType($sourceClass, $destinationClass);
 
         $mappedDestinationProps = $this->strategyRegistry->getMapperPropertiesKeys($strategyTypeKey);
-        $destinationContent = $this->filterSourceProps($destination, $mappedDestinationProps);
+        $destinationContent = $this->filterSourceProps($source, $mappedDestinationProps);
 
         foreach ($mappedDestinationProps as $destinationProp) {
             $destinationContent[$destinationProp] = $this->hydrateValue($destinationProp, $source, $destinationClass);
         }
 
-        return $this->hydrateToObject($source, $dto);
+        return $this->hydrateToObject($destinationContent, $dto);
     }
 
     /**
@@ -73,5 +66,30 @@ final class ObjectHydrator extends AbstractHydrator
             },
             ARRAY_FILTER_USE_KEY
         );
+    }
+
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @param mixed $source
+     * @param mixed $destination
+     *
+     * @return void
+     */
+    private function validateTypes($source, $destination): void
+    {
+        $notValid = !\is_object($source) || (
+            !\is_object($destination) && (
+                \is_string($destination) && !\class_exists($destination)
+            )
+        );
+
+        if ($notValid) {
+            $message = '$source argument - must be object type,' .
+                '$destination argument - must by exist class name or object type';
+
+            throw new InvalidArgumentException($message);
+        }
     }
 }

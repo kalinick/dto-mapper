@@ -72,6 +72,6 @@ class StrategyRegistry extends RegistryContainer implements StrategyRegistryInte
      */
     public function getMapperPropertiesKeys(string $key): array
     {
-        return \array_keys($this->offsetGet($key));
+        return $this->offsetExists($key) ? \array_keys($this->offsetGet($key)) : [];
     }
 }
