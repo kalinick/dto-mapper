@@ -2,7 +2,7 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Exception\InvalidArgumentException;
 
 /**
  * Interface HydrationInterface

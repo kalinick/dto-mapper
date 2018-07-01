@@ -2,9 +2,9 @@
 
 namespace DataMapper\Hydrator\Strategy;
 
-use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Exception\InvalidArgumentException;
 use DataMapper\Hydrator\HydratorInterface;
-use DataMapper\Mapper\Registry\CollectionRelationsRegistryInterface;
+use DataMapper\Mapper\Registry\RelationsRegistryInterface;
 
 /**
  * Class MultiCollectionStrategy
@@ -12,7 +12,7 @@ use DataMapper\Mapper\Registry\CollectionRelationsRegistryInterface;
 final class CollectionStrategy implements StrategyInterface
 {
     /**
-     * @var CollectionRelationsRegistryInterface
+     * @var RelationsRegistryInterface
      */
     private $mappingRegistry;
 
@@ -24,10 +24,10 @@ final class CollectionStrategy implements StrategyInterface
     /**
      * CollectionStrategy constructor.
      *
-     * @param HydratorInterface                      $hydrator
-     * @param CollectionRelationsRegistryInterface   $mappingRegistry
+     * @param HydratorInterface          $hydrator
+     * @param RelationsRegistryInterface $mappingRegistry
      */
-    public function __construct(HydratorInterface $hydrator, CollectionRelationsRegistryInterface $mappingRegistry)
+    public function __construct(HydratorInterface $hydrator, RelationsRegistryInterface $mappingRegistry)
     {
         $this->mappingRegistry = $mappingRegistry;
         $this->hydrator = $hydrator;
@@ -38,7 +38,7 @@ final class CollectionStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        if (!\is_array($value)) {
+        if (!\is_array($value) || !\is_array($context)) {
             return $value;
         }
         [$contextClass, $propertyName] = $context;

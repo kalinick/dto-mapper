@@ -2,7 +2,7 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Exception\InvalidArgumentException;
 
 /**
  * Class CollectionHydrator
@@ -14,7 +14,9 @@ final class CollectionHydrator extends AbstractHydrator
      */
     public function hydrate($source, $destination)
     {
-        $notValid = !\is_array($source) || (!\get_class($destination) || !\class_exists($destination));
+        $notValid = !\is_array($source) ||
+            (\is_string($destination) && !\class_exists($destination)) ||
+            (\is_object($destination) && !\get_class($destination));
 
         if ($notValid) {
             $message = '$source argument - must be array type,' .
@@ -27,7 +29,7 @@ final class CollectionHydrator extends AbstractHydrator
 
         foreach ($source as $name => $value) {
             $hydratedName = $this->hydrateName($name, $destination);
-            $source[$hydratedName] = $this->hydrateValue($hydratedName, $value, $destinationClass);
+            $source[$hydratedName] = $this->hydrateValue($hydratedName, $value, [$destinationClass, $hydratedName]);
         }
 
         return $this->hydrateToObject($source, $dto);

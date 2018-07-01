@@ -2,12 +2,14 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\UnknownStrategyTypeException;
-use DataMapper\Hydrator\NamingStrategy\NamingStrategyEnabledInterface;
-use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
-use DataMapper\Hydrator\Strategy\StrategyEnabledInterface;
-use DataMapper\Hydrator\Strategy\StrategyInterface;
-use DataMapper\Mapper\MappingRegistry;
+use DataMapper\TypeDict;
+use DataMapper\Hydrator\{
+    Exception\UnknownStrategyTypeException,
+    NamingStrategy\NamingStrategyEnabledInterface,
+    NamingStrategy\NamingStrategyInterface,
+    Strategy\StrategyEnabledInterface,
+    Strategy\StrategyInterface
+};
 
 use GeneratedHydrator\Configuration;
 
@@ -33,11 +35,17 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     public function hasStrategy(string $name): bool
     {
-        if (\array_key_exists($name, $this->strategies)) {
+        if (array_key_exists($name, $this->strategies)) {
             return true;
         }
 
-        return $this->hasDefaultStrategy();
+        if ($this->hasNamingStrategy() &&
+            \array_key_exists($this->getNamingStrategy()->hydrate($name), $this->strategies)
+        ) {
+            return true;
+        }
+
+        return \array_key_exists('*', $this->strategies);
     }
 
     /**
@@ -45,7 +53,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     private function hasDefaultStrategy(): bool
     {
-        return \array_key_exists(MappingRegistry::ALL_STRATEGY, $this->strategies);
+        return \array_key_exists(TypeDict::ALL_TYPE, $this->strategies);
     }
 
     /**
@@ -56,10 +64,10 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     private function getDefaultStrategy(): StrategyInterface
     {
         if (!$this->hasDefaultStrategy()) {
-            throw new UnknownStrategyTypeException(MappingRegistry::ALL_STRATEGY);
+            throw new UnknownStrategyTypeException(TypeDict::ALL_TYPE);
         }
 
-        return $this->strategies[MappingRegistry::ALL_STRATEGY];
+        return $this->strategies[TypeDict::ALL_TYPE];
     }
 
     /**
@@ -87,7 +95,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     public function getStrategy(string $name): StrategyInterface
     {
-        if (!$this->hasStrategy($name)) {
+        if (!isset($this->strategies[$name])) {
             return $this->getDefaultStrategy();
         }
 
@@ -100,6 +108,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      * @param string $name    The name of the strategy to use.
      * @param mixed  $value   The value that should be converted.
      * @param mixed  $context The whole data is optionally provided as context.
+     *
      * @return mixed
      */
     protected function hydrateValue(string $name, $value, $context = null)

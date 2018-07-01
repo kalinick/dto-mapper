@@ -2,12 +2,12 @@
 
 namespace DataMapper\Mapper\Registry;
 
-use DataMapper\Mapping\Exception\MappingRegistryException;
+use DataMapper\Exception\MappingRegistryException;
 
 /**
- * Interface CollectionRelationsRegistryInterface
+ * Interface RelationsRegistryInterface
  */
-interface CollectionRelationsRegistryInterface extends DestinationRegistryInterface
+interface RelationsRegistryInterface
 {
     /**
      * @param string $className

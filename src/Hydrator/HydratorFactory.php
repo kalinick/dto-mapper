@@ -3,6 +3,7 @@
 namespace DataMapper\Hydrator;
 
 use DataMapper\Mapper\MappingRegistry;
+use DataMapper\TypeResolver;
 
 /**
  * Class HydratorFactory
@@ -37,7 +38,8 @@ class HydratorFactory implements HydratorFactoryInterface
     public function createHydratorBuilder($source, $destination): HydratorBuilderInterface
     {
         /** @var AbstractHydrator $hydrator */
-        $hydrator = $this->hydratorRegistry->getHydrator($source, $destination);
+        $type = TypeResolver::getHydratedType($source, $destination);
+        $hydrator = $this->hydratorRegistry->getHydratorByType($type);
 
         return HydratorBuilder::create($hydrator);
     }
@@ -48,9 +50,19 @@ class HydratorFactory implements HydratorFactoryInterface
     public function createHydrator($source, $destination): HydratorInterface
     {
         $hBuilder = $this->createHydratorBuilder($source, $destination);
-        $hydrationStrategies = $this->mappingRegistry->getRegisteredStrategiesFor($source, $destination);
+        $strategyKey = TypeResolver::getStrategyType($source, $destination);
 
-        if ($namingStrategy = $this->mappingRegistry->getRegisteredNamingStrategyFor($destination)) {
+        $hydrationStrategies = $this
+            ->mappingRegistry
+            ->getStrategyRegistry()
+            ->getRegisteredStrategiesFor($strategyKey);
+
+        $namingStrategy = $this
+            ->mappingRegistry
+            ->getNamingRegistry()
+            ->getRegisteredNamingStrategyFor($destination);
+
+        if ($namingStrategy !== null) {
             $hBuilder->setNamingStrategy($namingStrategy);
         }
 

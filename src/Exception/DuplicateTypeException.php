@@ -1,11 +1,11 @@
 <?php
 
-namespace DataMapper\Hydrator\Exception;
+namespace DataMapper\Exception;
 
 /**
- * Class UnknownTypeException
+ * Class DuplicateTypeException
  */
-final class UnknownTypeException extends HydratorException
+final class DuplicateTypeException extends \BadMethodCallException
 {
     /**
      * DuplicateRegisterException constructor.
@@ -16,7 +16,7 @@ final class UnknownTypeException extends HydratorException
      */
     public function __construct(string $type, int $code = 0, \Throwable $previous = null)
     {
-        $message = sprintf('Hydrator type: %s not registered', $type);
+        $message = sprintf('%s:  %s - already registered', static::class, $type);
         parent::__construct($message, $code, $previous);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace DataMapper\Hydrator\Exception;
+namespace DataMapper\Exception;
 
 /**
  * Class InvalidArgumentException

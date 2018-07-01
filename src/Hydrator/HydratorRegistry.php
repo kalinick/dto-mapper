@@ -2,86 +2,45 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\DuplicateTypeException;
-use DataMapper\Hydrator\Exception\UnknownTypeException;
+use DataMapper\Exception\DuplicateTypeException;
+use DataMapper\Hydrator\Exception\UnknownHydratorTypeException;
+use DataMapper\RegistryContainer;
 
 /**
  * Class HydratorRegistry
  */
-class HydratorRegistry
+class HydratorRegistry extends RegistryContainer implements HydratorRegistryInterface
 {
     /**
-     * @var array
+     * {@inheritDoc}
      */
-    private $hydrators = [];
-
-    /**
-     * @throws UnknownTypeException
-     *
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return AbstractHydrator
-     */
-    public function getHydrator($source, $destination): AbstractHydrator
+    public function getHydratorByType(string $type): AbstractHydrator
     {
-        $type = self::formatHydratorType($source, $destination);
-
-        if (!$this->contains($type)) {
-            throw new UnknownTypeException($type);
+        if (!$this->hasRegisterHydrator($type)) {
+            throw new UnknownHydratorTypeException($type);
         }
 
-        return $this->hydrators[$type];
+        return $this->offsetGet($type);
     }
 
     /**
-     * @throws DuplicateTypeException
-     *
-     * @param AbstractHydrator $hydrator
-     * @param string           $type
-     *
-     * @return HydratorRegistry
+     * {@inheritDoc}
      */
-    public function registerHydrator(AbstractHydrator $hydrator, string $type): self
+    public function registerHydrator(AbstractHydrator $hydrator, string $type): HydratorRegistryInterface
     {
-        if ($this->contains($type)) {
+        if ($this->hasRegisterHydrator($type)) {
             throw new DuplicateTypeException($type);
         }
-
-        $this->hydrators[$type] = $hydrator;
+        $this->offsetSet($type, $hydrator);
 
         return $this;
     }
 
     /**
-     * @param string $type
-     *
-     * @return bool
+     * {@inheritDoc}
      */
-    public function contains(string $type): bool
+    public function hasRegisterHydrator(string $type): bool
     {
-        return isset($this->hydrators[$type]);
-    }
-
-    /**
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return string
-     */
-    public static function formatHydratorType($source, $destination): string
-    {
-        return self::formatType(\gettype($source), \gettype($destination));
-    }
-
-    /**
-     * @param string $source
-     * @param string $destination
-     *
-     * @return string
-     */
-    public static function formatType(string $source, string $destination): string
-    {
-        return $source . ':' . $destination;
+        return $this->offsetExists($type);
     }
 }

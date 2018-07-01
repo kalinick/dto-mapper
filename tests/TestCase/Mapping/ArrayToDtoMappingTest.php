@@ -1,20 +1,14 @@
 <?php
 
-namespace Tests\TestCase\Mapper\ArrayMapping;
+namespace Tests\TestCase\Mapping;
 
-use MapperBundle\Hydrator\NamingStrategy\SnakeCaseNamingStrategy;
 use Tests\DataFixtures\Dto\RegistrationRequestDto;
-use Tests\TestCase\Mapper\MapperTrait;
-
-use PHPUnit\Framework\TestCase;
 
 /**
  * Class ArrayToDtoMappingTest
  */
-class ArrayToDtoMappingTest extends TestCase
+class ArrayToDtoMappingTest extends AbstractMapping
 {
-    use MapperTrait;
-
     /**
      * @param array $registrationData
      *
@@ -22,11 +16,16 @@ class ArrayToDtoMappingTest extends TestCase
      */
     public function testArrayToDtoMapping(array $registrationData): void
     {
-        $namingStrategy = new SnakeCaseNamingStrategy();
         /** @var RegistrationRequestDto $dto */
         $dto = $this
-            ->createMapper($namingStrategy)
-            ->convert($registrationData, RegistrationRequestDto::class);
+            ->createArrayToClassHydrator(
+                $registrationData,
+                RegistrationRequestDto::class
+            )
+            ->hydrate(
+                $registrationData,
+                RegistrationRequestDto::class
+            );
 
         $this->assertEquals($dto->getFirstName(), $registrationData['first_name']);
         $this->assertEquals($dto->getLastName(), $registrationData['last_name']);
@@ -58,7 +57,22 @@ class ArrayToDtoMappingTest extends TestCase
                         'b_b' => 2,
                     ]
                 ],
-            ]
+            ],
+            [
+                [
+                    'first_name' => null,
+                    'last_name' => 2,
+                    'password' => 'ivanstrongpassword',
+                    'city' => null,
+                    'country' => 'Ukraine',
+                    'email' => 'ivan@gmail.com',
+                    'birthday' => '2020/02//12',
+                    'personal_info' => [
+                        'a_a' => 1,
+                        'b_b' => 2,
+                    ]
+                ],
+            ],
         ];
     }
 }

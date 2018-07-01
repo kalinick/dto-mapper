@@ -50,6 +50,7 @@ class ArrayToRelationsDtoMappingTest extends TestCase
         $this->assertEquals($dto->getBirthday(), $registrationData['birthday']);
         $this->assertEquals($dto->getPersonalInfo(), $registrationData['personal_info']);
     }
+
     /**
      * @return array
      */

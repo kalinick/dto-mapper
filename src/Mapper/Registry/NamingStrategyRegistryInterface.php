@@ -2,13 +2,13 @@
 
 namespace DataMapper\Mapper\Registry;
 
+use DataMapper\Exception\MappingRegistryException;
 use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
-use DataMapper\Mapping\Exception\MappingRegistryException;
 
 /**
  * Interface NamingStrategyRegistryInterface
  */
-interface NamingStrategyRegistryInterface extends DestinationRegistryInterface
+interface NamingStrategyRegistryInterface
 {
     /**
      * @param mixed $destination

@@ -3,71 +3,60 @@
 namespace DataMapper\Mapper\Registry;
 
 use DataMapper\Hydrator\Strategy\StrategyInterface;
-use DataMapper\Mapping\Exception\MappingRegistryException;
+use DataMapper\Exception\MappingRegistryException;
 
 /**
  * Interface StrategyRegistryInterface
  */
-interface StrategyRegistryInterface extends DestinationRegistryInterface
+interface StrategyRegistryInterface
 {
     /**
-     * @param string $source
-     * @param string $destination
+     * @param string $key
      *
      * @return bool
      */
-    public function hasRegisteredTypeStrategy(string $source, string $destination): bool;
+    public function hasRegisteredTypeStrategy(string $key): bool;
 
     /**
-     * @param string $source
-     * @param string $destination
+     * @param string $key
      * @param string $property
      *
      * @return bool
      */
-    public function hasRegisteredPropertyStrategy(string $source, string $destination, string $property): bool;
+    public function hasRegisteredPropertyStrategy(string $key, string $property): bool;
 
     /**
-     * @param string $source
-     * @param string $destination
+     * @param string $key
      *
      * @return array ['name' => StrategyInterface .. etc]
      */
-    public function getRegisteredStrategiesFor(string $source, string $destination): array;
+    public function getRegisteredStrategiesFor(string $key): array;
 
     /**
      * @throws MappingRegistryException
      *
-     * @param string            $source
-     * @param string            $destination
+     * @param string            $key
      * @param string            $property
      * @param StrategyInterface $strategy
      *
      * @return void
      */
-    public function registerPropertyStrategy(
-        string $source,
-        string $destination,
-        string $property,
-        StrategyInterface $strategy
-    ): void;
+    public function registerPropertyStrategy(string $key, string $property, StrategyInterface $strategy): void;
 
     /**
      * @throws MappingRegistryException
      *
-     * @param string            $source
-     * @param string            $destination
+     * @param string            $key
      * @param StrategyInterface $strategy
      *
      * @return void
      */
-    public function registerTypeStrategy(string $source, string $destination, StrategyInterface $strategy): void;
+    public function registerTypeStrategy(string $key, StrategyInterface $strategy): void;
 
     /**
-     * @param string $source
-     * @param string $destination
+     * @param string $key
      *
      * @return array
      */
-    public function getMapperPropertiesKeys(string $source, string $destination): array;
+    public function getMapperPropertiesKeys(string $key): array;
 }
