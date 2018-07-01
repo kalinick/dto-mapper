@@ -1,13 +1,13 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Hydrator\Exception\InvalidArgumentException;
 
 /**
  * Class ArraySerializableHydrator
  */
-class ArraySerializableHydrator extends AbstractHydrator
+final class ArraySerializableHydrator extends AbstractHydrator
 {
     /**
      * {@inheritDoc}
@@ -22,5 +22,7 @@ class ArraySerializableHydrator extends AbstractHydrator
             $hydratedName = $this->hydrateName($name);
             $destination[$hydratedName] = $this->hydrateValue($hydratedName, $value, $destination);
         }
+
+        return $destination;
     }
 }

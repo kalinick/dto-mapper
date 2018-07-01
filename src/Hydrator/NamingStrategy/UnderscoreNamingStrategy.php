@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\NamingStrategy;
+namespace DataMapper\Hydrator\NamingStrategy;
 
 /**
  * Class UnderscoreNamingStrategy

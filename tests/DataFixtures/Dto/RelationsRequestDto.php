@@ -2,26 +2,17 @@
 
 namespace Tests\DataFixtures\Dto;
 
-use MapperBundle\Mapping\Annotation\Meta;
-use MapperBundle\Mapping\Annotation\Meta\Strategy;
-
 /**
  * Class RelationsRequestDto
- * @Meta\DestinationClass
- * @Meta\NamingStrategy\UnderscoreNamingStrategy
  */
 class RelationsRequestDto
 {
     /**
-     * @Strategy\CollectionStrategy(targetClass="Tests\DataFixtures\Dto\RegistrationRequestDto")
-     *
      * @var RegistrationRequestDto[]
      */
     public $registrationsRequests = [];
 
     /**
-     * @Strategy\MultiCollectionStrategy(targetClass="Tests\DataFixtures\Dto\PersonalInfoDto")
-     *
      * @var PersonalInfoDto
      */
     public $personalInfo;

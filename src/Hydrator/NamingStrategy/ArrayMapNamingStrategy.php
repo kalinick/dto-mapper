@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\NamingStrategy;
+namespace DataMapper\Hydrator\NamingStrategy;
 
 /**
  * Class ArrayMapNamingStrategy
@@ -15,7 +15,7 @@ final class ArrayMapNamingStrategy implements NamingStrategyInterface
     /**
      * @var string[]
      */
-    private $hydrationMap = [];
+    private $hydrationMap;
 
     /**
      * Constructor

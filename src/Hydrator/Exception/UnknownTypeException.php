@@ -1,28 +1,22 @@
 <?php
 
-namespace MapperBundle\Hydrator\Exception;
-
-use Throwable;
+namespace DataMapper\Hydrator\Exception;
 
 /**
  * Class UnknownTypeException
  */
-class UnknownTypeException extends HydratorException
+final class UnknownTypeException extends HydratorException
 {
-    /**
-     * @var string
-     */
-    protected $message = 'Hydrator type: %s not registered';
-
     /**
      * DuplicateRegisterException constructor.
      *
-     * @param string         $type
-     * @param int            $code
-     * @param Throwable|null $previous
+     * @param string          $type
+     * @param int             $code
+     * @param \Throwable|null $previous
      */
-    public function __construct(string $type, int $code = 0, Throwable $previous = null)
+    public function __construct(string $type, int $code = 0, \Throwable $previous = null)
     {
-        parent::__construct(sprintf($this->message, $type), $code, $previous);
+        $message = sprintf('Hydrator type: %s not registered', $type);
+        parent::__construct($message, $code, $previous);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace MapperBundle\Hydrator\Strategy;
+namespace DataMapper\Hydrator\Strategy;
 
-use MapperBundle\Hydrator\Exception\UnknownStrategyTypeException;
+use DataMapper\Hydrator\Exception\UnknownStrategyTypeException;
 
 /**
  * Interface StrategyEnabledInterface

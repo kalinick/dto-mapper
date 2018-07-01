@@ -1,10 +1,10 @@
 <?php
 
-namespace MapperBundle\Hydrator\Strategy;
+namespace DataMapper\Hydrator\Strategy;
 
-use MapperBundle\Hydrator\Exception\InvalidArgumentException;
-use MapperBundle\Hydrator\HydratorInterface;
-use MapperBundle\Mapping\MappingRegistry;
+use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Hydrator\HydratorInterface;
+use DataMapper\Mapper\Registry\CollectionRelationsRegistryInterface;
 
 /**
  * Class MultiCollectionStrategy
@@ -12,7 +12,7 @@ use MapperBundle\Mapping\MappingRegistry;
 final class CollectionStrategy implements StrategyInterface
 {
     /**
-     * @var MappingRegistry
+     * @var CollectionRelationsRegistryInterface
      */
     private $mappingRegistry;
 
@@ -24,21 +24,13 @@ final class CollectionStrategy implements StrategyInterface
     /**
      * CollectionStrategy constructor.
      *
-     * @param HydratorInterface $hydrator
-     * @param MappingRegistry   $mappingRegistry
+     * @param HydratorInterface                      $hydrator
+     * @param CollectionRelationsRegistryInterface   $mappingRegistry
      */
-    public function __construct(HydratorInterface $hydrator, MappingRegistry $mappingRegistry)
+    public function __construct(HydratorInterface $hydrator, CollectionRelationsRegistryInterface $mappingRegistry)
     {
         $this->mappingRegistry = $mappingRegistry;
         $this->hydrator = $hydrator;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function extract($value, $context): array
-    {
-        $this->hydrator->extract($value);
     }
 
     /**
@@ -49,7 +41,6 @@ final class CollectionStrategy implements StrategyInterface
         if (!\is_array($value)) {
             return $value;
         }
-
         [$contextClass, $propertyName] = $context;
 
         if (!\is_string($contextClass) || !\class_exists($contextClass)) {

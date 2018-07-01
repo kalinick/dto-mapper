@@ -1,13 +1,15 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
+
+use DataMapper\Hydrator\Exception\UnknownStrategyTypeException;
+use DataMapper\Hydrator\NamingStrategy\NamingStrategyEnabledInterface;
+use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
+use DataMapper\Hydrator\Strategy\StrategyEnabledInterface;
+use DataMapper\Hydrator\Strategy\StrategyInterface;
+use DataMapper\Mapper\MappingRegistry;
 
 use GeneratedHydrator\Configuration;
-use MapperBundle\Hydrator\Exception\UnknownStrategyTypeException;
-use MapperBundle\Hydrator\NamingStrategy\NamingStrategyEnabledInterface;
-use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
-use MapperBundle\Hydrator\Strategy\StrategyEnabledInterface;
-use MapperBundle\Hydrator\Strategy\StrategyInterface;
 
 /**
  * Class AbstractHydrator
@@ -35,7 +37,29 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
             return true;
         }
 
-        return \array_key_exists('*', $this->strategies);
+        return $this->hasDefaultStrategy();
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasDefaultStrategy(): bool
+    {
+        return \array_key_exists(MappingRegistry::ALL_STRATEGY, $this->strategies);
+    }
+
+    /**
+     * @throws UnknownStrategyTypeException
+     *
+     * @return StrategyInterface
+     */
+    private function getDefaultStrategy(): StrategyInterface
+    {
+        if (!$this->hasDefaultStrategy()) {
+            throw new UnknownStrategyTypeException(MappingRegistry::ALL_STRATEGY);
+        }
+
+        return $this->strategies[MappingRegistry::ALL_STRATEGY];
     }
 
     /**
@@ -64,29 +88,10 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     public function getStrategy(string $name): StrategyInterface
     {
         if (!$this->hasStrategy($name)) {
-            throw new UnknownStrategyTypeException($name);
+            return $this->getDefaultStrategy();
         }
 
         return $this->strategies[$name];
-    }
-
-    /**
-     * Converts a value for extraction. If no strategy exists the plain value is returned.
-     *
-     * @param  string $name    The name of the strategy to use.
-     * @param  mixed  $value   The value that should be converted.
-     * @param  mixed  $context The object is optionally provided as context.
-     *
-     * @return mixed
-     */
-    public function extractValue(string $name, $value, $context = null)
-    {
-        if ($this->hasStrategy($name)) {
-            $strategy = $this->getStrategy($name);
-            $value = $strategy->extract($value, $context);
-        }
-
-        return $value;
     }
 
     /**
@@ -111,14 +116,13 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      * Convert a name for extraction. If no naming strategy exists, the plain value is returned.
      *
      * @param string $name    The name to convert.
-     * @param mixed  $context The object is optionally provided as context.
      *
      * @return string
      */
-    protected function extractName(string $name, $context = null): string
+    protected function extractName(string $name): string
     {
         if ($this->hasNamingStrategy()) {
-            $name = $this->getNamingStrategy()->extract($name, $context);
+            $name = $this->getNamingStrategy()->extract($name);
         }
 
         return $name;
@@ -178,6 +182,23 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     }
 
     /**
+     * @param array  $source
+     * @param object $target
+     *
+     * @return object
+     */
+    protected function hydrateToObject(array $source, object $target): object
+    {
+        $className = \get_class($target);
+        $config = new Configuration($className);
+        $hydratorClass = $config->createFactory()->getHydratorClass();
+        /* @var HydratorInterface $hydrator */
+        $hydrator = new $hydratorClass();
+
+        return $hydrator->hydrate($source, $target);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function extract(object $type): array
@@ -191,7 +212,8 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
 
         foreach ($extracted as $name => $value) {
             $hydratedName = $this->extractName($name);
-            $extracted[$hydratedName] = $this->extractValue($hydratedName, $value);
+            $extracted[$hydratedName] = $value;
+            unset($extracted[$name]);
         }
 
         return $extracted;

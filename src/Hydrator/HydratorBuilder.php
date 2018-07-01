@@ -1,9 +1,9 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\NamingStrategy\NamingStrategyInterface;
-use MapperBundle\Hydrator\Strategy\StrategyInterface;
+use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
+use DataMapper\Hydrator\Strategy\StrategyInterface;
 
 /**
  * Class HydratorBuilder

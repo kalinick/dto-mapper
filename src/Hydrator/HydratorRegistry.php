@@ -1,22 +1,23 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\Exception\DuplicateTypeException;
+use DataMapper\Hydrator\Exception\DuplicateTypeException;
+use DataMapper\Hydrator\Exception\UnknownTypeException;
 
 /**
  * Class HydratorRegistry
  */
 class HydratorRegistry
 {
-    private const ALL_TYPE = '*';
-
     /**
      * @var array
      */
     private $hydrators = [];
 
     /**
+     * @throws UnknownTypeException
+     *
      * @param mixed $source
      * @param mixed $destination
      *
@@ -27,7 +28,7 @@ class HydratorRegistry
         $type = self::formatHydratorType($source, $destination);
 
         if (!$this->contains($type)) {
-            return $this->getBaseHydrator();
+            throw new UnknownTypeException($type);
         }
 
         return $this->hydrators[$type];
@@ -60,14 +61,6 @@ class HydratorRegistry
     public function contains(string $type): bool
     {
         return isset($this->hydrators[$type]);
-    }
-
-    /**
-     * @return AbstractHydrator
-     */
-    public function getBaseHydrator(): AbstractHydrator
-    {
-        return $this->hydrators[self::ALL_TYPE];
     }
 
     /**

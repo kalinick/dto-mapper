@@ -1,17 +1,12 @@
 <?php
 
-namespace MapperBundle\Hydrator\Exception;
+namespace DataMapper\Hydrator\Exception;
 
 /**
  * Class DestinationTypeException
  */
-class DestinationTypeException extends HydratorException
+final class DestinationTypeException extends HydratorException
 {
-    /**
-     * @var string
-     */
-    protected $message = 'Destination type: %s not supported by %s';
-
     /**
      * DuplicateRegisterException constructor.
      *
@@ -21,6 +16,7 @@ class DestinationTypeException extends HydratorException
      */
     public function __construct(string $type, int $code = 0, \Throwable $previous = null)
     {
-        parent::__construct(sprintf($this->message, $type, get_called_class()), $code, $previous);
+        $message = sprintf('Destination type: %s not supported by %s', $type, static::class);
+        parent::__construct($message, $code, $previous);
     }
 }

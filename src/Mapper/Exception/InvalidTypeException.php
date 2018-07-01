@@ -1,11 +1,11 @@
 <?php
 
-namespace MapperBundle\Mapper\Exception;
+namespace DataMapper\Mapper\Exception;
 
 /**
  * Class InvalidTypeException
  */
-class InvalidTypeException extends \RuntimeException
+final class InvalidTypeException extends \RuntimeException
 {
 
 }

@@ -1,18 +1,27 @@
 <?php
 
-namespace MapperBundle\Hydrator\Strategy;
+namespace DataMapper\Hydrator\Strategy;
+
+use DataMapper\Hydrator\Exception\InvalidArgumentException;
 
 /**
  * Class GetterStrategy
  */
-class GetterStrategy implements StrategyInterface
+final class GetterStrategy implements StrategyInterface
 {
     /**
-     * {@inheritDoc}
+     * @var string
      */
-    public function extract($value, $context)
+    private $methodToCall;
+
+    /**
+     * GetterStrategy constructor.
+     *
+     * @param string $methodToCall
+     */
+    public function __construct(string $methodToCall)
     {
-        // TODO: Implement extract() method.
+        $this->methodToCall = $methodToCall;
     }
 
     /**
@@ -20,6 +29,16 @@ class GetterStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        // TODO: Implement hydrate() method.
+        if (!\is_object($value)) {
+            throw new InvalidArgumentException('$value - argument must be object');
+        }
+        if (!\is_callable([$value, $this->methodToCall])) {
+            throw new InvalidArgumentException(
+                \get_class($value) .
+                "- getter method: {$this->methodToCall} must be callable"
+            );
+        }
+
+        return $value->{$this->methodToCall}();
     }
 }

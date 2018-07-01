@@ -1,28 +1,22 @@
 <?php
 
-namespace MapperBundle\Hydrator\Exception;
-
-use Throwable;
+namespace DataMapper\Hydrator\Exception;
 
 /**
  * Class UnknownStrategyTypeException
  */
-class UnknownStrategyTypeException extends HydratorException
+final class UnknownStrategyTypeException extends HydratorException
 {
-    /**
-     * @var string
-     */
-    protected $message = 'Strategy type: %s not registered';
-
     /**
      * DuplicateRegisterException constructor.
      *
      * @param string         $type
      * @param int            $code
-     * @param Throwable|null $previous
+     * @param \Throwable|null $previous
      */
-    public function __construct(string $type, int $code = 0, Throwable $previous = null)
+    public function __construct(string $type, int $code = 0, \Throwable $previous = null)
     {
-        parent::__construct(sprintf($this->message, $type), $code, $previous);
+        $message = sprintf('Strategy type: %s not registered', $type);
+        parent::__construct($message, $code, $previous);
     }
 }

@@ -2,12 +2,8 @@
 
 namespace Tests\DataFixtures\Dto;
 
-use MapperBundle\Mapping\Annotation\Meta\DestinationClass;
-
 /**
  * Class RegistrationRequestDto
- * @DestinationClass
- *
  */
 class RegistrationRequestDto
 {

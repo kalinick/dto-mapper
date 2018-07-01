@@ -1,22 +1,14 @@
 <?php
 
-namespace MapperBundle\Hydrator\Strategy;
+namespace DataMapper\Hydrator\Strategy;
 
-use MapperBundle\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Hydrator\Exception\InvalidArgumentException;
 
 /**
  * Interface StrategyInterface
  */
 interface StrategyInterface
 {
-    /**
-     * @param mixed $value
-     * @param mixed $context
-     *
-     * @return mixed
-     */
-    public function extract($value, $context);
-
     /**
      * @throws InvalidArgumentException
      *

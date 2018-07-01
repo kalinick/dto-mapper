@@ -1,14 +1,13 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\Strategy\StrategyInterface;
-use MapperBundle\Mapping\MappingRegistry;
+use DataMapper\Mapper\MappingRegistry;
 
 /**
  * Class HydratorFactory
  */
-class HydratorFactory
+class HydratorFactory implements HydratorFactoryInterface
 {
     /**
      * @var HydratorRegistry
@@ -33,10 +32,7 @@ class HydratorFactory
     }
 
     /**
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return HydratorBuilderInterface
+     * {@inheritDoc}
      */
     public function createHydratorBuilder($source, $destination): HydratorBuilderInterface
     {
@@ -47,23 +43,17 @@ class HydratorFactory
     }
 
     /**
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return HydratorInterface
+     * {@inheritDoc}
      */
     public function createHydrator($source, $destination): HydratorInterface
     {
-        /** @var HydratorBuilderInterface $hBuilder */
-        $hBuilder = $this->createHydrator($source, $destination);
+        $hBuilder = $this->createHydratorBuilder($source, $destination);
         $hydrationStrategies = $this->mappingRegistry->getRegisteredStrategiesFor($source, $destination);
-        $namingStrategy = $this->mappingRegistry->getRegisteredNamingStrategyFor($destination);
 
-        if ($namingStrategy !== null) {
+        if ($namingStrategy = $this->mappingRegistry->getRegisteredNamingStrategyFor($destination)) {
             $hBuilder->setNamingStrategy($namingStrategy);
         }
 
-        /** @var StrategyInterface $strategy */
         foreach ($hydrationStrategies as $name => $strategy) {
             $hBuilder->addStrategy($name, $strategy);
         }

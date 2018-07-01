@@ -1,8 +1,8 @@
 <?php
 
-namespace MapperBundle\Hydrator;
+namespace DataMapper\Hydrator;
 
-use MapperBundle\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Hydrator\Exception\InvalidArgumentException;
 
 /**
  * Interface HydrationInterface

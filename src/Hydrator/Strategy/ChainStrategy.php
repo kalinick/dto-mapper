@@ -1,6 +1,6 @@
 <?php
 
-namespace MapperBundle\Hydrator\Strategy;
+namespace DataMapper\Hydrator\Strategy;
 
 /**
  * Class ChainStrategy
@@ -28,19 +28,6 @@ final class ChainStrategy implements StrategyInterface
             },
             $strategies
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function extract($value, $context)
-    {
-        /** @var StrategyInterface $strategy */
-        foreach ($this->strategies as $strategy) {
-            $value = $strategy->extract($value, $context);
-        }
-
-        return $value;
     }
 
     /**
