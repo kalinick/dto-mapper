@@ -38,41 +38,33 @@ class HydratorBuilder implements HydratorBuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): HydratorBuilderInterface
+    public function addStrategy(string $name, StrategyInterface $strategy): void
     {
         $this->hydrator->addStrategy($name, $strategy);
-
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): HydratorBuilderInterface
+    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): void
     {
         $this->hydrator->setNamingStrategy($namingStrategy);
-
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeNamingStrategy(): HydratorBuilderInterface
+    public function removeNamingStrategy(): void
     {
         $this->hydrator->removeNamingStrategy();
-
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeStrategy(string $name): HydratorBuilderInterface
+    public function removeStrategy(string $name): void
     {
         $this->hydrator->removeStrategy($name);
-
-        return $this;
     }
 
     /**

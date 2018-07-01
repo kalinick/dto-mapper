@@ -26,14 +26,13 @@ class HydratorRegistry extends RegistryContainer implements HydratorRegistryInte
     /**
      * {@inheritDoc}
      */
-    public function registerHydrator(AbstractHydrator $hydrator, string $type): HydratorRegistryInterface
+    public function registerHydrator(AbstractHydrator $hydrator, string $type): void
     {
         if ($this->hasRegisterHydrator($type)) {
             throw new DuplicateTypeException($type);
         }
-        $this->offsetSet($type, $hydrator);
 
-        return $this;
+        $this->offsetSet($type, $hydrator);
     }
 
     /**

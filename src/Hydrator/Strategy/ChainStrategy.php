@@ -21,7 +21,7 @@ final class ChainStrategy implements StrategyInterface
      */
     public function __construct(array $strategies)
     {
-        $this->strategies = array_map(
+        $this->strategies = \array_map(
             function (StrategyInterface $strategy) {
                 // this callback is here only to ensure type-safety
                 return $strategy;

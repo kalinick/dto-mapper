@@ -41,24 +41,25 @@ final class CollectionStrategy implements StrategyInterface
         if (!\is_array($value) || !\is_array($context)) {
             return $value;
         }
+
         [$contextClass, $propertyName] = $context;
 
         if (!\is_string($contextClass) || !\class_exists($contextClass)) {
             throw new InvalidArgumentException('$context - argument must be exists class name');
         }
-        $hasRelation = $this->mappingRegistry->hasRegisteredRelationDestination($propertyName, $contextClass);
 
+        $hasRelation = $this->mappingRegistry->hasRegisteredRelation($propertyName, $contextClass);
         if (!$hasRelation) {
             return $value;
         }
 
         $relationTargetClass = $this
             ->mappingRegistry
-            ->getRegisteredRelationDestination($propertyName, $contextClass);
+            ->getRegisteredRelation($propertyName, $contextClass);
 
         $hasMultiRelation = $this
             ->mappingRegistry
-            ->hasRegisteredMultiRelationsDestination($propertyName, $contextClass);
+            ->hasRegisteredMultiRelation($propertyName, $contextClass);
 
         if (!$hasMultiRelation) {
             return $this->hydrator->hydrate($value, $relationTargetClass);
@@ -66,7 +67,7 @@ final class CollectionStrategy implements StrategyInterface
 
         return \array_map(
             function ($element) use ($relationTargetClass) {
-                    return $this->hydrator->hydrate($element, $relationTargetClass);
+                return $this->hydrator->hydrate($element, $relationTargetClass);
             },
             $value
         );

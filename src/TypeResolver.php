@@ -19,12 +19,12 @@ class TypeResolver
     public static function hydrationSupportedTypeSequence(): array
     {
         return [
-            TypeDict::ARRAY_TO_OBJECT => CollectionHydrator::class,
-            TypeDict::ARRAY_TO_CLASS => CollectionHydrator::class,
-            TypeDict::OBJECT_TO_ARRAY => CollectionHydrator::class,
-            TypeDict::ARRAY_TO_ARRAY => ArraySerializableHydrator::class,
-            TypeDict::OBJECT_TO_CLASS => ObjectHydrator::class,
-            TypeDict::OBJECT_TO_OBJECT => ObjectHydrator::class,
+            TypeDict::ARRAY_TO_OBJECT   => CollectionHydrator::class,
+            TypeDict::ARRAY_TO_CLASS    => CollectionHydrator::class,
+            TypeDict::OBJECT_TO_ARRAY   => CollectionHydrator::class,
+            TypeDict::ARRAY_TO_ARRAY    => ArraySerializableHydrator::class,
+            TypeDict::OBJECT_TO_CLASS   => ObjectHydrator::class,
+            TypeDict::OBJECT_TO_OBJECT  => ObjectHydrator::class,
         ];
     }
 

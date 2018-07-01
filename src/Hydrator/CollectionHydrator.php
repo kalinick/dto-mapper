@@ -14,16 +14,8 @@ final class CollectionHydrator extends AbstractHydrator
      */
     public function hydrate($source, $destination)
     {
-        $notValid = !\is_array($source) ||
-            (\is_string($destination) && !\class_exists($destination)) ||
-            (\is_object($destination) && !\get_class($destination));
+        $this->validateTypes($source, $destination);
 
-        if ($notValid) {
-            $message = '$source argument - must be array type,' .
-                '$destination argument - must by exist class name or object type';
-
-            throw new InvalidArgumentException($message);
-        }
         $dto = \is_object($destination) ? $destination : new $destination();
         $destinationClass = \get_class($dto);
 
@@ -33,5 +25,27 @@ final class CollectionHydrator extends AbstractHydrator
         }
 
         return $this->hydrateToObject($source, $dto);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @param mixed $source
+     * @param mixed $destination
+     *
+     * @return void
+     */
+    private function validateTypes($source, $destination): void
+    {
+        $notValid = !\is_array($source) ||
+            (\is_string($destination) && !\class_exists($destination)) ||
+            (\is_object($destination) && !\get_class($destination));
+
+        if ($notValid) {
+            $message =  static::class . ': $source argument - must be array type,' .
+                '$destination argument - must by exist class name or object type';
+
+            throw new InvalidArgumentException($message);
+        }
     }
 }

@@ -13,29 +13,29 @@ interface HydratorBuilderInterface
     /**
      * @param NamingStrategyInterface|null $namingStrategy
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): HydratorBuilderInterface;
+    public function setNamingStrategy(NamingStrategyInterface $namingStrategy): void;
 
     /**
      * @param string            $name
      * @param StrategyInterface $strategy
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): HydratorBuilderInterface;
+    public function addStrategy(string $name, StrategyInterface $strategy): void;
 
     /**
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function removeNamingStrategy(): HydratorBuilderInterface;
+    public function removeNamingStrategy(): void;
 
     /**
      * @param string $name
      *
-     * @return HydratorBuilderInterface
+     * @return void
      */
-    public function removeStrategy(string $name): HydratorBuilderInterface;
+    public function removeStrategy(string $name): void;
 
     /**
      * @param string $name

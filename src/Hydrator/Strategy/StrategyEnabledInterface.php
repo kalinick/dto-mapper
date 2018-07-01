@@ -12,10 +12,8 @@ interface StrategyEnabledInterface
     /**
      * @param string            $name
      * @param StrategyInterface $strategy
-     *
-     * @return StrategyEnabledInterface
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): StrategyEnabledInterface;
+    public function addStrategy(string $name, StrategyInterface $strategy): void;
 
     /**
      * @throws UnknownStrategyTypeException
@@ -35,8 +33,6 @@ interface StrategyEnabledInterface
 
     /**
      * @param string $name
-     *
-     * @return StrategyEnabledInterface
      */
-    public function removeStrategy(string $name): StrategyEnabledInterface;
+    public function removeStrategy(string $name): void;
 }

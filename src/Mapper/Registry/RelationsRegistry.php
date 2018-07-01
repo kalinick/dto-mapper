@@ -13,7 +13,7 @@ class RelationsRegistry extends RegistryContainer implements RelationsRegistryIn
     /**
      * {@inheritDoc}
      */
-    public function hasRegisteredRelationsMapping(string $className): bool
+    public function hasRegisteredRelations(string $className): bool
     {
         return $this->offsetExists($className);
     }
@@ -21,7 +21,7 @@ class RelationsRegistry extends RegistryContainer implements RelationsRegistryIn
     /**
      * {@inheritDoc}
      */
-    public function hasRegisteredRelationDestination(string $propertyName, string $className): bool
+    public function hasRegisteredRelation(string $propertyName, string $className): bool
     {
         return $this->offsetExists($className) ? isset($this->offsetGet($className)[$propertyName]) : false;
     }
@@ -29,16 +29,16 @@ class RelationsRegistry extends RegistryContainer implements RelationsRegistryIn
     /**
      * {@inheritDoc}
      */
-    public function hasRegisteredMultiRelationsDestination(string $propertyName, string $destinationClass): bool
+    public function hasRegisteredMultiRelation(string $propertyName, string $destinationClass): bool
     {
-        return $this->hasRegisteredRelationDestination($propertyName, $destinationClass) ?
+        return $this->hasRegisteredRelation($propertyName, $destinationClass) ?
             $this->offsetGet($destinationClass)[$propertyName]['multi'] : false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getRegisteredRelationDestination(string $propertyName, string $destinationClass): string
+    public function getRegisteredRelation(string $propertyName, string $destinationClass): string
     {
         return $this->offsetGet($destinationClass)[$propertyName]['target'];
     }
@@ -52,7 +52,7 @@ class RelationsRegistry extends RegistryContainer implements RelationsRegistryIn
         string $targetClass,
         bool $isMulti = false
     ): void {
-        if ($this->hasRegisteredRelationDestination($propertyName, $destinationClass)) {
+        if ($this->hasRegisteredRelation($propertyName, $destinationClass)) {
             $message = "Relation Mapping already registered for class: $destinationClass, property: $propertyName";
             throw new MappingRegistryException($message);
         }

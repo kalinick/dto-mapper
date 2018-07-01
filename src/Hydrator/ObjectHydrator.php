@@ -2,8 +2,9 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Exception\InvalidArgumentException;
 use DataMapper\Mapper\Registry\StrategyRegistryInterface;
+use DataMapper\TypeResolver;
 
 /**
  * Class ObjectHydrator
@@ -38,11 +39,13 @@ final class ObjectHydrator extends AbstractHydrator
 
             throw new InvalidArgumentException($message);
         }
+
         $dto = \is_object($destination) ? $destination : new $destination();
         $destinationClass = \get_class($dto);
         $sourceClass = \get_class($source);
+        $strategyTypeKey = TypeResolver::getStrategyType($sourceClass, $destinationClass);
 
-        $mappedDestinationProps = $this->strategyRegistry->getMapperPropertiesKeys($sourceClass, $destinationClass);
+        $mappedDestinationProps = $this->strategyRegistry->getMapperPropertiesKeys($strategyTypeKey);
         $destinationContent = $this->filterSourceProps($destination, $mappedDestinationProps);
 
         foreach ($mappedDestinationProps as $destinationProp) {

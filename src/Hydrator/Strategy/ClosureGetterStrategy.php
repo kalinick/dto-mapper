@@ -2,7 +2,7 @@
 
 namespace DataMapper\Hydrator\Strategy;
 
-use DataMapper\Hydrator\Exception\InvalidArgumentException;
+use DataMapper\Exception\InvalidArgumentException;
 
 /**
  * Class ClosureGetterStrategy
@@ -23,24 +23,15 @@ final class ClosureGetterStrategy implements StrategyInterface
      */
     public function __construct(\Closure $hydrateFunc)
     {
-        if ($hydrateFunc !== null && !\is_callable($hydrateFunc)) {
+        if (!\is_callable($hydrateFunc)) {
             throw new InvalidArgumentException('$hydrateFunc must be callable');
         }
 
-        if ($hydrateFunc === null) {
-            $this->hydrateFunc = function ($value) {
-                return $value;
-            };
-        } else {
-            $this->hydrateFunc = $hydrateFunc;
-        }
+        $this->hydrateFunc = $hydrateFunc;
     }
 
     /**
-     * @param mixed $value
-     * @param mixed $context
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function hydrate($value, $context)
     {

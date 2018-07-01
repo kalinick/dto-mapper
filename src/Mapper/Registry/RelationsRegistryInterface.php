@@ -14,7 +14,7 @@ interface RelationsRegistryInterface
      *
      * @return bool
      */
-    public function hasRegisteredRelationsMapping(string $className): bool;
+    public function hasRegisteredRelations(string $className): bool;
 
     /**
      * @param string $propertyName
@@ -22,7 +22,7 @@ interface RelationsRegistryInterface
      *
      * @return bool
      */
-    public function hasRegisteredRelationDestination(string $propertyName, string $className): bool;
+    public function hasRegisteredRelation(string $propertyName, string $className): bool;
 
     /**
      * @param string $propertyName
@@ -30,7 +30,7 @@ interface RelationsRegistryInterface
      *
      * @return bool
      */
-    public function hasRegisteredMultiRelationsDestination(string $propertyName, string $destinationClass): bool;
+    public function hasRegisteredMultiRelation(string $propertyName, string $destinationClass): bool;
 
     /**
      * @throws MappingRegistryException
@@ -40,7 +40,7 @@ interface RelationsRegistryInterface
      *
      * @return string
      */
-    public function getRegisteredRelationDestination(string $propertyName, string $destinationClass): string;
+    public function getRegisteredRelation(string $propertyName, string $destinationClass): string;
 
     /**
      * @throws MappingRegistryException

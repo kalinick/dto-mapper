@@ -2,10 +2,11 @@
 [![Build Status](https://travis-ci.org/vklymniuk/dto-mapper.svg?branch=master)](https://travis-ci.org/vklymniuk/dto-mapper)
 
 
-# DataMapper
+#DataMapper library
 
 ```text
-Use generated-hydrator to create or extract objects.
+Wrapped generated hydrator with ability to customize mapping options.
+Good choice for performance improve, work without heavy reflection/serializer mappers. 
 ```
 
 ## Installation

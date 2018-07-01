@@ -2,6 +2,7 @@
 
 namespace DataMapper\Hydrator;
 
+use GeneratedHydrator\Configuration;
 use DataMapper\TypeDict;
 use DataMapper\Hydrator\{
     Exception\UnknownStrategyTypeException,
@@ -10,8 +11,6 @@ use DataMapper\Hydrator\{
     Strategy\StrategyEnabledInterface,
     Strategy\StrategyInterface
 };
-
-use GeneratedHydrator\Configuration;
 
 /**
  * Class AbstractHydrator
@@ -39,13 +38,14 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
             return true;
         }
 
-        if ($this->hasNamingStrategy() &&
-            \array_key_exists($this->getNamingStrategy()->hydrate($name), $this->strategies)
-        ) {
-            return true;
-        }
+        $hasStrategyForHydratedName =
+            $this->hasNamingStrategy() &&
+            \array_key_exists(
+                $this->getNamingStrategy()->hydrate($name),
+                $this->strategies
+            );
 
-        return \array_key_exists('*', $this->strategies);
+        return $hasStrategyForHydratedName?: \array_key_exists('*', $this->strategies);
     }
 
     /**
@@ -73,21 +73,17 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     /**
      * {@inheritDoc}
      */
-    public function addStrategy(string $name, StrategyInterface $strategy): StrategyEnabledInterface
+    public function addStrategy(string $name, StrategyInterface $strategy): void
     {
         $this->strategies[$name] = $strategy;
-
-        return $this;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function removeStrategy(string $name): StrategyEnabledInterface
+    public function removeStrategy(string $name): void
     {
         unset($this->strategies[$name]);
-
-        return $this;
     }
 
     /**
@@ -157,11 +153,9 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     /**
      * {@inheritDoc}
      */
-    public function setNamingStrategy(NamingStrategyInterface $strategy): NamingStrategyEnabledInterface
+    public function setNamingStrategy(NamingStrategyInterface $strategy): void
     {
         $this->namingStrategy = $strategy;
-
-        return $this;
     }
 
     /**
@@ -183,11 +177,9 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     /**
      * {@inheritDoc}
      */
-    public function removeNamingStrategy(): NamingStrategyEnabledInterface
+    public function removeNamingStrategy(): void
     {
         $this->namingStrategy = null;
-
-        return $this;
     }
 
     /**

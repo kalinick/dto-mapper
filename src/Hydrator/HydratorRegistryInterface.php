@@ -2,10 +2,8 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\Exception\{
-    DuplicateTypeException,
-    UnknownHydratorTypeException
-};
+use DataMapper\Exception\DuplicateTypeException;
+use DataMapper\Hydrator\Exception\UnknownHydratorTypeException;
 
 /**
  * Interface HydratorRegistryInterface
@@ -27,9 +25,9 @@ interface HydratorRegistryInterface
      * @param AbstractHydrator $hydrator
      * @param string           $type
      *
-     * @return HydratorRegistryInterface
+     * @return void
      */
-    public function registerHydrator(AbstractHydrator $hydrator, string $type): HydratorRegistryInterface;
+    public function registerHydrator(AbstractHydrator $hydrator, string $type): void;
 
     /**
      * @param string $type
