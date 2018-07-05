@@ -2,7 +2,6 @@
 
 namespace DataMapper\Hydrator;
 
-use GeneratedHydrator\Configuration;
 use DataMapper\TypeDict;
 use DataMapper\Hydrator\{
     Exception\UnknownStrategyTypeException,
@@ -11,6 +10,8 @@ use DataMapper\Hydrator\{
     Strategy\StrategyEnabledInterface,
     Strategy\StrategyInterface
 };
+
+use GeneratedHydrator\Configuration;
 
 /**
  * Class AbstractHydrator
@@ -28,6 +29,11 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      * @var NamingStrategyInterface|null
      */
     protected $namingStrategy;
+
+    /**
+     * @var array Save extracted objects to reduce duplicate extract calls
+     */
+    protected static $extractedObjects = [];
 
     /**
      * {@inheritDoc}
@@ -210,8 +216,11 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
         $hydrator = new $hydratorClass();
         /* @var HydratorInterface $hydrator */
         $extracted = $hydrator->extract($type);
-
         foreach ($extracted as $name => $value) {
+            if (\is_object($value)) {
+                $value = $this->extract($value);
+            }
+
             $hydratedName = $this->extractName($name);
             unset($extracted[$name]);
             $extracted[$hydratedName] = $value;

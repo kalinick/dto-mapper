@@ -2,19 +2,17 @@
 
 namespace Tests\TestCase\Mapping;
 
-use DataMapper\Hydrator\AbstractHydrator;
 use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
-use DataMapper\TypeDict;
-
 use DataMapper\TypeResolver;
+
 use Tests\DataFixtures\Dto\CustomerDto;
 use Tests\DataFixtures\Model\Bill;
 
 /**
- * Class ObjectToClassTest
+ * Class ObjectToClassGetterTest
  */
-class ObjectToClassTest extends AbstractMapping
+class ObjectToClassGetterTest extends AbstractMapping
 {
     /**
      * Source object, getter strategy test

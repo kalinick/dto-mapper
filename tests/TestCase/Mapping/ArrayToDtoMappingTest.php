@@ -59,7 +59,7 @@ class ArrayToDtoMappingTest extends AbstractMapping
                     'personal_info' => [
                         'a_a' => 1,
                         'b_b' => 2,
-                    ]
+                    ],
                 ],
             ],
             [
@@ -74,7 +74,7 @@ class ArrayToDtoMappingTest extends AbstractMapping
                     'personal_info' => [
                         'a_a' => 1,
                         'b_b' => 2,
-                    ]
+                    ],
                 ],
             ],
         ];

@@ -3,6 +3,7 @@
 namespace Tests\TestCase\Mapping;
 
 use DataMapper\Hydrator\{
+    ExtractionInterface,
     NamingStrategy\NamingStrategyInterface,
     NamingStrategy\SnakeCaseNamingStrategy,
     NamingStrategy\UnderscoreNamingStrategy,
@@ -14,7 +15,8 @@ use DataMapper\Hydrator\{
     CollectionHydrator,
     AbstractHydrator,
     ArraySerializableHydrator,
-    ObjectHydrator
+    ObjectHydrator,
+    Strategy\XPathGetterStrategy
 };
 
 use DataMapper\Mapper\{
@@ -123,5 +125,11 @@ abstract class AbstractMapping extends TestCase
     protected function createGetterStrategy(string $methodName): GetterStrategy
     {
         return new GetterStrategy($methodName);
+    }
+
+
+    protected function createXPathStrategy(ExtractionInterface $extractor, string $path): XPathGetterStrategy
+    {
+        return new XPathGetterStrategy($extractor, $path);
     }
 }

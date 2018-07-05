@@ -77,7 +77,7 @@ class ArrayToRelatedDtoMappingTest extends AbstractMapping
                             'personal_info' => [
                                 'a_a' => 1,
                                 'b_b' => 2,
-                            ]
+                            ],
                         ],
                         [
                             'first_name' => 'Ivan 2',
@@ -90,7 +90,7 @@ class ArrayToRelatedDtoMappingTest extends AbstractMapping
                             'personal_info' => [
                                 'a_a' => 1,
                                 'b_b' => 2,
-                            ]
+                            ],
                         ],
                     ],
                     'personal_info' => [
@@ -101,7 +101,7 @@ class ArrayToRelatedDtoMappingTest extends AbstractMapping
                     'extra' => [
                         'extra_1' => 1,
                         'extra_2' => 2,
-                    ]
+                    ],
                 ],
                 [
                     [
@@ -113,7 +113,7 @@ class ArrayToRelatedDtoMappingTest extends AbstractMapping
                         'personalInfo',
                         PersonalInfoDto::class,
                         false
-                    ]
+                    ],
                 ]
             ]
         ];
