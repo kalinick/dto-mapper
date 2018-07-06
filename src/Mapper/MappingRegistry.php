@@ -2,16 +2,7 @@
 
 namespace DataMapper\Mapper;
 
-use DataMapper\Mapper\Registry\{
-    DestinationRegistry,
-    DestinationRegistryInterface,
-    NamingStrategyRegistry,
-    NamingStrategyRegistryInterface,
-    RelationsRegistry,
-    RelationsRegistryInterface,
-    StrategyRegistry,
-    StrategyRegistryInterface
-};
+use DataMapper\Mapper\Registry;
 
 /**
  * Class MappingRegistry
@@ -19,64 +10,73 @@ use DataMapper\Mapper\Registry\{
 class MappingRegistry
 {
     /**
-     * @var NamingStrategyRegistryInterface
+     * @var Registry\NamingStrategyRegistryInterface
      */
     private $namingRegistry;
 
     /**
-     * @var RelationsRegistryInterface
+     * @var Registry\RelationsRegistryInterface
      */
     private $relationsRegistry;
 
     /**
-     * @var StrategyRegistryInterface
+     * @var Registry\StrategyRegistryInterface
      */
     private $strategyRegistry;
 
     /**
-     * @var DestinationRegistryInterface
+     * @var Registry\DestinationRegistryInterface
      */
     private $destinationRegistry;
 
     /**
      * MappingRegistry constructor.
+     *
+     * @param Registry\DestinationRegistryInterface    $destinationRegistry
+     * @param Registry\RelationsRegistryInterface      $relationsRegistry
+     * @param Registry\NamingStrategyRegistryInterface $namingStrategyRegistry
+     * @param Registry\StrategyRegistryInterface       $strategyRegistry
      */
-    public function __construct()
-    {
-        $this->destinationRegistry = new DestinationRegistry();
-        $this->relationsRegistry = new RelationsRegistry();
-        $this->namingRegistry = new NamingStrategyRegistry();
-        $this->strategyRegistry = new StrategyRegistry();
+    public function __construct(
+        Registry\DestinationRegistryInterface $destinationRegistry,
+        Registry\RelationsRegistryInterface $relationsRegistry,
+        Registry\NamingStrategyRegistryInterface $namingStrategyRegistry,
+        Registry\StrategyRegistryInterface $strategyRegistry
+    ) {
+        $this->destinationRegistry = $destinationRegistry;
+        $this->relationsRegistry = $relationsRegistry;
+        $this->namingRegistry = $namingStrategyRegistry;
+        $this->strategyRegistry = $strategyRegistry;
     }
 
     /**
-     * @return DestinationRegistryInterface
+     * @return Registry\DestinationRegistryInterface
      */
-    public function getDestinationRegistry(): DestinationRegistryInterface
+    public function getDestinationRegistry(): Registry\DestinationRegistryInterface
     {
         return $this->destinationRegistry;
     }
 
     /**
-     * @return RelationsRegistryInterface
+     * @return Registry\RelationsRegistryInterface
      */
-    public function getRelationsRegistry(): RelationsRegistryInterface
+    public function getRelationsRegistry(): Registry\RelationsRegistryInterface
     {
         return $this->relationsRegistry;
     }
 
     /**
-     * @return NamingStrategyRegistryInterface
+     * @return Registry\NamingStrategyRegistryInterface
      */
-    public function getNamingRegistry(): NamingStrategyRegistryInterface
+    public function getNamingRegistry(): Registry\NamingStrategyRegistryInterface
     {
         return $this->namingRegistry;
     }
 
     /**
-     * @return StrategyRegistryInterface
+     * @return Registry\StrategyRegistryInterface
      */
-    public function getStrategyRegistry(): StrategyRegistryInterface
+    public function getStrategyRegistry(): Registry\StrategyRegistryInterface
     {
         return $this->strategyRegistry;
     }

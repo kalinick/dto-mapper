@@ -7,6 +7,7 @@ use DataMapper\Hydrator\{
     NamingStrategy\NamingStrategyInterface,
     NamingStrategy\SnakeCaseNamingStrategy,
     NamingStrategy\UnderscoreNamingStrategy,
+    Strategy\ClosureStrategy,
     Strategy\CollectionStrategy,
     Strategy\StrategyInterface,
     Strategy\GetterStrategy,
@@ -21,7 +22,11 @@ use DataMapper\Hydrator\{
 
 use DataMapper\Mapper\{
     MappingRegistry,
+    Registry\DestinationRegistry,
+    Registry\NamingStrategyRegistry,
+    Registry\RelationsRegistry,
     Registry\RelationsRegistryInterface,
+    Registry\StrategyRegistry,
     Registry\StrategyRegistryInterface
 };
 
@@ -86,7 +91,12 @@ abstract class AbstractMapping extends TestCase
      */
     protected function createMappingRegistry(): MappingRegistry
     {
-        return new MappingRegistry();
+        return new MappingRegistry(
+            new DestinationRegistry(),
+            new RelationsRegistry(),
+            new NamingStrategyRegistry(),
+            new StrategyRegistry()
+        );
     }
 
     /**
@@ -127,7 +137,22 @@ abstract class AbstractMapping extends TestCase
         return new GetterStrategy($methodName);
     }
 
+    /**
+     * @param \Closure $closure
+     *
+     * @return ClosureStrategy
+     */
+    protected function createClosureStrategy(\Closure $closure): ClosureStrategy
+    {
+        return new ClosureStrategy($closure);
+    }
 
+    /**
+     * @param ExtractionInterface $extractor
+     * @param string              $path
+     *
+     * @return XPathGetterStrategy
+     */
     protected function createXPathStrategy(ExtractionInterface $extractor, string $path): XPathGetterStrategy
     {
         return new XPathGetterStrategy($extractor, $path);

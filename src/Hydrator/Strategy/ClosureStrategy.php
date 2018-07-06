@@ -5,9 +5,9 @@ namespace DataMapper\Hydrator\Strategy;
 use DataMapper\Exception\InvalidArgumentException;
 
 /**
- * Class ClosureGetterStrategy
+ * Class ClosureStrategy
  */
-final class ClosureGetterStrategy implements StrategyInterface
+final class ClosureStrategy implements StrategyInterface
 {
     /**
      * @var \Closure

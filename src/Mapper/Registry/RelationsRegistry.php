@@ -32,7 +32,8 @@ class RelationsRegistry extends RegistryContainer implements RelationsRegistryIn
     public function hasRegisteredMultiRelation(string $propertyName, string $destinationClass): bool
     {
         return $this->hasRegisteredRelation($propertyName, $destinationClass) ?
-            $this->offsetGet($destinationClass)[$propertyName]['multi'] : false;
+            $this->offsetGet($destinationClass)[$propertyName]['multi'] :
+            false;
     }
 
     /**
