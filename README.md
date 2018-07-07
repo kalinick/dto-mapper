@@ -15,7 +15,6 @@ $ composer require vklymniuk/dto-mapper
 ```
 
 # Class diagram
-![Alt text](./docs/Mapper_Library.svg)
-<img src="./docs/Mapper_Library.svg">
+![Static Structure diagram](./docs/Mapper_Library.svg)
 
 Use code generators from Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)
