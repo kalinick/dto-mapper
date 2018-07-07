@@ -9,12 +9,13 @@
       "email": "v.klymniuk@gmail.com"
     }
   ],
+  "homepage": "https://github.com/vklymniuk/dto-mapper",
   "require": {
-    "php": "^7.1",
+    "php": ">=7.1",
     "ocramius/generated-hydrator": "^2.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.1"
+    "phpunit/phpunit": ">=7.1"
   },
   "autoload":     {
     "psr-4": { "DataMapper\\": "src/" }

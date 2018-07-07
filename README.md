@@ -11,7 +11,7 @@ Good choice for performance improve, work without heavy reflection/serializer ma
 
 ## Installation
 ```bash
-$ composer require vklymniuk/dto-mapper
+$ composer require dto/dto-mapper
 ```
 
 Use code generators from Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)
