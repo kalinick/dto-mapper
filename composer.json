@@ -32,7 +32,6 @@
     "object conversion",
     "serializer"
   ],
-  "minimum-stability": "stable",
   "scripts": {
     "test": "phpunit"
   }
