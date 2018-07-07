@@ -2,8 +2,8 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\Hydrator\NamingStrategy\NamingStrategyInterface;
-use DataMapper\Hydrator\Strategy\StrategyInterface;
+use DataMapper\NamingStrategy\NamingStrategyInterface;
+use DataMapper\Strategy\StrategyInterface;
 
 /**
  * Interface HydratorBuilderInterface

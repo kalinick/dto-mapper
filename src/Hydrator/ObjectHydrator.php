@@ -3,29 +3,12 @@
 namespace DataMapper\Hydrator;
 
 use DataMapper\Exception\InvalidArgumentException;
-use DataMapper\Mapper\Registry\StrategyRegistryInterface;
-use DataMapper\TypeResolver;
 
 /**
  * Class ObjectHydrator
  */
 final class ObjectHydrator extends AbstractHydrator
 {
-    /**
-     * @var StrategyRegistryInterface
-     */
-    private $strategyRegistry;
-
-    /**
-     * ObjectHydrator constructor.
-     *
-     * @param StrategyRegistryInterface $strategyRegistry
-     */
-    public function __construct(StrategyRegistryInterface $strategyRegistry)
-    {
-        $this->strategyRegistry = $strategyRegistry;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -35,13 +18,15 @@ final class ObjectHydrator extends AbstractHydrator
 
         $dto = \is_object($destination) ? $destination : new $destination();
         $destinationClass = \get_class($dto);
-        $sourceClass = \get_class($source);
-        $strategyTypeKey = TypeResolver::getStrategyType($sourceClass, $destinationClass);
-
-        $mappedDestinationProps = $this->strategyRegistry->getMapperPropertiesKeys($strategyTypeKey);
+        $mappedDestinationProps = array_keys($this->extract($dto));
         $destinationContent = $this->filterSourceProps($source, $mappedDestinationProps);
 
         foreach ($mappedDestinationProps as $destinationProp) {
+            // Skip, we need to map only configured properties
+            if (!$this->hasStrategy($destinationProp)) {
+                continue;
+            }
+
             $destinationContent[$destinationProp] = $this->hydrateValue($destinationProp, $source, $destinationClass);
         }
 
@@ -68,16 +53,10 @@ final class ObjectHydrator extends AbstractHydrator
         );
     }
 
-
     /**
-     * @throws InvalidArgumentException
-     *
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return void
+     * {@inheritDoc}
      */
-    private function validateTypes($source, $destination): void
+    protected function validateTypes($source, $destination): void
     {
         $notValid = !\is_object($source) || (
             !\is_object($destination) && (

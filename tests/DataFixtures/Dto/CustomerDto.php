@@ -7,16 +7,17 @@ namespace Tests\DataFixtures\Dto;
  */
 class CustomerDto
 {
-    /**
-     * @var string
-     */
     private $bill = '00.00';
+    public $copiedByName;
 
-    /**
-     * @return string
-     */
     public function getBill(): string
     {
         return $this->bill;
+    }
+
+
+    public function getCopiedByName()
+    {
+        return $this->copiedByName;
     }
 }

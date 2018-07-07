@@ -7,29 +7,28 @@ namespace Tests\DataFixtures\Dto;
  */
 class DeepValueDto
 {
-    /**
-     * @var string|null
-     */
     public $found;
-
-    /**
-     * @var mixed
-     */
     public $test;
+    public $destinationGetterTarget;
+    public $copiedByName;
 
-    /**
-     * @return string|null
-     */
-    public function getFound(): ?string
+    public function getFound()
     {
         return $this->found;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTest()
     {
         return $this->test;
+    }
+
+    public function getDestinationGetterTarget()
+    {
+        return $this->destinationGetterTarget;
+    }
+
+    public function getCopiedByName()
+    {
+        return $this->copiedByName;
     }
 }

@@ -28,14 +28,9 @@ final class CollectionHydrator extends AbstractHydrator
     }
 
     /**
-     * @throws InvalidArgumentException
-     *
-     * @param mixed $source
-     * @param mixed $destination
-     *
-     * @return void
+     * {@inheritDoc}
      */
-    private function validateTypes($source, $destination): void
+    protected function validateTypes($source, $destination): void
     {
         $notValid = !\is_array($source) ||
             (\is_string($destination) && !\class_exists($destination)) ||

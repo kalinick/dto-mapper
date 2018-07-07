@@ -7,98 +7,67 @@ namespace Tests\DataFixtures\Dto;
  */
 class RegistrationRequestDto
 {
-    /**
-     * @var string|null
-     */
     public $firstName;
-
-    /**
-     * @var string|null
-     */
     public $lastName;
-
-    /**
-     * @var string|null
-     */
     public $password;
-
-    /**
-     * @var string|null
-     */
     public $city;
-
-    /**
-     * @var string|null
-     */
     public $country;
-
-    /**
-     * @var string|null
-     */
     public $email;
-
-    /**
-     * @var string|null
-     */
     public $birthday;
-
-    /**
-     * @var array
-     */
     public $personalInfo = [];
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getFirstName(): ?string
+    public function getFirstName()
     {
         return $this->firstName;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getLastName(): ?string
+    public function getLastName()
     {
         return $this->lastName;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getPassword(): ?string
+    public function getPassword()
     {
         return $this->password;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getCity(): ?string
+    public function getCity()
     {
         return $this->city;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getCountry(): ?string
+    public function getCountry()
     {
         return $this->country;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getEmail(): ?string
+    public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * @return null|string
+     * @return mixed
      */
-    public function getBirthday(): ?string
+    public function getBirthday()
     {
         return $this->birthday;
     }

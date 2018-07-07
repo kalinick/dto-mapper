@@ -7,41 +7,30 @@ namespace Tests\DataFixtures\Dto;
  */
 class PersonalInfoDto
 {
-    /**
-     * @var string
-     */
     public $codeWord;
-
-    /**
-     * @var string
-     */
     public $gender;
-
-    /**
-     * @var string
-     */
     public $phone;
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCodeWord(): string
+    public function getCodeWord()
     {
         return $this->codeWord;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getGender(): string
+    public function getGender()
     {
         return $this->gender;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getPhone(): string
+    public function getPhone()
     {
         return $this->phone;
     }
