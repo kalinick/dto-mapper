@@ -126,7 +126,7 @@ class CollectionHydratorTest extends TestCase
 
         $mappingRegistry
             ->getNamingRegistry()
-            ->registerNamingStrategy($className, $this->createSnakeCaseNamingStrategy());
+            ->registerNamingStrategy($strategyKey, $this->createSnakeCaseNamingStrategy());
 
         foreach ($mappingProps as [$prop, $target, $multi]) {
             $relationsRegistry->registerRelationsMapping($prop, $className, $target, $multi);

@@ -60,7 +60,7 @@ class HydratorFactory implements HydratorFactoryInterface
         $namingStrategy = $this
             ->mappingRegistry
             ->getNamingRegistry()
-            ->getRegisteredNamingStrategyFor($destination);
+            ->getRegisteredNamingStrategyFor($strategyKey);
 
         if ($namingStrategy !== null) {
             $hBuilder->setNamingStrategy($namingStrategy);

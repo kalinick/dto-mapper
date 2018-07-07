@@ -6,6 +6,7 @@ use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
 use DataMapper\Type\TypeDict;
 
+use DataMapper\Type\TypeResolver;
 use Tests\DataFixtures\Model\RegistrationResponseDto;
 use Tests\DataFixtures\Traits\BaseMappingTrait;
 
@@ -46,10 +47,11 @@ class ObjectExtractionTest extends TestCase
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
+        $strategyKey = TypeResolver::getStrategyType($source, []);
 
         $mappingRegistry
             ->getNamingRegistry()
-            ->registerNamingStrategy(TypeDict::ARRAY_TYPE, $this->createUnderscoreNamingStrategy());
+            ->registerNamingStrategy($strategyKey, $this->createUnderscoreNamingStrategy());
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, []);
     }

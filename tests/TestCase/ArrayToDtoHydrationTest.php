@@ -5,6 +5,7 @@ namespace Tests\TestCase;
 use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
 
+use DataMapper\Type\TypeResolver;
 use Tests\DataFixtures\Dto\RegistrationRequestDto;
 use Tests\DataFixtures\Traits\BaseMappingTrait;
 
@@ -88,6 +89,7 @@ class ArrayToDtoHydrationTest extends TestCase
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
+        $strategyKey = TypeResolver::getStrategyType($source, $className);
 
         $mappingRegistry
             ->getDestinationRegistry()
@@ -95,7 +97,7 @@ class ArrayToDtoHydrationTest extends TestCase
 
         $mappingRegistry
             ->getNamingRegistry()
-            ->registerNamingStrategy($className, $this->createSnakeCaseNamingStrategy());
+            ->registerNamingStrategy($strategyKey, $this->createSnakeCaseNamingStrategy());
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, $className);
     }

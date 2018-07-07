@@ -14,27 +14,24 @@ final class NamingStrategyRegistry extends RegistryContainer implements NamingSt
     /**
      * {@inheritDoc}
      */
-    public function getRegisteredNamingStrategyFor($destination): ?NamingStrategyInterface
+    public function getRegisteredNamingStrategyFor(string $key): ?NamingStrategyInterface
     {
-        $destination = TypeResolver::resolveStrategyType($destination);
-
-        return $this->offsetExists($destination) ?
-            $this->offsetGet($destination): null;
+        return $this->offsetExists($key) ? $this->offsetGet($key): null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function hasRegisteredNamingStrategyFor(string $destination): bool
+    public function hasRegisteredNamingStrategyFor(string $key): bool
     {
-        return $this->offsetGet($destination);
+        return $this->offsetGet($key);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function registerNamingStrategy(string $destination, NamingStrategyInterface $strategy): void
+    public function registerNamingStrategy(string $key, NamingStrategyInterface $strategy): void
     {
-        $this->offsetSet($destination, $strategy);
+        $this->offsetSet($key, $strategy);
     }
 }

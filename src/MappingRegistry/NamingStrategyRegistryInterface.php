@@ -11,24 +11,24 @@ use DataMapper\MappingRegistry\Exception\MappingRegistryException;
 interface NamingStrategyRegistryInterface
 {
     /**
-     * @param mixed $destination
+     * @param string $key
      *
      * @return NamingStrategyInterface|null
      */
-    public function getRegisteredNamingStrategyFor($destination): ?NamingStrategyInterface;
+    public function getRegisteredNamingStrategyFor(string $key): ?NamingStrategyInterface;
 
     /**
-     * @param string $destination
+     * @param string $key
      *
      * @return bool
      */
-    public function hasRegisteredNamingStrategyFor(string $destination): bool;
+    public function hasRegisteredNamingStrategyFor(string $key): bool;
 
     /**
      * @throws MappingRegistryException
      *
-     * @param string                  $destination
+     * @param string                  $key
      * @param NamingStrategyInterface $strategy
      */
-    public function registerNamingStrategy(string $destination, NamingStrategyInterface $strategy): void;
+    public function registerNamingStrategy(string $key, NamingStrategyInterface $strategy): void;
 }
