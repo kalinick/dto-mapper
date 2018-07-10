@@ -2,8 +2,8 @@
 
 namespace DataMapper\Hydrator;
 
-use DataMapper\MappingRegistry\HydratorRegistry;
-use DataMapper\MappingRegistry\MappingRegistry;
+use DataMapper\MappingRegistry\HydratorRegistryInterface;
+use DataMapper\MappingRegistry\MappingRegistryInterface;
 use DataMapper\Type\TypeResolver;
 
 /**
@@ -12,22 +12,22 @@ use DataMapper\Type\TypeResolver;
 class HydratorFactory implements HydratorFactoryInterface
 {
     /**
-     * @var HydratorRegistry
+     * @var HydratorRegistryInterface
      */
     private $hydratorRegistry;
 
     /**
-     * @var MappingRegistry
+     * @var MappingRegistryInterface
      */
     private $mappingRegistry;
 
     /**
      * HydratorFactory constructor.
      *
-     * @param HydratorRegistry $hydratorRegistry
-     * @param MappingRegistry  $mappingRegistry
+     * @param HydratorRegistryInterface $hydratorRegistry
+     * @param MappingRegistryInterface  $mappingRegistry
      */
-    public function __construct(HydratorRegistry $hydratorRegistry, MappingRegistry $mappingRegistry)
+    public function __construct(HydratorRegistryInterface $hydratorRegistry, MappingRegistryInterface $mappingRegistry)
     {
         $this->hydratorRegistry = $hydratorRegistry;
         $this->mappingRegistry = $mappingRegistry;
