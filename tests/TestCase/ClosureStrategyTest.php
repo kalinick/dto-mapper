@@ -63,7 +63,7 @@ class ClosureStrategyTest extends TestCase
 
         $mappingRegistry
             ->getStrategyRegistry()
-            ->registerPropertyStrategy($strategyKey, $property, ClosureStrategy::class, $args);
+            ->registerPropertyStrategy($strategyKey, $property, new ClosureStrategy(...$args));
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, $target);
     }

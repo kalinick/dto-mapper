@@ -133,11 +133,7 @@ class CollectionHydratorTest extends TestCase
             $mappingRegistry->getStrategyRegistry()->registerPropertyStrategy(
                 $strategyKey,
                 $prop,
-                CollectionStrategy::class,
-                [
-                    $hydrator,
-                    $relationsRegistry
-                ]
+                new CollectionStrategy($hydrator, $relationsRegistry)
             );
         }
 

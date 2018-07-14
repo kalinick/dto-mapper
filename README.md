@@ -14,7 +14,4 @@ Good choice for performance improve, work without heavy reflection/serializer ma
 $ composer require vklymniuk/dto-mapper
 ```
 
-# Class diagram
-![Static Structure diagram](./docs/Mapper_Library.svg)
-
 Use code generators from Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)

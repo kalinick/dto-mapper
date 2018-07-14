@@ -28,13 +28,7 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
             return [];
         }
 
-        return array_map(
-            function ($mapping) {
-                [$class, $args] = $mapping;
-                return new $class(...$args);
-            },
-            $this->offsetGet($key)
-        );
+        return $this->offsetGet($key);
     }
 
     /**
@@ -42,23 +36,10 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
      *
      * {@inheritDoc}
      */
-    public function registerPropertyStrategy(
-        string $key,
-        string $property,
-        string $strategyClass,
-        array $strategyArgs = []
-    ): void {
-
+    public function registerPropertyStrategy(string $key, string $property, StrategyInterface $strategy): void
+    {
         if ($this->hasRegisteredPropertyStrategy($key, $property)) {
             throw new MappingRegistryException("Property strategy already registered for: $key");
-        }
-
-        if (!class_exists($strategyClass)) {
-            throw new MappingRegistryException("Could not find class: $strategyClass");
-        }
-
-        if (!\array_key_exists(StrategyInterface::class, class_implements($strategyClass))) {
-            throw new MappingRegistryException("Class: $strategyClass must implement - " . StrategyInterface::class);
         }
 
         $value = [];
@@ -66,7 +47,7 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
             $value = $this->offsetGet($key);
         }
 
-        $value[$property] = [$strategyClass, $strategyArgs];
+        $value[$property] = $strategy;
         $this->offsetSet($key, $value);
     }
 }

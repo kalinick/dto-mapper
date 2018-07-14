@@ -61,11 +61,10 @@ class ObjectToClassXPathTest extends TestCase
             ->registerPropertyStrategy(
                 $strategyKey,
                 $destinationProperty,
-                XPathGetterStrategy::class,
-                [
+                new XPathGetterStrategy(
                     $hydrationRegistry->getHydratorByType(TypeDict::OBJECT_TO_CLASS),
                     $path
-                ]
+                )
             );
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, $target);

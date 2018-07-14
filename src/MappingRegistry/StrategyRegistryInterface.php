@@ -3,6 +3,7 @@
 namespace DataMapper\MappingRegistry;
 
 use DataMapper\MappingRegistry\Exception\MappingRegistryException;
+use DataMapper\Strategy\StrategyInterface;
 
 /**
  * Interface StrategyRegistryInterface
@@ -29,15 +30,9 @@ interface StrategyRegistryInterface
      *
      * @param string            $key
      * @param string            $property
-     * @param string            $strategyClass
-     * @param array             $strategyArgs
+     * @param StrategyInterface $strategy
      *
      * @return void
      */
-    public function registerPropertyStrategy(
-        string $key,
-        string $property,
-        string $strategyClass,
-        array $strategyArgs = []
-    ): void;
+    public function registerPropertyStrategy(string $key, string $property, StrategyInterface $strategy): void;
 }

@@ -53,8 +53,7 @@ class GetterStrategyTest extends TestCase
             ->registerPropertyStrategy(
                 TypeResolver::getStrategyType($source, $destinationClass),
                 $destinationProperty,
-                GetterStrategy::class,
-                [$sourceGetterName]
+                new GetterStrategy($sourceGetterName)
             );
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))

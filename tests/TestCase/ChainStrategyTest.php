@@ -88,7 +88,7 @@ class ChainStrategyTest extends TestCase
         foreach ($mapping as [$destinationProperty, $args, $strategy]) {
             $mappingRegistry
                 ->getStrategyRegistry()
-                ->registerPropertyStrategy($typeStrategyType, $destinationProperty, $strategy, $args);
+                ->registerPropertyStrategy($typeStrategyType, $destinationProperty, new $strategy(...$args));
         }
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, $destinationClass);
