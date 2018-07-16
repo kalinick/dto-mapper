@@ -7,7 +7,7 @@ use DataMapper\Exception\InvalidArgumentException;
 /**
  * Class GetterStrategy
  */
-final class GetterStrategy implements StrategyInterface
+class GetterStrategy implements StrategyInterface
 {
     /**
      * @var string

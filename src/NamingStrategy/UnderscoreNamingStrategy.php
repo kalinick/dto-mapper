@@ -5,7 +5,7 @@ namespace DataMapper\NamingStrategy;
 /**
  * Class UnderscoreNamingStrategy
  */
-final class UnderscoreNamingStrategy implements NamingStrategyInterface
+class UnderscoreNamingStrategy implements NamingStrategyInterface
 {
     /**
      * {@inheritdoc}

@@ -5,7 +5,7 @@ namespace DataMapper\NamingStrategy;
 /**
  * Class SnakeCaseNamingStrategy
  */
-final class SnakeCaseNamingStrategy implements NamingStrategyInterface
+class SnakeCaseNamingStrategy implements NamingStrategyInterface
 {
     /**
      * {@inheritdoc}

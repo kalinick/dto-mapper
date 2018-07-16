@@ -7,7 +7,7 @@ use DataMapper\Exception\InvalidArgumentException;
 /**
  * Class ArraySerializableHydrator
  */
-final class ArraySerializableHydrator extends AbstractHydrator
+class ArraySerializableHydrator extends AbstractHydrator
 {
     /**
      * {@inheritDoc}

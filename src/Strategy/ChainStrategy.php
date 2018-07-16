@@ -5,7 +5,7 @@ namespace DataMapper\Strategy;
 /**
  * Class ChainStrategy
  */
-final class ChainStrategy implements StrategyInterface
+class ChainStrategy implements StrategyInterface
 {
     /**
      * Chain of strategies for extraction

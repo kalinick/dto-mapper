@@ -39,6 +39,7 @@ final class TypeResolver
 
         $type = self::resolveBaseType($variable);
 
+        // If we $variable is exists class name return name
         return $type === TypeDict::CLASS_TYPE ? $variable : $type;
     }
 
@@ -77,10 +78,12 @@ final class TypeResolver
             return $variableType;
         }
 
+        // Hook for array source type support
         if ($variable === TypeDict::ARRAY_TYPE) {
             return TypeDict::ARRAY_TYPE;
         }
 
+        // If type is string check is it class name
         if (\class_exists($variable)) {
             return TypeDict::CLASS_TYPE;
         }

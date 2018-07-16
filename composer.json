@@ -36,6 +36,6 @@
     "serializer"
   ],
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit -c tests/phpunit.xml tests/"
   }
 }

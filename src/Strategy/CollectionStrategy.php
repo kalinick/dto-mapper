@@ -9,7 +9,7 @@ use DataMapper\MappingRegistry\RelationsRegistryInterface;
 /**
  * Class MultiCollectionStrategy
  */
-final class CollectionStrategy implements StrategyInterface
+class CollectionStrategy implements StrategyInterface
 {
     /**
      * @var RelationsRegistryInterface

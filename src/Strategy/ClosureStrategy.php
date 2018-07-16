@@ -7,7 +7,7 @@ use DataMapper\Exception\InvalidArgumentException;
 /**
  * Class ClosureStrategy
  */
-final class ClosureStrategy implements StrategyInterface
+class ClosureStrategy implements StrategyInterface
 {
     /**
      * @var \Closure

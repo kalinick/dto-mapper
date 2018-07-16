@@ -9,7 +9,7 @@ use DataMapper\Hydrator\ExtractionInterface;
 /**
  * Class GetterStrategy
  */
-final class XPathGetterStrategy implements StrategyInterface
+class XPathGetterStrategy implements StrategyInterface
 {
     private const DELIMITER = '.';
 

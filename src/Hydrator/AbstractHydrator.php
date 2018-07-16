@@ -8,6 +8,7 @@ use DataMapper\NamingStrategy\NamingStrategyEnabledInterface;
 use DataMapper\NamingStrategy\NamingStrategyInterface;
 use DataMapper\Strategy\StrategyEnabledInterface;
 use DataMapper\Strategy\StrategyInterface;
+use DataMapper\Type\TypeDict;
 use GeneratedHydrator\Configuration;
 use DataMapper\Exception\InvalidArgumentException;
 
@@ -38,7 +39,29 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     public function hasStrategy(string $name): bool
     {
-        return array_key_exists($name, $this->strategies);
+        return array_key_exists($name, $this->strategies) ?? $this->hasDefaultStrategy();
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasDefaultStrategy(): bool
+    {
+        return \array_key_exists(TypeDict::ALL_TYPE, $this->strategies);
+    }
+
+    /**
+     * @throws UnknownStrategyTypeException
+     *
+     * @return StrategyInterface
+     */
+    private function getDefaultStrategy(): StrategyInterface
+    {
+        if (!$this->hasDefaultStrategy()) {
+            throw new UnknownStrategyTypeException(TypeDict::ALL_TYPE);
+        }
+
+        return $this->strategies[TypeDict::ALL_TYPE];
     }
 
     /**
@@ -62,11 +85,15 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     public function getStrategy(string $name): StrategyInterface
     {
-        if (!$this->hasStrategy($name)) {
-            throw new UnknownStrategyFieldException($name);
+        if ($this->hasStrategy($name)) {
+            return $this->strategies[$name];
         }
 
-        return $this->strategies[$name];
+        if ($this->hasDefaultStrategy()) {
+            return $this->getDefaultStrategy();
+        }
+
+        throw new UnknownStrategyFieldException($name);
     }
 
     /**
@@ -188,9 +215,15 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
         $className = \get_class($type);
         $config = new Configuration($className);
         $hydratorClass = $config->createFactory()->getHydratorClass();
-        $hydrator = new $hydratorClass();
         /* @var HydratorInterface $hydrator */
-        $extracted = $hydrator->extract($type);
+        $hydrator = new $hydratorClass();
+
+        $extractedHash = \spl_object_hash($type);
+        if (!isset(self::$extractedObjects[$extractedHash])) {
+            self::$extractedObjects[$extractedHash] = $hydrator->extract($type);
+        }
+        $extracted = self::$extractedObjects[$extractedHash];
+
         foreach ($extracted as $name => $value) {
             if (\is_object($value)) {
                 $value = $this->extract($value);

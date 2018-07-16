@@ -5,7 +5,7 @@ namespace DataMapper\NamingStrategy;
 /**
  * Class IdentityNamingStrategy
  */
-final class IdentityNamingStrategy implements NamingStrategyInterface
+class IdentityNamingStrategy implements NamingStrategyInterface
 {
     /**
      * {@inheritDoc}
