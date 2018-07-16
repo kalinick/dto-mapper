@@ -73,8 +73,16 @@ final class TypeResolver
     {
         $variableType = \gettype($variable);
 
-        if ($variableType === TypeDict::STRING_TYPE && \class_exists($variable)) {
-            $variableType = TypeDict::CLASS_TYPE;
+        if ($variableType !== TypeDict::STRING_TYPE) {
+            return $variableType;
+        }
+
+        if ($variable === TypeDict::ARRAY_TYPE) {
+            return TypeDict::ARRAY_TYPE;
+        }
+
+        if (\class_exists($variable)) {
+            return TypeDict::CLASS_TYPE;
         }
 
         return $variableType;
