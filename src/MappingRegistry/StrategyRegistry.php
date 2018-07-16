@@ -4,6 +4,8 @@ namespace DataMapper\MappingRegistry;
 
 use DataMapper\MappingRegistry\Exception\MappingRegistryException;
 use DataMapper\Strategy\StrategyInterface;
+use DataMapper\Type\TypeDict;
+use DataMapper\Type\TypeResolver;
 use DataMapper\Util\RegistryContainer;
 
 /**
@@ -24,11 +26,26 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
      */
     public function loadRegisteredStrategiesFor(string $key): array
     {
-        if (!$this->offsetExists($key)) {
-            return [];
+        $defaultStrategies = [];
+        $registeredStrategies = [];
+
+        [$source, $destination] = \explode(TypeDict::STRATEGY_GLUE, $key);
+        $defaultStrategiesKey = TypeResolver::implodeType(
+            TypeDict::ALL_TYPE,
+            $destination,
+            TypeDict::HYDRATOR_GLUE
+        );
+
+        if ($this->offsetExists($defaultStrategiesKey)) {
+            $defaultStrategies = $this->offsetGet($defaultStrategies);
         }
 
-        return $this->offsetGet($key);
+
+        if ($this->offsetExists($key)) {
+            $registeredStrategies = $this->offsetGet($key);
+        }
+
+        return \array_merge($defaultStrategies, $registeredStrategies);
     }
 
     /**

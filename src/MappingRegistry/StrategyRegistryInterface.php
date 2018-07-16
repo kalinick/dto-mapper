@@ -21,7 +21,7 @@ interface StrategyRegistryInterface
     /**
      * @param string $key
      *
-     * @return array ['name' => StrategyInterface .. etc]
+     * @return array ['ClassAName#ClassBName' => StrategyInterface .. etc]
      */
     public function loadRegisteredStrategiesFor(string $key): array;
 

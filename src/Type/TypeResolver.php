@@ -51,7 +51,23 @@ final class TypeResolver
      */
     public static function getStrategyType($source, $destination): string
     {
-        return self::resolveStrategyType($source) . TypeDict::STRATEGY_GLUE . self::resolveStrategyType($destination);
+        return self::implodeType(
+            self::resolveStrategyType($source),
+            self::resolveStrategyType($destination),
+            TypeDict::STRATEGY_GLUE
+        );
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @param string $glue
+     *
+     * @return string
+     */
+    public static function implodeType(string $source, string $destination, string $glue): string
+    {
+        return $source . $glue . $destination;
     }
 
     /**
@@ -62,7 +78,11 @@ final class TypeResolver
      */
     public static function getHydratedType($source, $destination): string
     {
-        return self::resolveBaseType($source) . TypeDict::HYDRATOR_GLUE . self::resolveBaseType($destination);
+        return self::implodeType(
+            self::resolveBaseType($source),
+            self::resolveBaseType($destination),
+            TypeDict::HYDRATOR_GLUE
+        );
     }
 
     /**

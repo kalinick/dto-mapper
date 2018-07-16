@@ -39,29 +39,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      */
     public function hasStrategy(string $name): bool
     {
-        return array_key_exists($name, $this->strategies) ?? $this->hasDefaultStrategy();
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasDefaultStrategy(): bool
-    {
-        return \array_key_exists(TypeDict::ALL_TYPE, $this->strategies);
-    }
-
-    /**
-     * @throws UnknownStrategyTypeException
-     *
-     * @return StrategyInterface
-     */
-    private function getDefaultStrategy(): StrategyInterface
-    {
-        if (!$this->hasDefaultStrategy()) {
-            throw new UnknownStrategyTypeException(TypeDict::ALL_TYPE);
-        }
-
-        return $this->strategies[TypeDict::ALL_TYPE];
+        return array_key_exists($name, $this->strategies);
     }
 
     /**
