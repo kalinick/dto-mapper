@@ -1,8 +1,4 @@
 
----
-title: Mapper naming strategies
----
-
 # Supported naming strategies
 
 Currently, there're 3 strategies supported by Mapper:

@@ -1,8 +1,4 @@
 
----
-title: Mapper strategies
----
-
 # Supported strategies
 
 Currently, there're 5 strategies supported by Mapper:
