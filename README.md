@@ -5,8 +5,8 @@
 #DataMapper library
 
 ```text
-Wrapped generated hydrator with ability to customize mapping options.
-Good choice for performance improve, work without heavy reflection/serializer mappers.
+Generated hydrator wrapped with the ability to customize mapping behaviour.
+It's a perfect choice for trowing away dummy and heavy reflection based mappers.
 ```
 
 ## Installation
@@ -21,4 +21,4 @@ php composer.phar require vklymniuk/dto-mapper
 You can learn more about the mapper library and how to use the **DataMapper** in the [docs](docs).
 
 ## Symfony bundle
-See in action [dto-mapper-bundle](https://github.com/vklymniuk/dto-mapper-bundle) for more examples. 
+Watch it in action [dto-mapper-bundle](https://github.com/vklymniuk/dto-mapper-bundle) for more examples. 

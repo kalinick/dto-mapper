@@ -1,11 +1,7 @@
 
----
-title: Mapper hydrators
----
+# Supported hydrators
 
-# Supported strategies
-
-Currently, 3 hydrators supported by Mapper:
+Currently there're 3 hydrators supported by Mapper:
 
 * [`DataMapper\Strategy\CollectionHydrator`](https://github.com/vklymniuk/dto-mapper/blob/master/src/Hydrator/CollectionHydrator.php)
 used for array to object conversion.
