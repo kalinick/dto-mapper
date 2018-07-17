@@ -7,7 +7,7 @@
 
 ```text
 Generated hydrator wrapped with the ability to customize mapping behaviour.
-It's a perfect choice for trowing away dummy and heavy reflection based mappers.
+It's a perfect choice for throwing away dummy and heavy reflection based mappers.
 ```
 
 ## Installation
