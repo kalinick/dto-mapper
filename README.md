@@ -6,12 +6,19 @@
 
 ```text
 Wrapped generated hydrator with ability to customize mapping options.
-Good choice for performance improve, work without heavy reflection/serializer mappers. 
+Good choice for performance improve, work without heavy reflection/serializer mappers.
 ```
 
 ## Installation
-```bash
-$ composer require vklymniuk/dto-mapper
+
+The suggested installation method is via [composer](https://getcomposer.org/):
+
+```sh
+php composer.phar require vklymniuk/dto-mapper
 ```
 
-Use code generators from Ocramius/GeneratedHydrator See [here](https://github.com/Ocramius/GeneratedHydrator)
+## Documentation
+You can learn more about the mapper library and how to use the **DataMapper** in the [docs](docs).
+
+## Symfony bundle
+See in action [dto-mapper-bundle](https://github.com/vklymniuk/dto-mapper-bundle) for more examples. 
