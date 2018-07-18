@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/vklymniuk/dto-mapper.svg?branch=master)](https://travis-ci.org/vklymniuk/dto-mapper)
 
 
-#DataMapper library
+# DataMapper library
 
 ```text
 Generated hydrator wrapped with the ability to customize mapping behaviour.

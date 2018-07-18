@@ -3,12 +3,10 @@
 namespace DataMapper\Hydrator;
 
 use DataMapper\MappingRegistry\Exception\UnknownStrategyFieldException;
-use DataMapper\MappingRegistry\Exception\UnknownStrategyTypeException;
 use DataMapper\NamingStrategy\NamingStrategyEnabledInterface;
 use DataMapper\NamingStrategy\NamingStrategyInterface;
 use DataMapper\Strategy\StrategyEnabledInterface;
 use DataMapper\Strategy\StrategyInterface;
-use DataMapper\Type\TypeDict;
 use GeneratedHydrator\Configuration;
 use DataMapper\Exception\InvalidArgumentException;
 
@@ -28,11 +26,6 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      * @var NamingStrategyInterface|null
      */
     protected $namingStrategy;
-
-    /**
-     * @var array Save extracted objects to reduce duplicate extract calls
-     */
-    protected static $extractedObjects = [];
 
     /**
      * {@inheritDoc}
@@ -65,10 +58,6 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     {
         if ($this->hasStrategy($name)) {
             return $this->strategies[$name];
-        }
-
-        if ($this->hasDefaultStrategy()) {
-            return $this->getDefaultStrategy();
         }
 
         throw new UnknownStrategyFieldException($name);
@@ -195,12 +184,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
         $hydratorClass = $config->createFactory()->getHydratorClass();
         /* @var HydratorInterface $hydrator */
         $hydrator = new $hydratorClass();
-
-        $extractedHash = \spl_object_hash($type);
-        if (!isset(self::$extractedObjects[$extractedHash])) {
-            self::$extractedObjects[$extractedHash] = $hydrator->extract($type);
-        }
-        $extracted = self::$extractedObjects[$extractedHash];
+        $extracted = $hydrator->extract($type);
 
         foreach ($extracted as $name => $value) {
             if (\is_object($value)) {
