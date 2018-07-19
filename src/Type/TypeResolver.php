@@ -19,7 +19,7 @@ final class TypeResolver
         return [
             TypeDict::ARRAY_TO_OBJECT   => CollectionHydrator::class,
             TypeDict::ARRAY_TO_CLASS    => CollectionHydrator::class,
-            TypeDict::OBJECT_TO_ARRAY   => CollectionHydrator::class,
+            TypeDict::OBJECT_TO_ARRAY   => ArraySerializableHydrator::class,
             TypeDict::ARRAY_TO_ARRAY    => ArraySerializableHydrator::class,
             TypeDict::OBJECT_TO_CLASS   => ObjectHydrator::class,
             TypeDict::OBJECT_TO_OBJECT  => ObjectHydrator::class,
@@ -39,7 +39,7 @@ final class TypeResolver
 
         $type = self::resolveBaseType($variable);
 
-        // If we $variable is exists class name return name
+        // If $variable is exists class name return class name
         return $type === TypeDict::CLASS_TYPE ? $variable : $type;
     }
 
@@ -98,14 +98,11 @@ final class TypeResolver
             return $variableType;
         }
 
-        // Hook for array source type support
-        if ($variable === TypeDict::ARRAY_TYPE) {
-            return TypeDict::ARRAY_TYPE;
-        }
-
-        // If type is string check is it class name
-        if (\class_exists($variable)) {
-            return TypeDict::CLASS_TYPE;
+        switch ($variable) {
+            case (TypeDict::ARRAY_TYPE):
+                return TypeDict::ARRAY_TYPE;
+            case (\class_exists($variable)):
+                return TypeDict::CLASS_TYPE;
         }
 
         return $variableType;

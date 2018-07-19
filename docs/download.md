@@ -4,5 +4,5 @@
 The suggested installation method is via [composer](https://getcomposer.org/).
 
 ```sh
-php composer.phar require vklymniuk/dto-mapper:1.0.*
+php composer.phar require vklymniuk/dto-mapper
 ```

@@ -7,7 +7,6 @@ Currently, there're 5 strategies supported by Mapper:
 which contains the chain of strategies that pass the last mapped value to next strategy call.
 You can use it to combine behaviour of different strategies.
 
-
 * [`DataMapper\Strategy\GetterStrategy`](https://github.com/vklymniuk/dto-mapper/blob/master/src/Strategy/GetterStrategy.php)
 which calls source object method to extract or format value before injection to mapping destination.
 

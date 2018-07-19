@@ -3,6 +3,7 @@
 namespace DataMapper;
 
 use DataMapper\Hydrator\HydratorFactoryInterface;
+use DataMapper\Type\TypeDict;
 
 /**
  * Class Mapper
@@ -42,7 +43,7 @@ class Mapper implements MapperInterface
     {
         return $this
             ->hydratorFactory
-            ->createHydrator($source, [])
+            ->createHydrator($source, TypeDict::ARRAY_TYPE)
             ->extract($source);
     }
 }
