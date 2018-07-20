@@ -28,6 +28,24 @@ class CollectionHydrator extends AbstractHydrator
     }
 
     /**
+     * @param object $type
+     *
+     * @return array
+     */
+    public function extract(object $type): array
+    {
+        $extracted = parent::extract($type);
+
+        foreach ($extracted as $name => $value) {
+            if (\is_object($value)) {
+                $extracted[$name] = parent::extract($value);
+            }
+        }
+
+        return $extracted;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function validateTypes($source, $destination): void

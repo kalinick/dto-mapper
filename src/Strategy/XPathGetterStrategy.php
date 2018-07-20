@@ -55,7 +55,11 @@ class XPathGetterStrategy implements StrategyInterface
                 return null;
             }
 
-            $extracted = $extracted[$key];
+            if (!\is_object($extracted[$key])) {
+                $extracted = $extracted[$key];
+            } else {
+                $extracted =  $this->extractor->extract($extracted[$key]);
+            }
         }
 
         return $extracted;

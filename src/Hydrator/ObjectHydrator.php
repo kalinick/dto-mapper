@@ -3,6 +3,7 @@
 namespace DataMapper\Hydrator;
 
 use DataMapper\Exception\InvalidArgumentException;
+use GeneratedHydrator\Configuration;
 
 /**
  * Class ObjectHydrator
@@ -59,10 +60,10 @@ class ObjectHydrator extends AbstractHydrator
     protected function validateTypes($source, $destination): void
     {
         $notValid = !\is_object($source) || (
-            !\is_object($destination) && (
-                \is_string($destination) && !\class_exists($destination)
-            )
-        );
+                !\is_object($destination) && (
+                    \is_string($destination) && !\class_exists($destination)
+                )
+            );
 
         if ($notValid) {
             $message = '$source argument - must be object type,' .
