@@ -22,7 +22,7 @@ class GetterStrategyTest extends TestCase
 
     /**
      */
-    public function testGetterStrategyHydration()
+    public function testGetterStrategyHydration(): void
     {
         $bill = new Bill();
         $hydrator = $this->createHydrator($bill, CustomerDto::class, ['bill', 'getFormattedAmount']);

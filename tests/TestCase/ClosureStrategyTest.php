@@ -22,7 +22,7 @@ class ClosureStrategyTest extends TestCase
 
     /**
      */
-    public function testClosureStrategyHydration()
+    public function testClosureStrategyHydration(): void
     {
         $outer = new Outer();
         $searchString = 'Returned from closure';

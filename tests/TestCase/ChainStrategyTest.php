@@ -25,7 +25,7 @@ class ChainStrategyTest extends TestCase
 
     /**
      */
-    public function testChainStrategyHydration()
+    public function testChainStrategyHydration(): void
     {
         $outer = new Outer();
         $pathTOValue = 'inner.deep.searchValue';

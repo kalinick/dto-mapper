@@ -24,7 +24,7 @@ class ObjectToClassXPathTest extends TestCase
     /**
      * Source object, getter strategy test
      */
-    public function testXPathHydration()
+    public function testXPathHydration(): void
     {
         $outer = new Outer();
         $pathTOValue = 'inner.deep.searchValue';
