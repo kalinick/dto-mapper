@@ -2,19 +2,19 @@
 
 namespace Tests\DataFixtures\Traits;
 
-use DataMapper\Hydrator\AbstractHydrator;
-use DataMapper\Hydrator\ArrayCollectionHydrator;
-use DataMapper\Hydrator\ArraySerializableHydrator;
-use DataMapper\Hydrator\ObjectHydrator;
-use DataMapper\MappingRegistry\DestinationRegistry;
-use DataMapper\MappingRegistry\HydratorRegistry;
-use DataMapper\MappingRegistry\MappingRegistry;
-use DataMapper\MappingRegistry\NamingStrategyRegistry;
-use DataMapper\MappingRegistry\RelationsRegistry;
-use DataMapper\MappingRegistry\StrategyRegistry;
-use DataMapper\NamingStrategy\NamingStrategyInterface;
-use DataMapper\NamingStrategy\SnakeCaseNamingStrategy;
-use DataMapper\NamingStrategy\UnderscoreNamingStrategy;
+use DataMapper\Hydrator\{
+    AbstractHydrator,
+    ArrayCollectionHydrator,
+    ArraySerializableHydrator,
+    ObjectHydrator
+};
+use DataMapper\NamingStrategy\{
+    MapNamingStrategy, NamingStrategyInterface, SnakeCaseNamingStrategy, UnderscoreNamingStrategy
+};
+use DataMapper\MappingRegistry\{
+    DestinationRegistry, HydratorRegistry, MappingRegistry,
+    NamingStrategyRegistry, RelationsRegistry, StrategyRegistry
+};
 use DataMapper\Type\TypeDict;
 
 /**
@@ -93,5 +93,16 @@ trait BaseMappingTrait
     protected function createSnakeCaseNamingStrategy(): NamingStrategyInterface
     {
         return new SnakeCaseNamingStrategy();
+    }
+
+    /**
+     * @param array      $mapping
+     * @param array|null $reverse
+     *
+     * @return NamingStrategyInterface
+     */
+    protected function createMapNamingStrategy(array $mapping, ?array $reverse): NamingStrategyInterface
+    {
+        return new MapNamingStrategy($mapping, $reverse);
     }
 }

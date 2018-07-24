@@ -44,6 +44,10 @@ class SerializerStrategy implements StrategyInterface
 
         [$destinationContextClass, $propertyName] = $context;
 
+        if (\is_object($destinationContextClass)) {
+            $destinationContextClass = \get_class($destinationContextClass);
+        }
+
         if (!\is_string($destinationContextClass) || !\class_exists($destinationContextClass)) {
             throw new InvalidArgumentException('$destinationContextClass - argument must be exists class name');
         }

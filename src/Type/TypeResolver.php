@@ -105,8 +105,8 @@ final class TypeResolver
                 return TypeDict::CLASS_TYPE;
             case (TypeDict::ALL_TYPE):
                 return TypeDict::ALL_TYPE;
+            default:
+                return $variableType;
         }
-
-        return $variableType;
     }
 }
