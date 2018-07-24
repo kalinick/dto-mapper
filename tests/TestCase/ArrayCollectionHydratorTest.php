@@ -4,7 +4,7 @@ namespace Tests\TestCase;
 
 use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
-use DataMapper\Strategy\CollectionStrategy;
+use DataMapper\Strategy\SerializerStrategy;
 use DataMapper\Type\TypeDict;
 use DataMapper\Type\TypeResolver;
 
@@ -16,9 +16,9 @@ use Tests\DataFixtures\Traits\BaseMappingTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CollectionHydratorTest
+ * Class ArrayObjectHydratorTest
  */
-class CollectionHydratorTest extends TestCase
+class ArrayCollectionHydratorTest extends TestCase
 {
     use BaseMappingTrait;
 
@@ -31,9 +31,8 @@ class CollectionHydratorTest extends TestCase
     public function testArrayToDtoMapping(array $parameters, array $relations): void
     {
         /** @var RelationsRequestDto $dto */
-        $dto = $this
-            ->createHydrator($parameters, RelationsRequestDto::class, $relations)
-            ->hydrate($parameters, RelationsRequestDto::class);
+        $hydrator = $this->createHydrator($parameters, RelationsRequestDto::class, $relations);
+        $dto = $hydrator->hydrate($parameters, RelationsRequestDto::class);
 
         $this->assertRegistrationData($parameters['registrations_requests'][0], $dto->getRegistrationsRequests()[0]);
         $this->assertRegistrationData($parameters['registrations_requests'][1], $dto->getRegistrationsRequests()[1]);
@@ -133,7 +132,7 @@ class CollectionHydratorTest extends TestCase
             $mappingRegistry->getStrategyRegistry()->registerPropertyStrategy(
                 $strategyKey,
                 $prop,
-                new CollectionStrategy($hydrator, $relationsRegistry)
+                new SerializerStrategy($hydrator, $relationsRegistry)
             );
         }
 

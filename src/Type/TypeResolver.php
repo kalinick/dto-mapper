@@ -2,7 +2,7 @@
 
 namespace DataMapper\Type;
 
-use DataMapper\Hydrator\CollectionHydrator;
+use DataMapper\Hydrator\ArrayCollectionHydrator;
 use DataMapper\Hydrator\ArraySerializableHydrator;
 use DataMapper\Hydrator\ObjectHydrator;
 
@@ -17,8 +17,8 @@ final class TypeResolver
     public static function hydrationSupportedTypeSequence(): array
     {
         return [
-            TypeDict::ARRAY_TO_OBJECT   => CollectionHydrator::class,
-            TypeDict::ARRAY_TO_CLASS    => CollectionHydrator::class,
+            TypeDict::ARRAY_TO_OBJECT   => ArrayCollectionHydrator::class,
+            TypeDict::ARRAY_TO_CLASS    => ArrayCollectionHydrator::class,
             TypeDict::OBJECT_TO_ARRAY   => ArraySerializableHydrator::class,
             TypeDict::ARRAY_TO_ARRAY    => ArraySerializableHydrator::class,
             TypeDict::OBJECT_TO_CLASS   => ObjectHydrator::class,
@@ -103,6 +103,8 @@ final class TypeResolver
                 return TypeDict::ARRAY_TYPE;
             case (\class_exists($variable)):
                 return TypeDict::CLASS_TYPE;
+            case (TypeDict::ALL_TYPE):
+                return TypeDict::ALL_TYPE;
         }
 
         return $variableType;

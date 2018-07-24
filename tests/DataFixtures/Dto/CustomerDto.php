@@ -8,6 +8,7 @@ namespace Tests\DataFixtures\Dto;
 class CustomerDto
 {
     private $bill = '00.00';
+
     public $copiedByName;
 
     public function getBill(): string

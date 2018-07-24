@@ -13,7 +13,7 @@ abstract class RegistryContainer implements \ArrayAccess
     /**
      * @var array
      */
-    private $container = [];
+    protected $container = [];
 
     /**
      * {@inheritDoc}

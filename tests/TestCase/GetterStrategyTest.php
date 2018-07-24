@@ -41,7 +41,7 @@ class GetterStrategyTest extends TestCase
      */
     private function createHydrator(object $source, string $destinationClass, array $mapping): HydratorInterface
     {
-        [$destinationProperty, $sourceGetterName] = $mapping;
+        [$sourceProperty, $sourceGetterName] = $mapping;
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $mappingRegistry
@@ -49,10 +49,14 @@ class GetterStrategyTest extends TestCase
             ->registerDestinationClass($destinationClass);
 
         $mappingRegistry
+            ->getDestinationRegistry()
+            ->registerSourceClass(\get_class($source));
+
+        $mappingRegistry
             ->getStrategyRegistry()
             ->registerPropertyStrategy(
                 TypeResolver::getStrategyType($source, $destinationClass),
-                $destinationProperty,
+                $sourceProperty,
                 new GetterStrategy($sourceGetterName)
             );
 

@@ -15,13 +15,15 @@ class Outer
     /**
      * @var int
      */
-    private $testGetter = 100;
+    private $destinationGetterTarget = 100;
 
     /**
      * @var string
      */
     public $copiedByName = 'ok';
 
+    public $found;
+    public $test;
 
     /**
      * Outer constructor.
@@ -44,7 +46,7 @@ class Outer
      */
     public function getTestGetter(): int
     {
-        return $this->testGetter;
+        return $this->destinationGetterTarget;
     }
 
     /**

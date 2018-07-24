@@ -26,9 +26,8 @@ class ArrayToDtoHydrationTest extends TestCase
     public function testArrayToDtoMapping(array $registrationData): void
     {
         /** @var RegistrationRequestDto $dto */
-        $dto = $this
-            ->createArrayToClassHydrator($registrationData, RegistrationRequestDto::class)
-            ->hydrate($registrationData, RegistrationRequestDto::class);
+        $hydrator = $this->createArrayToClassHydrator($registrationData, RegistrationRequestDto::class);
+        $dto = $hydrator->hydrate($registrationData, RegistrationRequestDto::class);
 
         $this->assertEquals($dto->getFirstName(), $registrationData['first_name']);
         $this->assertEquals($dto->getLastName(), $registrationData['last_name']);

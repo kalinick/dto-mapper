@@ -3,8 +3,8 @@
 namespace Tests\DataFixtures\Traits;
 
 use DataMapper\Hydrator\AbstractHydrator;
+use DataMapper\Hydrator\ArrayCollectionHydrator;
 use DataMapper\Hydrator\ArraySerializableHydrator;
-use DataMapper\Hydrator\CollectionHydrator;
 use DataMapper\Hydrator\ObjectHydrator;
 use DataMapper\MappingRegistry\DestinationRegistry;
 use DataMapper\MappingRegistry\HydratorRegistry;
@@ -27,14 +27,14 @@ trait BaseMappingTrait
      */
     protected function createHydrationRegistry(): HydratorRegistry
     {
-        $collectionHydrator = $this->createCollectionHydrator();
         $objectHydrator = $this->createObjectHydrator();
         $arraySerializerHydrator = $this->createArraySerializableHydrator();
+        $arrayCollectionHydrator = $this->createArrayCollectionHydrator();
 
         $hydrationRegistry = new HydratorRegistry();
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::ARRAY_TO_CLASS);
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::ARRAY_TO_OBJECT);
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::OBJECT_TO_ARRAY);
+        $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_CLASS);
+        $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_OBJECT);
+        $hydrationRegistry->registerHydrator($arraySerializerHydrator, TypeDict::OBJECT_TO_ARRAY);
         $hydrationRegistry->registerHydrator($arraySerializerHydrator, TypeDict::ARRAY_TO_ARRAY);
         $hydrationRegistry->registerHydrator($objectHydrator, TypeDict::OBJECT_TO_CLASS);
         $hydrationRegistry->registerHydrator($objectHydrator, TypeDict::OBJECT_TO_OBJECT);
@@ -45,9 +45,9 @@ trait BaseMappingTrait
     /**
      * @return AbstractHydrator
      */
-    protected function createCollectionHydrator(): AbstractHydrator
+    protected function createObjectHydrator(): AbstractHydrator
     {
-        return new CollectionHydrator();
+        return new ObjectHydrator();
     }
 
     /**
@@ -61,9 +61,9 @@ trait BaseMappingTrait
     /**
      * @return AbstractHydrator
      */
-    protected function createObjectHydrator(): AbstractHydrator
+    protected function createArrayCollectionHydrator(): AbstractHydrator
     {
-        return new ObjectHydrator();
+        return new ArrayCollectionHydrator();
     }
 
     /**
