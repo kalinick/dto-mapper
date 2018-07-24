@@ -25,14 +25,12 @@ class ObjectHydrator extends AbstractHydrator
 
         foreach ($sourceContent as $sourceKey => $sourceValue) {
             $hydratedName = $this->hydrateName($sourceKey, $destination);
-            unset($sourceContent[$sourceKey]);
-            $sourceContent[$hydratedName] = $sourceValue;
 
-            if (!$this->hasStrategy($hydratedName)) {
-                continue;
+            if ($hydratedName !== $sourceKey) {
+                unset($sourceContent[$sourceKey]);
             }
 
-            $sourceContent[$hydratedName] = $this->hydrateValue($hydratedName, $sourceValue, $source);
+            $sourceContent[$hydratedName] = $this->hydrateValue($sourceKey, $sourceValue, $source);
         }
 
         return $this->hydrateToObject($sourceContent, $dto);

@@ -19,11 +19,9 @@ class ArrayCollectionHydrator extends AbstractHydrator
 
         foreach ($source as $sourceKey => $sourceValue) {
             $hydratedName = $this->hydrateName($sourceKey, $destination);
-            unset($source[$sourceKey]);
-            $source[$hydratedName] = $sourceValue;
 
-            if (!$this->hasStrategy($hydratedName)) {
-                continue;
+            if ($hydratedName !== $sourceKey) {
+                unset($source[$sourceKey]);
             }
 
             $source[$hydratedName] = $this->hydrateValue($hydratedName, $sourceValue, $destination);
