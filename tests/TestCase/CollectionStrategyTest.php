@@ -3,10 +3,8 @@
 namespace Tests\TestCase;
 
 use DataMapper\Hydrator\HydratorFactory;
-use DataMapper\Hydrator\HydratorInterface;
 use DataMapper\Mapper;
 use DataMapper\MapperInterface;
-use DataMapper\Strategy\ClosureStrategy;
 use DataMapper\Strategy\CollectionStrategy;
 use DataMapper\Type\TypeDict;
 use DataMapper\Type\TypeResolver;
@@ -48,7 +46,6 @@ class CollectionStrategyTest extends TestCase
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
-        $relationsRegistry = $mappingRegistry->getRelationsRegistry();
         $factory = new HydratorFactory($hydrationRegistry, $mappingRegistry);
         $mapper = new Mapper($factory);
 
@@ -64,33 +61,12 @@ class CollectionStrategyTest extends TestCase
             ->getDestinationRegistry()
             ->registerDestinationClass(AgeDto::class);
 
-        $relationsRegistry->registerRelationsMapping(
-            'nodeA',
-            CollectionRoot::class,
-            WeightDto::class,
-            false
-        );
-
-        $relationsRegistry->registerRelationsMapping(
-            'nodeB',
-            CollectionRoot::class,
-            AgeDto::class,
-            false
-        );
-
-        $relationsRegistry->registerRelationsMapping(
-            'nodeC',
-            CollectionRoot::class,
-            AgeDto::class,
-            true
-        );
-
         $mappingRegistry
             ->getStrategyRegistry()
             ->registerPropertyStrategy(
                 TypeResolver::getStrategyType(CollectionRoot::class, HumanDto::class),
                 'nodeA',
-                new CollectionStrategy($mapper, $relationsRegistry)
+                new CollectionStrategy($mapper, WeightDto::class, false)
             );
 
         $mappingRegistry
@@ -98,7 +74,7 @@ class CollectionStrategyTest extends TestCase
             ->registerPropertyStrategy(
                 TypeResolver::getStrategyType(CollectionRoot::class, HumanDto::class),
                 'nodeB',
-                new CollectionStrategy($mapper, $relationsRegistry)
+                new CollectionStrategy($mapper, AgeDto::class, false)
             );
 
         $mappingRegistry
@@ -106,7 +82,7 @@ class CollectionStrategyTest extends TestCase
             ->registerPropertyStrategy(
                 TypeResolver::getStrategyType(CollectionRoot::class, TypeDict::ALL_TYPE),
                 'nodeC',
-                new CollectionStrategy($mapper, $relationsRegistry)
+                new CollectionStrategy($mapper, AgeDto::class, true)
             );
 
 

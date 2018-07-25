@@ -22,15 +22,33 @@ class SerializerStrategy implements StrategyInterface
     private $hydrator;
 
     /**
-     * CollectionStrategy constructor.
-     *
-     * @param HydratorInterface          $hydrator
-     * @param RelationsRegistryInterface $mappingRegistry
+     * @var string
      */
-    public function __construct(HydratorInterface $hydrator, RelationsRegistryInterface $mappingRegistry)
+    private $relationTargetClass;
+
+    /**
+     * @var bool
+     */
+    private $isCollection;
+
+    /**
+     * SerializerStrategy constructor.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @param HydratorInterface $hydrator
+     * @param string            $relationTargetClass
+     * @param bool              $isCollection
+     */
+    public function __construct(HydratorInterface $hydrator, string $relationTargetClass, bool $isCollection)
     {
-        $this->mappingRegistry = $mappingRegistry;
+        if (!\class_exists($relationTargetClass)) {
+            throw new InvalidArgumentException($relationTargetClass . ' - class is not exist.');
+        }
+
         $this->hydrator = $hydrator;
+        $this->relationTargetClass = $relationTargetClass;
+        $this->isCollection = $isCollection;
     }
 
     /**
@@ -38,39 +56,17 @@ class SerializerStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        if (!\is_array($value) || !\is_array($context)) {
+        if (!\is_array($value)) {
             return $value;
         }
 
-        [$destinationContextClass, $propertyName] = $context;
-
-        if (\is_object($destinationContextClass)) {
-            $destinationContextClass = \get_class($destinationContextClass);
-        }
-
-        if (!\is_string($destinationContextClass) || !\class_exists($destinationContextClass)) {
-            throw new InvalidArgumentException('$destinationContextClass - argument must be exists class name');
-        }
-
-        if (false === $this->mappingRegistry->hasRegisteredRelation($propertyName, $destinationContextClass)) {
-            return $value;
-        }
-
-        $relationTargetClass = $this
-            ->mappingRegistry
-            ->getRegisteredRelation($propertyName, $destinationContextClass);
-
-        $hasMultiRelation = $this
-            ->mappingRegistry
-            ->hasRegisteredMultiRelation($propertyName, $destinationContextClass);
-
-        if (!$hasMultiRelation) {
-            return $this->hydrator->hydrate($value, $relationTargetClass);
+        if (!$this->isCollection) {
+            return $this->hydrator->hydrate($value, $this->relationTargetClass);
         }
 
         return \array_map(
-            function ($element) use ($relationTargetClass) {
-                return $this->hydrator->hydrate($element, $relationTargetClass);
+            function ($element) {
+                return $this->hydrator->hydrate($element, $this->relationTargetClass);
             },
             $value
         );

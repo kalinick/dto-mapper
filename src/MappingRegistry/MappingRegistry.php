@@ -13,11 +13,6 @@ class MappingRegistry implements MappingRegistryInterface
     private $namingRegistry;
 
     /**
-     * @var RelationsRegistryInterface
-     */
-    private $relationsRegistry;
-
-    /**
      * @var StrategyRegistryInterface
      */
     private $strategyRegistry;
@@ -31,18 +26,15 @@ class MappingRegistry implements MappingRegistryInterface
      * MappingRegistry constructor.
      *
      * @param DestinationRegistryInterface    $destinationRegistry
-     * @param RelationsRegistryInterface      $relationsRegistry
      * @param NamingStrategyRegistryInterface $namingStrategyRegistry
      * @param StrategyRegistryInterface       $strategyRegistry
      */
     public function __construct(
         DestinationRegistryInterface $destinationRegistry,
-        RelationsRegistryInterface $relationsRegistry,
         NamingStrategyRegistryInterface $namingStrategyRegistry,
         StrategyRegistryInterface $strategyRegistry
     ) {
         $this->destinationRegistry = $destinationRegistry;
-        $this->relationsRegistry = $relationsRegistry;
         $this->namingRegistry = $namingStrategyRegistry;
         $this->strategyRegistry = $strategyRegistry;
     }
@@ -53,14 +45,6 @@ class MappingRegistry implements MappingRegistryInterface
     public function getDestinationRegistry(): DestinationRegistryInterface
     {
         return $this->destinationRegistry;
-    }
-
-    /**
-     * @return RelationsRegistryInterface
-     */
-    public function getRelationsRegistry(): RelationsRegistryInterface
-    {
-        return $this->relationsRegistry;
     }
 
     /**

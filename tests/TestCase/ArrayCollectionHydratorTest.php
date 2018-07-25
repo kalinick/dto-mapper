@@ -115,7 +115,6 @@ class ArrayCollectionHydratorTest extends TestCase
     {
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
-        $relationsRegistry = $mappingRegistry->getRelationsRegistry();
         $strategyKey = TypeResolver::getStrategyType($source, $className);
         $hydrator = $hydrationRegistry->getHydratorByType(TypeDict::ARRAY_TO_CLASS);
 
@@ -128,11 +127,10 @@ class ArrayCollectionHydratorTest extends TestCase
             ->registerNamingStrategy($strategyKey, $this->createSnakeCaseNamingStrategy());
 
         foreach ($mappingProps as [$prop, $target, $multi]) {
-            $relationsRegistry->registerRelationsMapping($prop, $className, $target, $multi);
             $mappingRegistry->getStrategyRegistry()->registerPropertyStrategy(
                 $strategyKey,
                 $prop,
-                new SerializerStrategy($hydrator, $relationsRegistry)
+                new SerializerStrategy($hydrator, $target, $multi)
             );
         }
 
@@ -152,6 +150,5 @@ class ArrayCollectionHydratorTest extends TestCase
         $this->assertEquals($dto->getCountry(), $registrationData['country']);
         $this->assertEquals($dto->getEmail(), $registrationData['email']);
         $this->assertEquals($dto->getBirthday(), $registrationData['birthday']);
-        $this->assertEquals($dto->getPersonalInfo(), $registrationData['personal_info']);
     }
 }

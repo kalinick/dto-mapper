@@ -14,7 +14,7 @@ class RegistrationRequestDto
     public $country;
     public $email;
     public $birthday;
-    public $personalInfo = [];
+    public $personalInfo;
 
     /**
      * @return mixed
@@ -73,9 +73,9 @@ class RegistrationRequestDto
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getPersonalInfo(): array
+    public function getPersonalInfo()
     {
         return $this->personalInfo;
     }

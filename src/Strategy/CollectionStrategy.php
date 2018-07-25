@@ -12,25 +12,38 @@ use DataMapper\MappingRegistry\RelationsRegistryInterface;
 class CollectionStrategy implements StrategyInterface
 {
     /**
-     * @var RelationsRegistryInterface
-     */
-    private $mappingRegistry;
-
-    /**
      * @var MapperInterface
      */
     private $mapper;
 
     /**
+     * @var string
+     */
+    private $relationTargetClass;
+
+    /**
+     * @var bool
+     */
+    private $isCollection;
+
+    /**
      * CollectionStrategy constructor.
      *
-     * @param MapperInterface            $mapper
-     * @param RelationsRegistryInterface $mappingRegistry
+     * @throws InvalidArgumentException
+     *
+     * @param MapperInterface $mapper
+     * @param string          $relationTargetClass
+     * @param bool            $isCollection
      */
-    public function __construct(MapperInterface $mapper, RelationsRegistryInterface $mappingRegistry)
+    public function __construct(MapperInterface $mapper, string $relationTargetClass, bool $isCollection)
     {
-        $this->mappingRegistry = $mappingRegistry;
+        if (!\class_exists($relationTargetClass)) {
+            throw new InvalidArgumentException($relationTargetClass . ' - class is not exist.');
+        }
+
         $this->mapper = $mapper;
+        $this->relationTargetClass = $relationTargetClass;
+        $this->isCollection = $isCollection;
     }
 
     /**
@@ -38,38 +51,17 @@ class CollectionStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        if (!\is_array($context) && \is_object($value)) {
-            return $value;
-        }
-
-        [$sourceContext, $propertyName] = $context;
-
-        if (!\is_object($sourceContext)) {
-            throw new InvalidArgumentException('$sourceContextClass - argument must be object.');
-        }
-
-        $sourceContextClass = \get_class($sourceContext);
-        $hasRelation = $this->mappingRegistry->hasRegisteredRelation($propertyName, $sourceContextClass);
-
-        if (!$hasRelation) {
-            return $value;
-        }
-        $relationTargetClass = $this->mappingRegistry->getRegisteredRelation($propertyName, $sourceContextClass);
-
         if (\is_object($value)) {
-            return $this->mapper->convert($value, $relationTargetClass);
+            return $this->mapper->convert($value, $this->relationTargetClass);
         }
-        $hasMultiRelation = $this
-            ->mappingRegistry
-            ->hasRegisteredMultiRelation($propertyName, $sourceContextClass);
 
-        if (\is_array($value) && false === $hasMultiRelation) {
+        if (\is_array($value) && false === $this->isCollection) {
              return $value;
         }
 
         return \array_map(
-            function ($element) use ($relationTargetClass) {
-                return $this->mapper->convert($element, $relationTargetClass);
+            function ($element) {
+                return $this->mapper->convert($element, $this->relationTargetClass);
             },
             $value
         );

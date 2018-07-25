@@ -73,7 +73,6 @@ trait BaseMappingTrait
     {
         return new MappingRegistry(
             new DestinationRegistry(),
-            new RelationsRegistry(),
             new NamingStrategyRegistry(),
             new StrategyRegistry()
         );

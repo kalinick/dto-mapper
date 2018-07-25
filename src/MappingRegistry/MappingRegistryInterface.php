@@ -13,11 +13,6 @@ interface MappingRegistryInterface
     public function getDestinationRegistry(): DestinationRegistryInterface;
 
     /**
-     * @return RelationsRegistryInterface
-     */
-    public function getRelationsRegistry(): RelationsRegistryInterface;
-
-    /**
      * @return NamingStrategyRegistryInterface
      */
     public function getNamingRegistry(): NamingStrategyRegistryInterface;
