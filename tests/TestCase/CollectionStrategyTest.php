@@ -80,11 +80,10 @@ class CollectionStrategyTest extends TestCase
         $mappingRegistry
             ->getStrategyRegistry()
             ->registerPropertyStrategy(
-                TypeResolver::getStrategyType(CollectionRoot::class, TypeDict::ALL_TYPE),
+                TypeResolver::getStrategyType(CollectionRoot::class, HumanDto::class),
                 'nodeC',
                 new CollectionStrategy($mapper, AgeDto::class, true)
             );
-
 
         return $mapper;
     }

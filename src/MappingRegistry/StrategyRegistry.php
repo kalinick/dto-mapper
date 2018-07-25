@@ -26,25 +26,35 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
      */
     public function loadRegisteredStrategiesFor(string $key): array
     {
-        $defaultStrategies = [];
-        $registeredStrategies = [];
+        if ($this->offsetExists($key)) {
+            return $this->offsetGet($key);
+        }
+
         [$source, $destination] = \explode(TypeDict::STRATEGY_GLUE, $key);
 
-        $defaultStrategiesKey = TypeResolver::implodeType(
+        $defaultStrategiesInjectData = [];
+        $defaultStrategiesExtractData = [];
+        $defaultStrategiesExtractKey = TypeResolver::implodeType(
             $source,
             TypeDict::ALL_TYPE,
             TypeDict::STRATEGY_GLUE
         );
 
-        if (\class_exists($source) && $this->offsetExists($defaultStrategiesKey)) {
-            $defaultStrategies = $this->offsetGet($defaultStrategiesKey);
+        if ($this->offsetExists($defaultStrategiesExtractKey)) {
+            $defaultStrategiesExtractData = $this->offsetGet($defaultStrategiesExtractKey);
         }
 
-        if ($this->offsetExists($key)) {
-            $registeredStrategies = $this->offsetGet($key);
+        $defaultStrategiesInjectKey = TypeResolver::implodeType(
+            TypeDict::ALL_TYPE,
+            $destination,
+            TypeDict::STRATEGY_GLUE
+        );
+
+        if ($this->offsetExists($defaultStrategiesInjectKey)) {
+            $defaultStrategiesInjectData = $this->offsetGet($defaultStrategiesInjectKey);
         }
 
-        return \array_merge($defaultStrategies, $registeredStrategies);
+        return \array_merge($defaultStrategiesExtractData, $defaultStrategiesInjectData);
     }
 
     /**
