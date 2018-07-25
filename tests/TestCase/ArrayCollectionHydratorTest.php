@@ -4,7 +4,8 @@ namespace Tests\TestCase;
 
 use DataMapper\Hydrator\HydratorFactory;
 use DataMapper\Hydrator\HydratorInterface;
-use DataMapper\Strategy\SerializerStrategy;
+use DataMapper\Mapper;
+use DataMapper\Strategy\CollectionStrategy;
 use DataMapper\Type\TypeDict;
 use DataMapper\Type\TypeResolver;
 
@@ -116,7 +117,8 @@ class ArrayCollectionHydratorTest extends TestCase
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $strategyKey = TypeResolver::getStrategyType($source, $className);
-        $hydrator = $hydrationRegistry->getHydratorByType(TypeDict::ARRAY_TO_CLASS);
+        $factory = new HydratorFactory($hydrationRegistry, $mappingRegistry);
+        $mapper = new Mapper($factory);
 
         $mappingRegistry
             ->getDestinationRegistry()
@@ -130,7 +132,7 @@ class ArrayCollectionHydratorTest extends TestCase
             $mappingRegistry->getStrategyRegistry()->registerPropertyStrategy(
                 $strategyKey,
                 $prop,
-                new SerializerStrategy($hydrator, $target, $multi)
+                new CollectionStrategy($mapper, $target, $multi)
             );
         }
 

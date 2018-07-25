@@ -29,7 +29,7 @@ class GetterStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        [$sourceContext, $propertyName] = $context;
+        [$sourceContext] = $context;
 
         if (!\is_object($sourceContext)) {
             throw new InvalidArgumentException('$sourceContext - argument must be object');
