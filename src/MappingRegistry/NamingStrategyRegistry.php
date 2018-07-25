@@ -47,8 +47,10 @@ final class NamingStrategyRegistry extends RegistryContainer implements NamingSt
 
         if ($destination === TypeDict::ARRAY_TYPE) {
             $strategyKey = TypeResolver::getStrategyType($source, TypeDict::ALL_TYPE);
-        } else {
+        } elseif ($source === TypeDict::ARRAY_TYPE) {
             $strategyKey = TypeResolver::getStrategyType(TypeDict::ALL_TYPE, $destination);
+        } else {
+            $strategyKey = TypeResolver::getStrategyType($source, TypeDict::ALL_TYPE);
         }
 
         return $this->offsetExists($strategyKey) ? $this->offsetGet($strategyKey) : null;
