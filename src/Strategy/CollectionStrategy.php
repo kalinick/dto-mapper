@@ -4,7 +4,6 @@ namespace DataMapper\Strategy;
 
 use DataMapper\Exception\InvalidArgumentException;
 use DataMapper\MapperInterface;
-use DataMapper\MappingRegistry\RelationsRegistryInterface;
 
 /**
  * Class MultiCollectionStrategy

@@ -4,18 +4,12 @@ namespace DataMapper\Strategy;
 
 use DataMapper\Exception\InvalidArgumentException;
 use DataMapper\Hydrator\HydratorInterface;
-use DataMapper\MappingRegistry\RelationsRegistryInterface;
 
 /**
  * Class SerializerStrategy
  */
 class SerializerStrategy implements StrategyInterface
 {
-    /**
-     * @var RelationsRegistryInterface
-     */
-    private $mappingRegistry;
-
     /**
      * @var HydratorInterface
      */
