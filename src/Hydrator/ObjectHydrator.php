@@ -3,7 +3,6 @@
 namespace DataMapper\Hydrator;
 
 use DataMapper\Exception\InvalidArgumentException;
-use GeneratedHydrator\Configuration;
 
 /**
  * Class ObjectHydrator
@@ -16,42 +15,25 @@ class ObjectHydrator extends AbstractHydrator
     public function hydrate($source, $destination)
     {
         $this->validateTypes($source, $destination);
-
         $dto = \is_object($destination) ? $destination : new $destination();
-        $destinationClass = \get_class($dto);
-        $mappedDestinationProps = array_keys($this->extract($dto));
-        $destinationContent = $this->filterSourceProps($source, $mappedDestinationProps);
 
-        foreach ($mappedDestinationProps as $destinationProp) {
-            // Skip, we need to map only configured properties
-            if (!$this->hasStrategy($destinationProp)) {
-                continue;
-            }
-
-            $destinationContent[$destinationProp] = $this->hydrateValue($destinationProp, $source, $destinationClass);
+        if (\is_object($source)) {
+            $sourceContent = $this->extract($source);
+        } else {
+            $sourceContent = $source;
         }
 
-        return $this->hydrateToObject($destinationContent, $dto);
-    }
+        foreach ($sourceContent as $sourceKey => $sourceValue) {
+            $hydratedName = $this->hydrateName($sourceKey, $destination);
 
-    /**
-     * @param object $source
-     * @param array  $mappedDestinationProps
-     *
-     * @return array
-     */
-    private function filterSourceProps(object $source, array $mappedDestinationProps): array
-    {
-        $destinationContent = $this->extract($source);
-        $excludeKeys = \array_keys($destinationContent, $mappedDestinationProps);
+            if ($hydratedName !== $sourceKey) {
+                unset($sourceContent[$sourceKey]);
+            }
 
-        return \array_filter(
-            $destinationContent,
-            function ($key) use ($excludeKeys) {
-                return !\in_array($key, $excludeKeys, false);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
+            $sourceContent[$hydratedName] = $this->hydrateValue($sourceKey, $sourceValue, $source);
+        }
+
+        return $this->hydrateToObject($sourceContent, $dto);
     }
 
     /**
@@ -59,17 +41,12 @@ class ObjectHydrator extends AbstractHydrator
      */
     protected function validateTypes($source, $destination): void
     {
-        $notValid = !\is_object($source) || (
-                !\is_object($destination) && (
-                    \is_string($destination) && !\class_exists($destination)
-                )
-            );
+        if (!\is_array($source) && !\is_object($source)) {
+            throw new InvalidArgumentException('$source argument - must be object or array type');
+        }
 
-        if ($notValid) {
-            $message = '$source argument - must be object type,' .
-                '$destination argument - must by exist class name or object type';
-
-            throw new InvalidArgumentException($message);
+        if (\is_string($destination) && !\class_exists($destination)) {
+            throw new InvalidArgumentException('$destination argument - must by exist class name or object type');
         }
     }
 }

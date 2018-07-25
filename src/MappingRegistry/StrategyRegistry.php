@@ -28,18 +28,17 @@ final class StrategyRegistry extends RegistryContainer implements StrategyRegist
     {
         $defaultStrategies = [];
         $registeredStrategies = [];
-
         [$source, $destination] = \explode(TypeDict::STRATEGY_GLUE, $key);
+
         $defaultStrategiesKey = TypeResolver::implodeType(
+            $source,
             TypeDict::ALL_TYPE,
-            $destination,
-            TypeDict::HYDRATOR_GLUE
+            TypeDict::STRATEGY_GLUE
         );
 
-        if ($this->offsetExists($defaultStrategiesKey)) {
-            $defaultStrategies = $this->offsetGet($defaultStrategies);
+        if (\class_exists($source) && $this->offsetExists($defaultStrategiesKey)) {
+            $defaultStrategies = $this->offsetGet($defaultStrategiesKey);
         }
-
 
         if ($this->offsetExists($key)) {
             $registeredStrategies = $this->offsetGet($key);

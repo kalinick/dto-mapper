@@ -8,6 +8,7 @@ use DataMapper\Strategy\ClosureStrategy;
 use DataMapper\Type\TypeResolver;
 
 use Tests\DataFixtures\Dto\DeepValueDto;
+use Tests\DataFixtures\Model\Inner;
 use Tests\DataFixtures\Model\Outer;
 use Tests\DataFixtures\Traits\BaseMappingTrait;
 
@@ -26,20 +27,20 @@ class ClosureStrategyTest extends TestCase
     {
         $outer = new Outer();
         $searchString = 'Returned from closure';
-        $closure = function (Outer $outer) use ($searchString): string {
-            return $outer->getInner()->getDeep()->getDeepValue() . $searchString;
+        $closure = function (Inner $inner) use ($searchString): string {
+            return $inner->getDeep()->getDeepValue() . $searchString;
         };
 
         $hydrator = $this->createHydrator(
             $outer,
             DeepValueDto::class,
-            'test',
+            'inner',
             [$closure]
         );
 
         /** @var DeepValueDto $dto */
         $dto = $hydrator->hydrate($outer, DeepValueDto::class);
-        $this->assertContains($searchString, $dto->getTest());
+        $this->assertContains($searchString, $dto->getInner());
         $this->assertEquals($dto->getCopiedByName(), $outer->getCopiedByName());
     }
 
@@ -56,6 +57,10 @@ class ClosureStrategyTest extends TestCase
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $strategyKey = TypeResolver::getStrategyType($source, $target);
+
+        $mappingRegistry
+            ->getDestinationRegistry()
+            ->registerSourceClass(\get_class($source));
 
         $mappingRegistry
             ->getDestinationRegistry()

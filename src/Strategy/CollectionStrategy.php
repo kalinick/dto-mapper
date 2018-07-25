@@ -3,7 +3,7 @@
 namespace DataMapper\Strategy;
 
 use DataMapper\Exception\InvalidArgumentException;
-use DataMapper\Hydrator\HydratorInterface;
+use DataMapper\MapperInterface;
 use DataMapper\MappingRegistry\RelationsRegistryInterface;
 
 /**
@@ -17,20 +17,20 @@ class CollectionStrategy implements StrategyInterface
     private $mappingRegistry;
 
     /**
-     * @var HydratorInterface
+     * @var MapperInterface
      */
-    private $hydrator;
+    private $mapper;
 
     /**
      * CollectionStrategy constructor.
      *
-     * @param HydratorInterface          $hydrator
+     * @param MapperInterface            $mapper
      * @param RelationsRegistryInterface $mappingRegistry
      */
-    public function __construct(HydratorInterface $hydrator, RelationsRegistryInterface $mappingRegistry)
+    public function __construct(MapperInterface $mapper, RelationsRegistryInterface $mappingRegistry)
     {
         $this->mappingRegistry = $mappingRegistry;
-        $this->hydrator = $hydrator;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -38,37 +38,38 @@ class CollectionStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        if (!\is_array($value) || !\is_array($context)) {
+        if (!\is_array($context) && \is_object($value)) {
             return $value;
         }
 
-        [$contextClass, $propertyName] = $context;
+        [$sourceContext, $propertyName] = $context;
 
-        if (!\is_string($contextClass) || !\class_exists($contextClass)) {
-            throw new InvalidArgumentException('$context - argument must be exists class name');
+        if (!\is_object($sourceContext)) {
+            throw new InvalidArgumentException('$sourceContextClass - argument must be object.');
         }
 
-        $hasRelation = $this->mappingRegistry->hasRegisteredRelation($propertyName, $contextClass);
+        $sourceContextClass = \get_class($sourceContext);
+        $hasRelation = $this->mappingRegistry->hasRegisteredRelation($propertyName, $sourceContextClass);
 
         if (!$hasRelation) {
             return $value;
         }
+        $relationTargetClass = $this->mappingRegistry->getRegisteredRelation($propertyName, $sourceContextClass);
 
-        $relationTargetClass = $this
-            ->mappingRegistry
-            ->getRegisteredRelation($propertyName, $contextClass);
-
+        if (\is_object($value)) {
+            return $this->mapper->convert($value, $relationTargetClass);
+        }
         $hasMultiRelation = $this
             ->mappingRegistry
-            ->hasRegisteredMultiRelation($propertyName, $contextClass);
+            ->hasRegisteredMultiRelation($propertyName, $sourceContextClass);
 
-        if (!$hasMultiRelation) {
-            return $this->hydrator->hydrate($value, $relationTargetClass);
+        if (\is_array($value) && false === $hasMultiRelation) {
+             return $value;
         }
 
         return \array_map(
             function ($element) use ($relationTargetClass) {
-                return $this->hydrator->hydrate($element, $relationTargetClass);
+                return $this->mapper->convert($element, $relationTargetClass);
             },
             $value
         );

@@ -7,7 +7,7 @@ Currently there're 3 hydrators supported by Mapper:
 used for array to object conversion.
 
 * [`DataMapper\Strategy\ObjectHydrator`](https://github.com/vklymniuk/dto-mapper/blob/master/src/Hydrator/ObjectHydrator.php)
-used for object to object conversion. 
+used for object or array source data type to object conversion. 
  
  * [`DataMapper\Strategy\ArraySerializableHydrator`](https://github.com/vklymniuk/dto-mapper/blob/master/src/Hydrator/ArraySerializableHydrator.php)
  used for array to array conversion.

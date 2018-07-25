@@ -24,4 +24,22 @@ final class DestinationRegistry extends RegistryContainer implements Destination
     {
         return $this->offsetExists($className);
     }
+
+    /**
+     * @param string $className
+     */
+    public function registerSourceClass(string $className): void
+    {
+        $this->offsetSet($className, $className);
+    }
+
+    /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    public function hasRegisteredSource(string $className): bool
+    {
+        return $this->offsetExists($className);
+    }
 }

@@ -45,11 +45,13 @@ class XPathGetterStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
-        if (!\is_object($value)) {
+        [$sourceContext, $propertyName] = $context;
+
+        if (!\is_object($sourceContext)) {
             throw new InvalidArgumentException('$value - argument must be object');
         }
 
-        $extracted = $this->extractor->extract($value);
+        $extracted = $this->extractor->extract($sourceContext);
         foreach ($this->xPathParts as $step => $key) {
             if (!isset($extracted[$key])) {
                 return null;
@@ -58,7 +60,7 @@ class XPathGetterStrategy implements StrategyInterface
             if (!\is_object($extracted[$key])) {
                 $extracted = $extracted[$key];
             } else {
-                $extracted =  $this->extractor->extract($extracted[$key]);
+                $extracted = $this->extractor->extract($extracted[$key]);
             }
         }
 

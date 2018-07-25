@@ -5,9 +5,9 @@ namespace DataMapper\Strategy;
 use DataMapper\Exception\InvalidArgumentException;
 
 /**
- * Class GetterStrategy
+ * Class FormatterStrategy
  */
-class GetterStrategy implements StrategyInterface
+class FormatterStrategy implements StrategyInterface
 {
     /**
      * @var string
@@ -32,7 +32,7 @@ class GetterStrategy implements StrategyInterface
         [$sourceContext, $propertyName] = $context;
 
         if (!\is_object($sourceContext)) {
-            throw new InvalidArgumentException('$sourceContext - argument must be object');
+            throw new InvalidArgumentException('$context - argument must be object');
         }
 
         if (!\is_callable([$sourceContext, $this->methodToCall])) {
@@ -42,6 +42,6 @@ class GetterStrategy implements StrategyInterface
             );
         }
 
-        return $sourceContext->{$this->methodToCall}();
+        return $sourceContext->{$this->methodToCall}($value);
     }
 }

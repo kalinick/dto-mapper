@@ -17,6 +17,9 @@ class Bill
      */
     private $copiedByName = 'ok';
 
+
+    private $bill;
+
     /**
      * @return string
      */

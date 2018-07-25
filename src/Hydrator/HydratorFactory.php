@@ -38,12 +38,12 @@ class HydratorFactory implements HydratorFactoryInterface
      */
     public function createHydrator($source, $destination): HydratorInterface
     {
-        /** @var AbstractHydrator $hydrator */
+        $strategyKey = TypeResolver::getStrategyType($source, $destination);
         $type = TypeResolver::getHydratedType($source, $destination);
+        /** @var AbstractHydrator $hydrator */
         $hydrator = $this->hydratorRegistry->getHydratorByType($type);
         $hBuilder = HydratorBuilder::create($hydrator);
 
-        $strategyKey = TypeResolver::getStrategyType($source, $destination);
         $hydrationStrategies = $this
             ->mappingRegistry
             ->getStrategyRegistry()

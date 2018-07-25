@@ -2,19 +2,19 @@
 
 namespace Tests\DataFixtures\Traits;
 
-use DataMapper\Hydrator\AbstractHydrator;
-use DataMapper\Hydrator\ArraySerializableHydrator;
-use DataMapper\Hydrator\CollectionHydrator;
-use DataMapper\Hydrator\ObjectHydrator;
-use DataMapper\MappingRegistry\DestinationRegistry;
-use DataMapper\MappingRegistry\HydratorRegistry;
-use DataMapper\MappingRegistry\MappingRegistry;
-use DataMapper\MappingRegistry\NamingStrategyRegistry;
-use DataMapper\MappingRegistry\RelationsRegistry;
-use DataMapper\MappingRegistry\StrategyRegistry;
-use DataMapper\NamingStrategy\NamingStrategyInterface;
-use DataMapper\NamingStrategy\SnakeCaseNamingStrategy;
-use DataMapper\NamingStrategy\UnderscoreNamingStrategy;
+use DataMapper\Hydrator\{
+    AbstractHydrator,
+    ArrayCollectionHydrator,
+    ArraySerializableHydrator,
+    ObjectHydrator
+};
+use DataMapper\NamingStrategy\{
+    MapNamingStrategy, NamingStrategyInterface, SnakeCaseNamingStrategy, UnderscoreNamingStrategy
+};
+use DataMapper\MappingRegistry\{
+    DestinationRegistry, HydratorRegistry, MappingRegistry,
+    NamingStrategyRegistry, RelationsRegistry, StrategyRegistry
+};
 use DataMapper\Type\TypeDict;
 
 /**
@@ -27,14 +27,14 @@ trait BaseMappingTrait
      */
     protected function createHydrationRegistry(): HydratorRegistry
     {
-        $collectionHydrator = $this->createCollectionHydrator();
         $objectHydrator = $this->createObjectHydrator();
         $arraySerializerHydrator = $this->createArraySerializableHydrator();
+        $arrayCollectionHydrator = $this->createArrayCollectionHydrator();
 
         $hydrationRegistry = new HydratorRegistry();
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::ARRAY_TO_CLASS);
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::ARRAY_TO_OBJECT);
-        $hydrationRegistry->registerHydrator($collectionHydrator, TypeDict::OBJECT_TO_ARRAY);
+        $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_CLASS);
+        $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_OBJECT);
+        $hydrationRegistry->registerHydrator($arraySerializerHydrator, TypeDict::OBJECT_TO_ARRAY);
         $hydrationRegistry->registerHydrator($arraySerializerHydrator, TypeDict::ARRAY_TO_ARRAY);
         $hydrationRegistry->registerHydrator($objectHydrator, TypeDict::OBJECT_TO_CLASS);
         $hydrationRegistry->registerHydrator($objectHydrator, TypeDict::OBJECT_TO_OBJECT);
@@ -45,9 +45,9 @@ trait BaseMappingTrait
     /**
      * @return AbstractHydrator
      */
-    protected function createCollectionHydrator(): AbstractHydrator
+    protected function createObjectHydrator(): AbstractHydrator
     {
-        return new CollectionHydrator();
+        return new ObjectHydrator();
     }
 
     /**
@@ -61,9 +61,9 @@ trait BaseMappingTrait
     /**
      * @return AbstractHydrator
      */
-    protected function createObjectHydrator(): AbstractHydrator
+    protected function createArrayCollectionHydrator(): AbstractHydrator
     {
-        return new ObjectHydrator();
+        return new ArrayCollectionHydrator();
     }
 
     /**
@@ -93,5 +93,16 @@ trait BaseMappingTrait
     protected function createSnakeCaseNamingStrategy(): NamingStrategyInterface
     {
         return new SnakeCaseNamingStrategy();
+    }
+
+    /**
+     * @param array      $mapping
+     * @param array|null $reverse
+     *
+     * @return NamingStrategyInterface
+     */
+    protected function createMapNamingStrategy(array $mapping, ?array $reverse): NamingStrategyInterface
+    {
+        return new MapNamingStrategy($mapping, $reverse);
     }
 }

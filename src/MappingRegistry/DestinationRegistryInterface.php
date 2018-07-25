@@ -18,4 +18,16 @@ interface DestinationRegistryInterface
      * @return bool
      */
     public function hasRegisteredDestination(string $className): bool;
+
+    /**
+     * @param string $className
+     */
+    public function registerSourceClass(string $className): void;
+
+    /**
+     * @param string $className
+     *
+     * @return bool
+     */
+    public function hasRegisteredSource(string $className): bool;
 }

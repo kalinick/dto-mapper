@@ -18,7 +18,12 @@ class ArraySerializableHydrator extends AbstractHydrator
 
         foreach ($source as $name => $value) {
             $hydratedName = $this->hydrateName($name);
-            $destination[$hydratedName] = $this->hydrateValue($hydratedName, $value, $destination);
+
+            if ($hydratedName !== $name) {
+                unset($source[$name]);
+            }
+
+            $destination[$hydratedName] = $this->hydrateValue($name, $value, $destination);
         }
 
         return $destination;
@@ -34,8 +39,15 @@ class ArraySerializableHydrator extends AbstractHydrator
         $extracted = parent::extract($type);
 
         foreach ($extracted as $name => $value) {
+            $extractedName = $this->extractName($name);
+
+            if ($extractedName !== $name) {
+                unset($extracted[$name]);
+            }
+
+            $extracted[$extractedName] = $value;
             if (\is_object($value)) {
-                $extracted[$name] = parent::extract($value);
+                $extracted[$extractedName] = parent::extract($value);
             }
         }
 
