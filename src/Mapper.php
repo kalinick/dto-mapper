@@ -30,6 +30,10 @@ class Mapper implements MapperInterface
      */
     public function convert($source, $destination)
     {
+        if (null === $source) {
+            return $source;
+        }
+
         return $this
             ->hydratorFactory
             ->createHydrator($source, $destination)
