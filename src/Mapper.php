@@ -30,7 +30,7 @@ class Mapper implements MapperInterface
      */
     public function convert($source, $destination)
     {
-        if (null === $source) {
+        if (null === $source || !(\is_object($source) || \is_array($source))) {
             return $source;
         }
 

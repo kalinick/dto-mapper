@@ -10,23 +10,19 @@ use DataMapper\Exception\InvalidArgumentException;
 class ClosureStrategy implements StrategyInterface
 {
     /**
-     * @var \Closure
+     * @var callable
      */
     private $hydrateFunc;
 
     /**
      * ClosureStrategy constructor.
      *
-     * @param \Closure $hydrateFunc
+     * @param callable $hydrateFunc
      *
      * @throws InvalidArgumentException
      */
-    public function __construct(\Closure $hydrateFunc)
+    public function __construct(callable $hydrateFunc)
     {
-        if (!\is_callable($hydrateFunc)) {
-            throw new InvalidArgumentException('$hydrateFunc must be callable');
-        }
-
         $this->hydrateFunc = $hydrateFunc;
     }
 

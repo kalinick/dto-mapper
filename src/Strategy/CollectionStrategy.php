@@ -50,6 +50,11 @@ class CollectionStrategy implements StrategyInterface
      */
     public function hydrate($value, $context)
     {
+        if (null === $value || !(\is_object($value) || \is_array($value))) {
+            return $value;
+        }
+
+
         if (false === $this->isCollection) {
             return $this->mapper->convert($value, $this->relationTargetClass);
         }
