@@ -23,8 +23,10 @@ class ObjectHydrator extends AbstractHydrator
             $sourceContent = $source;
         }
 
+        $sourceContent = \array_merge(\get_object_vars($dto), $sourceContent);
+
         foreach ($sourceContent as $sourceKey => $sourceValue) {
-            $hydratedName = $this->hydrateName($sourceKey, $destination);
+            $hydratedName = $this->hydrateName($sourceKey, $dto);
 
             if ($hydratedName !== $sourceKey) {
                 unset($sourceContent[$sourceKey]);
