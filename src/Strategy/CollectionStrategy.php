@@ -4,6 +4,7 @@ namespace DataMapper\Strategy;
 
 use DataMapper\Exception\InvalidArgumentException;
 use DataMapper\MapperInterface;
+use ArrayAccess;
 
 /**
  * Class MultiCollectionStrategy
@@ -54,14 +55,20 @@ class CollectionStrategy implements StrategyInterface
             return $value;
         }
 
-
         if (false === $this->isCollection) {
             return $this->mapper->convert($value, $this->relationTargetClass);
         }
 
-        return \array_map(
-            function ($element) {
-                return $this->mapper->convert($element, $this->relationTargetClass);
+        if (\is_object($value) &&
+            interface_exists('\Doctrine\Common\Collections\Collection') &&
+            $value instanceof \Doctrine\Common\Collections\Collection
+        ) {
+            $value = $value->toArray();
+        }
+
+        return array_map(
+            function ($item) {
+                return $this->mapper->convert($item, $this->relationTargetClass);
             },
             $value
         );
