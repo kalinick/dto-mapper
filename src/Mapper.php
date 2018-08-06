@@ -43,6 +43,20 @@ class Mapper implements MapperInterface
     /**
      * {@inheritDoc}
      */
+    public function convertCollection(iterable $sources, string $destination): iterable
+    {
+        $result = [];
+
+        foreach ($sources as $source) {
+            $result[] = $this->convert($source, $destination);
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function extract(object $source): array
     {
         return $this
