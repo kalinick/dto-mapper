@@ -39,7 +39,7 @@ class ChainStrategyTest extends TestCase
                 [
                     'found',
                     [
-                        new ObjectHydrator(),
+                        new ObjectHydrator($this->createHydratedClassesFactory()),
                         $pathTOValue,
                     ],
                     XPathGetterStrategy::class,

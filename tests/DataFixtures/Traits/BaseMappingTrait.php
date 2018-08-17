@@ -37,7 +37,7 @@ trait BaseMappingTrait
      */
     protected function createObjectHydrator(): Hydrator\AbstractHydrator
     {
-        return new Hydrator\ObjectHydrator();
+        return new Hydrator\ObjectHydrator($this->createHydratedClassesFactory());
     }
 
     /**
@@ -45,7 +45,7 @@ trait BaseMappingTrait
      */
     protected function createArraySerializableHydrator(): Hydrator\AbstractHydrator
     {
-        return new Hydrator\ArraySerializableHydrator();
+        return new Hydrator\ArraySerializableHydrator($this->createHydratedClassesFactory());
     }
 
     /**
@@ -53,7 +53,15 @@ trait BaseMappingTrait
      */
     protected function createArrayCollectionHydrator(): Hydrator\AbstractHydrator
     {
-        return new Hydrator\ArrayCollectionHydrator();
+        return new Hydrator\ArrayCollectionHydrator($this->createHydratedClassesFactory());
+    }
+
+    /**
+     * @return Hydrator\HydratedClassesFactory
+     */
+    public function createHydratedClassesFactory(): Hydrator\HydratedClassesFactory
+    {
+        return new Hydrator\HydratedClassesFactory();
     }
 
     /**

@@ -12,16 +12,26 @@ class HydratedClassesFactory
     /**
      * @var null|string
      */
-    private static $targerDir = null;
+    private $targetDir;
+
+    /**
+     * HydratedClassesFactory constructor.
+     *
+     * @param null|string $targetDir
+     */
+    public function __construct(string $targetDir = null)
+    {
+        $this->targetDir = $targetDir;
+    }
 
     /**
      * @param string $className
      *
      * @return HydratorInterface
      */
-    public static function creareHydratorClass(string $className): object
+    public function createHydratorClass(string $className): object
     {
-        $hydratedClassName = self::createHydratedClass($className);
+        $hydratedClassName = $this->extractHydratedClass($className);
 
         return new $hydratedClassName();
     }
@@ -31,22 +41,14 @@ class HydratedClassesFactory
      *
      * @return string
      */
-    public static function createHydratedClass(string $className): string
+    public function extractHydratedClass(string $className): string
     {
         $config = new Configuration($className);
 
-        if (null !== self::$targerDir) {
-            $config->setGeneratedClassesTargetDir(self::$targerDir);
+        if (null !== $this->targetDir) {
+            $config->setGeneratedClassesTargetDir($this->targetDir);
         }
 
         return $config->createFactory()->getHydratorClass();
-    }
-
-    /**
-     * @param string $dirPath
-     */
-    public static function setGeneratedClassesTargetDir(string $dirPath): void
-    {
-        self::$targerDir = $dirPath;
     }
 }
