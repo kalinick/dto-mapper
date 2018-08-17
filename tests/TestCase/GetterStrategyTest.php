@@ -45,12 +45,12 @@ class GetterStrategyTest extends TestCase
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($destinationClass);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($destinationClass);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerSourceClass(\get_class($source));
+            ->getClassMappingRegistry()
+            ->registerMappingClass(\get_class($source));
 
         $mappingRegistry
             ->getStrategyRegistry()

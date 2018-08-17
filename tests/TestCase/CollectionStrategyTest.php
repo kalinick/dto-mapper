@@ -50,16 +50,16 @@ class CollectionStrategyTest extends TestCase
         $mapper = new Mapper($factory);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass(HumanDto::class);
+            ->getClassMappingRegistry()
+            ->registerMappingClass(HumanDto::class);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass(WeightDto::class);
+            ->getClassMappingRegistry()
+            ->registerMappingClass(WeightDto::class);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass(AgeDto::class);
+            ->getClassMappingRegistry()
+            ->registerMappingClass(AgeDto::class);
 
         $mappingRegistry
             ->getStrategyRegistry()

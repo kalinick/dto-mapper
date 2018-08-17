@@ -8,9 +8,9 @@ namespace DataMapper\MappingRegistry;
 interface MappingRegistryInterface
 {
     /**
-     * @return DestinationRegistryInterface
+     * @return ClassMappingRegistryInterface
      */
-    public function getDestinationRegistry(): DestinationRegistryInterface;
+    public function getClassMappingRegistry(): ClassMappingRegistryInterface;
 
     /**
      * @return NamingStrategyRegistryInterface

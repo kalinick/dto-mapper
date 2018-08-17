@@ -7,7 +7,6 @@ use DataMapper\NamingStrategy\NamingStrategyEnabledInterface;
 use DataMapper\NamingStrategy\NamingStrategyInterface;
 use DataMapper\Strategy\StrategyEnabledInterface;
 use DataMapper\Strategy\StrategyInterface;
-use GeneratedHydrator\Configuration;
 use DataMapper\Exception\InvalidArgumentException;
 
 /**
@@ -183,10 +182,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     protected function hydrateToObject(array $source, object $target): object
     {
         $className = \get_class($target);
-        $config = new Configuration($className);
-        $hydratorClass = $config->createFactory()->getHydratorClass();
-        /* @var HydratorInterface $hydrator */
-        $hydrator = new $hydratorClass();
+        $hydrator = HydratedClassesFactory::creareHydratorClass($className);
 
         return $hydrator->hydrate($source, $target);
     }
@@ -197,10 +193,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     public function extract(object $type): array
     {
         $className = \get_class($type);
-        $config = new Configuration($className);
-        $hydratorClass = $config->createFactory()->getHydratorClass();
-        /* @var HydratorInterface $hydrator */
-        $hydrator = new $hydratorClass();
+        $hydrator = HydratedClassesFactory::creareHydratorClass($className);
         $extracted = $hydrator->extract($type);
 
         foreach ($extracted as $name => $value) {

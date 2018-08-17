@@ -121,8 +121,8 @@ class ArrayCollectionHydratorTest extends TestCase
         $mapper = new Mapper($factory);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($className);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($className);
 
         $mappingRegistry
             ->getNamingRegistry()

@@ -2,19 +2,9 @@
 
 namespace Tests\DataFixtures\Traits;
 
-use DataMapper\Hydrator\{
-    AbstractHydrator,
-    ArrayCollectionHydrator,
-    ArraySerializableHydrator,
-    ObjectHydrator
-};
-use DataMapper\NamingStrategy\{
-    MapNamingStrategy, NamingStrategyInterface, SnakeCaseNamingStrategy, UnderscoreNamingStrategy
-};
-use DataMapper\MappingRegistry\{
-    DestinationRegistry, HydratorRegistry, MappingRegistry,
-    NamingStrategyRegistry, RelationsRegistry, StrategyRegistry
-};
+use DataMapper\Hydrator;
+use DataMapper\NamingStrategy;
+use DataMapper\MappingRegistry;
 use DataMapper\Type\TypeDict;
 
 /**
@@ -23,15 +13,15 @@ use DataMapper\Type\TypeDict;
 trait BaseMappingTrait
 {
     /**
-     * @return HydratorRegistry
+     * @return MappingRegistry\HydratorRegistry
      */
-    protected function createHydrationRegistry(): HydratorRegistry
+    protected function createHydrationRegistry(): MappingRegistry\HydratorRegistry
     {
         $objectHydrator = $this->createObjectHydrator();
         $arraySerializerHydrator = $this->createArraySerializableHydrator();
         $arrayCollectionHydrator = $this->createArrayCollectionHydrator();
 
-        $hydrationRegistry = new HydratorRegistry();
+        $hydrationRegistry = new MappingRegistry\HydratorRegistry();
         $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_CLASS);
         $hydrationRegistry->registerHydrator($arrayCollectionHydrator, TypeDict::ARRAY_TO_OBJECT);
         $hydrationRegistry->registerHydrator($arraySerializerHydrator, TypeDict::OBJECT_TO_ARRAY);
@@ -43,65 +33,67 @@ trait BaseMappingTrait
     }
 
     /**
-     * @return AbstractHydrator
+     * @return Hydrator\AbstractHydrator
      */
-    protected function createObjectHydrator(): AbstractHydrator
+    protected function createObjectHydrator(): Hydrator\AbstractHydrator
     {
-        return new ObjectHydrator();
+        return new Hydrator\ObjectHydrator();
     }
 
     /**
-     * @return AbstractHydrator
+     * @return Hydrator\AbstractHydrator
      */
-    protected function createArraySerializableHydrator(): AbstractHydrator
+    protected function createArraySerializableHydrator(): Hydrator\AbstractHydrator
     {
-        return new ArraySerializableHydrator();
+        return new Hydrator\ArraySerializableHydrator();
     }
 
     /**
-     * @return AbstractHydrator
+     * @return Hydrator\AbstractHydrator
      */
-    protected function createArrayCollectionHydrator(): AbstractHydrator
+    protected function createArrayCollectionHydrator(): Hydrator\AbstractHydrator
     {
-        return new ArrayCollectionHydrator();
+        return new Hydrator\ArrayCollectionHydrator();
     }
 
     /**
-     * @return MappingRegistry
+     * @return MappingRegistry\MappingRegistry
      */
-    protected function createMappingRegistry(): MappingRegistry
+    protected function createMappingRegistry(): MappingRegistry\MappingRegistry
     {
-        return new MappingRegistry(
-            new DestinationRegistry(),
-            new NamingStrategyRegistry(),
-            new StrategyRegistry()
+        return new MappingRegistry\MappingRegistry(
+            new MappingRegistry\ClassMappingRegistry(),
+            new MappingRegistry\NamingStrategyRegistry(),
+            new MappingRegistry\StrategyRegistry()
         );
     }
 
     /**
-     * @return NamingStrategyInterface
+     * @return NamingStrategy\NamingStrategyInterface
      */
-    protected function createUnderscoreNamingStrategy(): NamingStrategyInterface
+    protected function createUnderscoreNamingStrategy(): NamingStrategy\NamingStrategyInterface
     {
-        return new UnderscoreNamingStrategy();
+        return new NamingStrategy\UnderscoreNamingStrategy();
     }
 
     /**
-     * @return SnakeCaseNamingStrategy
+     * @return NamingStrategy\SnakeCaseNamingStrategy
      */
-    protected function createSnakeCaseNamingStrategy(): NamingStrategyInterface
+    protected function createSnakeCaseNamingStrategy(): NamingStrategy\NamingStrategyInterface
     {
-        return new SnakeCaseNamingStrategy();
+        return new NamingStrategy\SnakeCaseNamingStrategy();
     }
 
     /**
      * @param array      $mapping
      * @param array|null $reverse
      *
-     * @return NamingStrategyInterface
+     * @return NamingStrategy\NamingStrategyInterface
      */
-    protected function createMapNamingStrategy(array $mapping, ?array $reverse): NamingStrategyInterface
-    {
-        return new MapNamingStrategy($mapping, $reverse);
+    protected function createMapNamingStrategy(
+        array $mapping,
+        ?array $reverse
+    ): NamingStrategy\NamingStrategyInterface {
+        return new NamingStrategy\MapNamingStrategy($mapping, $reverse);
     }
 }

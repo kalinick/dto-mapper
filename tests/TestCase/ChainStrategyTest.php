@@ -82,8 +82,8 @@ class ChainStrategyTest extends TestCase
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($destinationClass);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($destinationClass);
 
         $typeStrategyType = TypeResolver::getStrategyType($source, $destinationClass);
         foreach ($mapping as [$destinationProperty, $args, $strategy]) {

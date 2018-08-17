@@ -18,33 +18,33 @@ class MappingRegistry implements MappingRegistryInterface
     private $strategyRegistry;
 
     /**
-     * @var DestinationRegistryInterface
+     * @var ClassMappingRegistryInterface
      */
-    private $destinationRegistry;
+    private $classMappingRegistry;
 
     /**
      * MappingRegistry constructor.
      *
-     * @param DestinationRegistryInterface    $destinationRegistry
+     * @param ClassMappingRegistryInterface   $classMappingRegistry
      * @param NamingStrategyRegistryInterface $namingStrategyRegistry
      * @param StrategyRegistryInterface       $strategyRegistry
      */
     public function __construct(
-        DestinationRegistryInterface $destinationRegistry,
+        ClassMappingRegistryInterface $classMappingRegistry,
         NamingStrategyRegistryInterface $namingStrategyRegistry,
         StrategyRegistryInterface $strategyRegistry
     ) {
-        $this->destinationRegistry = $destinationRegistry;
+        $this->classMappingRegistry = $classMappingRegistry;
         $this->namingRegistry = $namingStrategyRegistry;
         $this->strategyRegistry = $strategyRegistry;
     }
 
     /**
-     * @return DestinationRegistryInterface
+     * @return ClassMappingRegistryInterface
      */
-    public function getDestinationRegistry(): DestinationRegistryInterface
+    public function getClassMappingRegistry(): ClassMappingRegistryInterface
     {
-        return $this->destinationRegistry;
+        return $this->classMappingRegistry;
     }
 
     /**

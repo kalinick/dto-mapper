@@ -53,8 +53,8 @@ class ObjectToClassXPathTest extends TestCase
         $hydrationRegistry = $this->createHydrationRegistry();
         $strategyKey = TypeResolver::getStrategyType($source, $target);
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($target);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($target);
 
         $mappingRegistry
             ->getStrategyRegistry()

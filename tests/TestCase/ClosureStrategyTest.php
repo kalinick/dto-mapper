@@ -59,12 +59,12 @@ class ClosureStrategyTest extends TestCase
         $strategyKey = TypeResolver::getStrategyType($source, $target);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerSourceClass(\get_class($source));
+            ->getClassMappingRegistry()
+            ->registerMappingClass(\get_class($source));
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($target);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($target);
 
         $mappingRegistry
             ->getStrategyRegistry()

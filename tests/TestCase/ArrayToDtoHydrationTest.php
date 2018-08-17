@@ -91,8 +91,8 @@ class ArrayToDtoHydrationTest extends TestCase
         $strategyKey = TypeResolver::getStrategyType($source, $className);
 
         $mappingRegistry
-            ->getDestinationRegistry()
-            ->registerDestinationClass($className);
+            ->getClassMappingRegistry()
+            ->registerMappingClass($className);
 
         $mappingRegistry
             ->getNamingRegistry()
