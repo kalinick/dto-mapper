@@ -10,7 +10,7 @@ use GeneratedHydrator\Configuration;
 class HydratedClassesFactory
 {
     /**
-     * @var null|string
+     * @var string
      */
     private $targetDir;
 
@@ -19,7 +19,7 @@ class HydratedClassesFactory
      *
      * @param null|string $targetDir
      */
-    public function __construct(string $targetDir = null)
+    public function __construct(?string $targetDir)
     {
         $this->targetDir = $targetDir;
     }
@@ -47,8 +47,11 @@ class HydratedClassesFactory
 
         if (null !== $this->targetDir) {
             $config->setGeneratedClassesTargetDir($this->targetDir);
+            \spl_autoload_register($config->getGeneratedClassAutoloader());
         }
 
-        return $config->createFactory()->getHydratorClass();
+        $className =  $config->createFactory()->getHydratorClass();
+
+        return $className;
     }
 }

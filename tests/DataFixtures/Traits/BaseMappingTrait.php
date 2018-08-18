@@ -61,7 +61,7 @@ trait BaseMappingTrait
      */
     public function createHydratedClassesFactory(): Hydrator\HydratedClassesFactory
     {
-        return new Hydrator\HydratedClassesFactory();
+        return new Hydrator\HydratedClassesFactory(null);
     }
 
     /**
