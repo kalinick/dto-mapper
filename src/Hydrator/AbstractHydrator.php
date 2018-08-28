@@ -42,6 +42,15 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     }
 
     /**
+     * Reset settings
+     */
+    public function __clone()
+    {
+        $this->strategies = [];
+        $this->namingStrategy = null;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function hasStrategy(string $name): bool

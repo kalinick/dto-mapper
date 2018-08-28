@@ -35,6 +35,7 @@ class ArrayCollectionHydratorTest extends TestCase
         $hydrator = $this->createHydrator($parameters, RelationsRequestDto::class, $relations);
         $dto = $hydrator->hydrate($parameters, RelationsRequestDto::class);
 
+//        var_dump($dto);
         $this->assertRegistrationData($parameters['registrations_requests'][0], $dto->getRegistrationsRequests()[0]);
         $this->assertRegistrationData($parameters['registrations_requests'][1], $dto->getRegistrationsRequests()[1]);
         $this->assertEquals($parameters['personal_info']['code_word'], $dto->getPersonalInfo()->getCodeWord());
@@ -117,8 +118,6 @@ class ArrayCollectionHydratorTest extends TestCase
         $mappingRegistry = $this->createMappingRegistry();
         $hydrationRegistry = $this->createHydrationRegistry();
         $strategyKey = TypeResolver::getStrategyType($source, $className);
-        $factory = new HydratorFactory($hydrationRegistry, $mappingRegistry);
-        $mapper = new Mapper($factory);
 
         $mappingRegistry
             ->getClassMappingRegistry()
@@ -128,12 +127,22 @@ class ArrayCollectionHydratorTest extends TestCase
             ->getNamingRegistry()
             ->registerNamingStrategy($strategyKey, $this->createSnakeCaseNamingStrategy());
 
+        $factory = new HydratorFactory($hydrationRegistry, $mappingRegistry);
+        $mapper = new Mapper($factory);
+
         foreach ($mappingProps as [$prop, $target, $multi]) {
             $mappingRegistry->getStrategyRegistry()->registerPropertyStrategy(
                 $strategyKey,
                 $prop,
                 new CollectionStrategy($mapper, $target, $multi)
             );
+
+            $mappingRegistry
+                ->getNamingRegistry()
+                ->registerNamingStrategy(
+                    TypeResolver::getStrategyType($source, $target),
+                    $this->createSnakeCaseNamingStrategy()
+                );
         }
 
         return (new HydratorFactory($hydrationRegistry, $mappingRegistry))->createHydrator($source, $className);

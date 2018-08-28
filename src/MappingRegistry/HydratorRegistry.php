@@ -21,7 +21,7 @@ final class HydratorRegistry extends RegistryContainer implements HydratorRegist
             throw new UnknownHydratorTypeException($type);
         }
 
-        return $this->offsetGet($type);
+        return clone $this->offsetGet($type);
     }
 
     /**
