@@ -47,8 +47,8 @@ class Mapper implements MapperInterface
     {
         $result = [];
 
-        foreach ($sources as $source) {
-            $result[] = $this->convert($source, $destination);
+        foreach ($sources as $key => $source) {
+            $result[$key] = $this->convert($source, $destination);
         }
 
         return $result;
