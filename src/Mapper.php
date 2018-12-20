@@ -34,13 +34,21 @@ class Mapper implements MapperInterface
             return $source;
         }
 
-        return $this
+        gc_enable();
+
+        $dto = $this
             ->hydratorFactory
             ->createHydrator($source, $destination)
             ->hydrate($source, $destination);
+
+        gc_collect_cycles();
+
+        return $dto;
     }
 
     /**
+     * TODO: double check mapper usage then swap return to yield
+     *
      * {@inheritDoc}
      */
     public function convertCollection(iterable $sources, string $destination): iterable
