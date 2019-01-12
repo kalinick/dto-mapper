@@ -47,19 +47,13 @@ class Mapper implements MapperInterface
     }
 
     /**
-     * TODO: double check mapper usage then swap return to yield
-     *
      * {@inheritDoc}
      */
     public function convertCollection(iterable $sources, string $destination): iterable
     {
-        $result = [];
-
         foreach ($sources as $key => $source) {
-            $result[$key] = $this->convert($source, $destination);
+            yield $this->convert($source, $destination);
         }
-
-        return $result;
     }
 
     /**
