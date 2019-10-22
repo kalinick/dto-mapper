@@ -34,14 +34,10 @@ class Mapper implements MapperInterface
             return $source;
         }
 
-        gc_enable();
-
         $dto = $this
             ->hydratorFactory
             ->createHydrator($source, $destination)
             ->hydrate($source, $destination);
-
-        gc_collect_cycles();
 
         return $dto;
     }
