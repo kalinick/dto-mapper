@@ -203,7 +203,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
      *
      * @return object
      */
-    protected function hydrateToObject(array $source, object $target): object
+    protected function hydrateToObject(array $source, $target)
     {
         $className = \get_class($target);
         $hydrator = $this->classesFactory->createHydratorClass($className);
@@ -214,7 +214,7 @@ abstract class AbstractHydrator implements HydratorInterface, StrategyEnabledInt
     /**
      * {@inheritDoc}
      */
-    public function extract(object $type): array
+    public function extract($type): array
     {
         $className = \get_class($type);
         $hydrator = $this->classesFactory->createHydratorClass($className);

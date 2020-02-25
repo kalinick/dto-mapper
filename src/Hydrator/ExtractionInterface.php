@@ -12,5 +12,5 @@ interface ExtractionInterface
      *
      * @return array
      */
-    public function extract(object $type): array;
+    public function extract($type): array;
 }

@@ -55,7 +55,7 @@ class Mapper implements MapperInterface
     /**
      * {@inheritDoc}
      */
-    public function extract(object $source): array
+    public function extract($source): array
     {
         return $this
             ->hydratorFactory

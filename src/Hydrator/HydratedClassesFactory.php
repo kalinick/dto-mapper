@@ -29,7 +29,7 @@ class HydratedClassesFactory
      *
      * @return HydratorInterface
      */
-    public function createHydratorClass(string $className): object
+    public function createHydratorClass(string $className)
     {
         $hydratedClassName = $this->extractHydratedClass($className);
 

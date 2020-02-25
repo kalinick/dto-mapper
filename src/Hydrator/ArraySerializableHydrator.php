@@ -34,7 +34,7 @@ class ArraySerializableHydrator extends AbstractHydrator
      *
      * @return array
      */
-    public function extract(object $type): array
+    public function extract($type): array
     {
         $extracted = parent::extract($type);
 

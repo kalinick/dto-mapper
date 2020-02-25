@@ -28,5 +28,5 @@ interface MapperInterface
      *
      * @return array
      */
-    public function extract(object $source): array;
+    public function extract($source): array;
 }
